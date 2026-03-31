@@ -59,8 +59,9 @@ def simulate_ny_session(df_1m: pd.DataFrame, date_str: str, pivots: dict, asia_r
                 absolute_lowest = future_data['low'].min()
                 
                 # Calculate excursion points (Assuming a LONG setup)
-                mfe = round(absolute_highest - entry_price, 2)
-                mae = round(absolute_lowest - entry_price, 2) # This will be negative (drawdown)
+                # We wrap these in float() to fix the JSON serialization error
+                mfe = float(round(absolute_highest - entry_price, 2))
+                mae = float(round(absolute_lowest - entry_price, 2))
             else:
                 mfe, mae = 0.0, 0.0
                 
