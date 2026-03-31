@@ -3,3 +3,5 @@ pytest
 requests
 dotenv
 ollama
+supabase
+python-dotenv

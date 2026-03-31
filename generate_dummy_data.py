@@ -38,6 +38,13 @@ def create_perfect_setup_csv():
     df.loc['2023-10-11 14:55:00', 'high'] = 39150
     df.loc['2023-10-11 14:59:00', 'close'] = 39130 
 
+    # --- NEW: Post-Trade Price Action (Trade Management) ---
+    # Drawdown: Price dips to 39,090 at 15:30 (MAE of -40 points from 39,130 entry)
+    df.loc['2023-10-11 15:30:00', 'low'] = 39090
+    
+    # Run-up: Price rockets to 39,250 at 18:00 (MFE of +120 points from 39,130 entry)
+    df.loc['2023-10-11 18:00:00', 'high'] = 39250
+
     # Reset index to make it a standard column again before saving
     df.reset_index(inplace=True)
     

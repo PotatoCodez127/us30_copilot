@@ -19,29 +19,21 @@ def load_and_prep_data(filepath: str) -> pd.DataFrame:
 
 def simulate_ny_session(df_1m: pd.DataFrame, date_str: str, pivots: dict, asia_range: dict):
     """
-    Simulates the NY Session (13:30 to 20:00 UTC) candle by candle.
+    Simulates the NY Session (13:30 to 20:00 UTC) candle by candle and tracks MFE/MAE.
     """
-    # 1. Initialize the State Machine for the day
     tracker = US30SessionTracker(
         asia_high=asia_range['asia_high'],
         asia_low=asia_range['asia_low'],
         daily_pivots=[pivots['S2'], pivots['S1'], pivots['P'], pivots['R1'], pivots['R2']]
     )
     
-    # 2. Isolate the NY Session data for this specific day
-    # NY Open is 09:30 EST, which is 13:30 UTC (ignoring DST for this pure UTC logic)
     session_data = df_1m.loc[f"{date_str} 13:30:00":f"{date_str} 20:00:00"]
-    
-    # 3. Step through time chronologically
-    # We use a 15-minute rolling window to simulate the current 15m candle forming
     setups_found = []
     
     for i in range(len(session_data)):
         current_time = session_data.index[i]
         candle_1m = session_data.iloc[i].to_dict()
         
-        # Calculate the current 15-minute candle on the fly (from the top of the hour)
-        # E.g., at 13:42, it groups 13:30 to 13:42
         floor_15m = current_time.floor('15min')
         current_15m_window = session_data.loc[floor_15m:current_time]
         
@@ -49,18 +41,34 @@ def simulate_ny_session(df_1m: pd.DataFrame, date_str: str, pivots: dict, asia_r
             'open': current_15m_window['open'].iloc[0],
             'high': current_15m_window['high'].max(),
             'low': current_15m_window['low'].min(),
-            'close': current_15m_window['close'].iloc[-1], # Current price
+            'close': current_15m_window['close'].iloc[-1],
         }
         
-        # 4. Feed the engine
         ai_payload = tracker.update_state(candle_15m, candle_1m)
         
         if ai_payload:
-            # We add the timestamp so we know exactly when it triggered
             ai_payload['timestamp'] = str(current_time)
-            setups_found.append(ai_payload)
             
-            # Reset tracker if you only want one trade per day, or leave it to catch multiple
-            break 
+            # --- NEW: TRADE MANAGEMENT LOGIC ---
+            entry_price = candle_15m['close']
+            
+            # Slice the dataframe to look only at the time AFTER our entry
+            if i + 1 < len(session_data):
+                future_data = session_data.iloc[i+1:]
+                absolute_highest = future_data['high'].max()
+                absolute_lowest = future_data['low'].min()
+                
+                # Calculate excursion points (Assuming a LONG setup)
+                mfe = round(absolute_highest - entry_price, 2)
+                mae = round(absolute_lowest - entry_price, 2) # This will be negative (drawdown)
+            else:
+                mfe, mae = 0.0, 0.0
+                
+            ai_payload['mfe_points'] = mfe
+            ai_payload['mae_points'] = mae
+            # -----------------------------------
+            
+            setups_found.append(ai_payload)
+            break # We only track the first valid setup of the day to keep data clean
             
     return setups_found
