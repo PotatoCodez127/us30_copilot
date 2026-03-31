@@ -2,3 +2,4 @@
 .env
 .pytest_cache
 test_ai.py
+__pycache__
