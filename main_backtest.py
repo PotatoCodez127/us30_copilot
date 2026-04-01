@@ -1,151 +1,105 @@
 import pandas as pd
 import re
+import os
 from src.data_feed.historical import load_and_prep_data, simulate_ny_session
 from src.math_engine.pivots import calculate_daily_pivots
 from src.ai_agent.ollama_client import analyze_setup_with_ollama
-from src.database.supabase_client import log_setup_to_db
 
-# --- TERMINAL COLORS ---
 class Color:
-    GREEN = '\033[92m'
-    CYAN = '\033[96m'
-    YELLOW = '\033[93m'
-    RED = '\033[91m'
-    MAGENTA = '\033[95m'
-    WHITE = '\033[97m'
-    RESET = '\033[0m'
-# -----------------------
+    GREEN, CYAN, YELLOW, RED, MAGENTA, WHITE, RESET = '\033[92m', '\033[96m', '\033[93m', '\033[91m', '\033[95m', '\033[97m', '\033[0m'
 
 def run_master_backtest(csv_filepath: str):
-    print(f"{Color.CYAN}🚀 Initializing Opening Range Backtest Engine on {csv_filepath}...{Color.RESET}")
+    print(f"{Color.CYAN}🚀 Initializing Institutional Breakout Engine...{Color.RESET}")
     df = load_and_prep_data(csv_filepath)
     unique_dates = pd.Series(df.index.date).unique()
-    
-    print(f"{Color.CYAN}📊 Found {len(unique_dates)} trading days. Beginning quantitative scan...{Color.RESET}\n")
-    print("-" * 60)
-    
-    total_setups = 0
     all_logged_setups = []
 
     for i in range(1, len(unique_dates)):
-        prev_date_str = str(unique_dates[i-1])
         current_date_str = str(unique_dates[i])
+        prev_day_data, current_day_data = df.loc[str(unique_dates[i-1])], df.loc[current_date_str]
         
-        prev_day_data = df.loc[prev_date_str]
-        current_day_data = df.loc[current_date_str]
         if prev_day_data.empty or current_day_data.empty: continue
-            
-        try:
-            pivots = calculate_daily_pivots(
-                prev_day_data['high'].max(), prev_day_data['low'].min(), prev_day_data['close'].iloc[-1]
-            )
+        try: pivots = calculate_daily_pivots(prev_day_data['high'].max(), prev_day_data['low'].min(), prev_day_data['close'].iloc[-1])
         except ValueError: continue
 
         daily_setups = simulate_ny_session(current_day_data, current_date_str, pivots)
         
         if daily_setups:
             for setup in daily_setups:
+                # 1. TIME FILTER: "The Morning Drive" (Skip after 12:00 PM NY Time)
+                trigger_time = pd.to_datetime(setup['timestamp'])
+                if trigger_time.hour >= 16:
+                    continue
+
                 print(f"{Color.GREEN}🟢 SETUP TRIGGERED: {current_date_str} at {setup['timestamp']}{Color.RESET}")
-                print(f"Trigger: {setup['trigger']}")
-                
-                print(f"{Color.CYAN}🧠 Sending tape to AI Agent...{Color.RESET}")
                 ai_analysis = analyze_setup_with_ollama(setup)
-                setup['ai_risk_analysis'] = ai_analysis
                 
-                print(f"\n{Color.MAGENTA}" + "="*50)
-                print(f"🤖 LIVE AI DESK ANALYSIS:")
-                print("="*50 + f"{Color.YELLOW}")
-                print(ai_analysis)
-                print(f"{Color.MAGENTA}" + "="*50 + f"{Color.RESET}\n")
-                
-                # --- NEW: TRADE SIMULATION ENGINE ---
                 entry_price = setup.get('context', {}).get('close_price', 0)
-                setup['trade_outcome'] = "Parse Failed / No Trade"
-                setup['pnl'] = 0.0
+                setup['trade_outcome'] = "Skipped"
+                setup['pnl'], setup['holding_time_mins'] = 0.0, 0
                 
-                # Extract AI Execution Data using Regex
-                dir_match = re.search(r'DIRECTION:\s*(LONG|SHORT)', ai_analysis, re.IGNORECASE)
+                dir_match = re.search(r'DIRECTION:\s*(LONG|SHORT|NONE)', ai_analysis, re.IGNORECASE)
                 sl_match = re.search(r'SL:\s*[\$]?([\d,]+\.?\d*)', ai_analysis)
                 tp_match = re.search(r'TP:\s*[\$]?([\d,]+\.?\d*)', ai_analysis)
                 
-                if dir_match and sl_match and tp_match and entry_price > 0:
+                if dir_match and dir_match.group(1).upper() != 'NONE' and sl_match and tp_match:
                     direction = dir_match.group(1).upper()
                     sl = float(sl_match.group(1).replace(',', ''))
                     tp = float(tp_match.group(1).replace(',', ''))
                     
-                    # Grab the rest of the day's candles
-                    # Grab the rest of the day's candles (Ensuring timezone-aware matching)
+                    # 2. CAP: 85-point Goldilocks Cap
+                    if abs(entry_price - sl) > 85:
+                        print(f"{Color.RED}▶ TRADE SKIPPED: Risk > 85 points.{Color.RESET}")
+                        continue
+
                     future_data = current_day_data.loc[setup['timestamp'] : f"{current_date_str} 20:00:00+00:00"]
+                    outcome, exit_price, exit_time = "Closed Manually", future_data['close'].iloc[-1] if not future_data.empty else entry_price, future_data.index[-1] if not future_data.empty else trigger_time
                     
-                    outcome = "Closed Manually (End of Session)"
-                    exit_price = future_data['close'].iloc[-1] if not future_data.empty else entry_price
-                    
-                    # Walk forward minute-by-minute
+                    # 3. PURE FORWARD WALK (Let the Edge play out)
                     for idx, candle in future_data.iloc[1:].iterrows():
                         high, low = candle['high'], candle['low']
                         
                         if direction == 'LONG':
                             if low <= sl:
                                 outcome = "Hit Stop Loss 🛑"
-                                exit_price = sl
+                                exit_price, exit_time = sl, idx
                                 break
                             elif high >= tp:
                                 outcome = "Hit Take Profit 🎯"
-                                exit_price = tp
+                                exit_price, exit_time = tp, idx
                                 break
+                                
                         elif direction == 'SHORT':
                             if high >= sl:
                                 outcome = "Hit Stop Loss 🛑"
-                                exit_price = sl
+                                exit_price, exit_time = sl, idx
                                 break
                             elif low <= tp:
                                 outcome = "Hit Take Profit 🎯"
-                                exit_price = tp
+                                exit_price, exit_time = tp, idx
                                 break
                     
-                    # Calculate P/L
                     pnl = exit_price - entry_price if direction == 'LONG' else entry_price - exit_price
                     setup['trade_outcome'] = f"{outcome} at {exit_price:.2f}"
                     setup['pnl'] = round(pnl, 2)
+                    setup['holding_time_mins'] = round((exit_time - trigger_time).total_seconds() / 60.0, 1)
                     
-                    # Print outcome to terminal
                     color = Color.GREEN if pnl > 0 else Color.RED
-                    print(f"{color}▶ TRADE OUTCOME: {direction} | {outcome} | PNL: {setup['pnl']} points{Color.RESET}")
-                else:
-                    print(f"{Color.RED}▶ TRADE OUTCOME: AI did not provide strict execution format.{Color.RESET}")
-                # ------------------------------------
-
-                try:
-                    log_setup_to_db(setup)
-                    print(f"{Color.GREEN}✅ Successfully logged to Supabase.{Color.RESET}")
-                except Exception as e:
-                    print(f"{Color.RED}❌ Failed to log setup: {e}{Color.RESET}")
+                    print(f"{color}▶ OUTCOME: {direction} | {outcome} | PNL: {setup['pnl']} pts{Color.RESET}")
                     
-                print("-" * 50)
-                all_logged_setups.append(setup)
-                total_setups += 1
+                    all_logged_setups.append(setup)
 
-    print(f"\n{Color.CYAN}🏁 Backtest Complete. Processed {total_setups} total setups.{Color.RESET}")
-
-    # Write to text file with Outcomes
-    output_filename = "backtest_results.txt"
+    # EXPORT TO CSV
     if all_logged_setups:
-        print(f"{Color.CYAN}💾 Saving detailed results to {output_filename}...{Color.RESET}")
-        with open(output_filename, "w", encoding="utf-8") as f:
-            f.write("=" * 60 + "\n")
-            f.write("🏆 US30 COPILOT - QUANTITATIVE BACKTEST RESULTS\n")
-            f.write("=" * 60 + "\n\n")
-            
-            for i, trade in enumerate(all_logged_setups):
-                f.write(f"TRADE #{i+1} | {trade.get('timestamp', 'Unknown Time')}\n")
-                f.write(f"TRIGGER: {trade.get('trigger', 'Unknown')}\n")
-                f.write(f"ENTRY PRICE: {trade.get('context', {}).get('close_price', 'N/A')}\n")
-                f.write(f"OUTCOME: {trade.get('trade_outcome', 'Unknown')}\n")
-                f.write(f"PNL: {trade.get('pnl', '0.0')} points\n\n")
-                f.write("--- AI RISK ASSESSMENT ---\n")
-                f.write(f"{trade.get('ai_risk_analysis', 'No analysis provided.')}\n")
-                f.write("-" * 60 + "\n\n")
+        os.makedirs('results', exist_ok=True)
+        export_df = pd.DataFrame([{
+            'timestamp': t['timestamp'],
+            'trigger': t['trigger'],
+            'outcome': t['trade_outcome'],
+            'pnl': t['pnl'],
+            'holding_time': t['holding_time_mins']
+        } for t in all_logged_setups])
+        export_df.to_csv('results/trade_log.csv', index=False)
 
 if __name__ == "__main__":
-    DATA_FILE = "data/historical_us30_1m.csv"
-    run_master_backtest(DATA_FILE)
+    run_master_backtest("data/historical_us30_1m.csv")
