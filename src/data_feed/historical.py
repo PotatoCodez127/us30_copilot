@@ -52,24 +52,20 @@ def simulate_ny_session(df_1m: pd.DataFrame, date_str: str, pivots: dict):
             ai_payload['timestamp'] = str(current_time)
             entry_price = candle_15m['close']
             
+            # --- NEW: GRAB THE LIVE TAPE (LAST 15 MINS) ---
+            import pandas as pd
+            tape_start = current_time - pd.Timedelta(minutes=15)
+            recent_tape = trading_session.loc[tape_start:current_time]
+            
+            # Format the tape so the AI can read it minute-by-minute
+            tape_str = "\n".join([
+                f"{idx.strftime('%H:%M')} | O:{row['open']:.2f} H:{row['high']:.2f} L:{row['low']:.2f} C:{row['close']:.2f}" 
+                for idx, row in recent_tape.iterrows()
+            ])
+            ai_payload['recent_tape'] = tape_str
+            # ---------------------------------------------
+            
             # --- TRADE MANAGEMENT (MFE/MAE) ---
             if i + 1 < len(trading_session):
-                future_data = trading_session.iloc[i+1:]
-                absolute_highest = future_data['high'].max()
-                absolute_lowest = future_data['low'].min()
-                
-                # We calculate standard Long floats for the database columns
-                ai_payload['mfe_points'] = float(round(absolute_highest - entry_price, 2))
-                ai_payload['mae_points'] = float(round(absolute_lowest - entry_price, 2))
-                
-                # Add the Short perspective into the context payload for the AI to read
-                ai_payload['context']['short_mfe'] = float(round(entry_price - absolute_lowest, 2))
-                ai_payload['context']['short_mae'] = float(round(entry_price - absolute_highest, 2))
-            else:
-                ai_payload['mfe_points'] = 0.0
-                ai_payload['mae_points'] = 0.0
-            
-            setups_found.append(ai_payload)
-            break # Lock in the first valid setup of the day
             
     return setups_found
