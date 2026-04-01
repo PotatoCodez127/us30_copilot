@@ -2,292 +2,856 @@
 🏆 US30 COPILOT - QUANTITATIVE BACKTEST RESULTS
 ============================================================
 
-TRADE #1 | 2026-03-17 14:15:00+00:00
-TRIGGER: 15m Touch: R1 Pivot
-ENTRY PRICE: 47181.5
-OUTCOME: Closed Manually (End of Session) at 46993.87
-PNL: 187.63 points
-
---- AI RISK ASSESSMENT ---
-1. **Tape Reading:**  
-The price action over the last 15 minutes shows a clear bearish momentum shift. Starting around 14:09, we see a strong rejection high at 47312.00 followed by consecutive down closes, indicating selling pressure building. From 14:11 onward, candles are showing lower lows with strong bearish momentum—particularly evident in the gap-down open at 14:12 and again at 14:15. The most recent candle (14:15) opened lower, made a new session low of 47176.50, and closed near its lows, confirming aggressive selling interest. The interaction with R1 pivot appears to be a failed re-test, suggesting exhaustion or rejection at that level.
-
-2. **Direction:**  
-SHORT  
-
-3. **Stop Loss:**  
-A logical stop must be placed above the last significant structure high which acted as resistance — specifically the high of 14:09 at **47312.00**. This protects against a reversal while respecting the current downtrend.
-
-4. **Take Profit:**  
-For a minimum 2:1 reward:risk setup, we calculate risk from entry (47181.50) to stop (47312.00), which is 130.5 points. Therefore, take profit should be at least **46920.50**, giving us approximately 261 points of profit potential (more than double our risk).
-
-5. **Execution Confidence:**  
-Score: 9  
-
---- EXECUTION ---  
-DIRECTION: SHORT  
-ENTRY: 47181.5  
-SL: 47312.0  
-TP: 46920.5
-------------------------------------------------------------
-
-TRADE #2 | 2026-03-18 14:03:00+00:00
+TRADE #1 | 2026-02-20 14:01:00+00:00
 TRIGGER: 15m Touch: Opening Range Low
-ENTRY PRICE: 46736.25
-OUTCOME: Hit Take Profit 🎯 at 46560.31
-PNL: 175.94 points
-
---- AI RISK ASSESSMENT ---
-1. **Tape Reading:**  
-The price action shows a clear bearish momentum developing over the last three minutes. The candle at 14:01 closed higher, but failed to sustain buying pressure. The next two candles opened lower and showed increasing selling pressure, with each closing near or below the prior low. The 14:03 candle closed at 46736.25, which is below the Opening Range Low of 46736.79 — confirming a breakdown. The structure indicates strong institutional selling coming in, with no sign of rejection or support holding.
-
-2. **Direction:**  
-SHORT
-
-3. **Stop Loss:**  
-Place stop loss above the high of the 14:01 candle, which was the last sign of resistance before the breakdown. High of that candle = **46824.22**  
-SL: **46824.22**
-
-4. **Take Profit:**  
-A minimum 2:1 risk/reward setup implies we need at least double the distance from entry to stop for our profit target.  
-Risk = Entry (46736.25) – Stop (46824.22) = -87.97 points  
-So, TP = Entry – (Risk x 2) = 46736.25 – (87.97 * 2) = 46736.25 – 175.94 = **46560.31**
-
-5. **Execution Confidence:**  
-Score: **8/10** — Strong confluence between structure, momentum, and level; only concern being proximity to recent highs could trigger short-term volatility.
-
---- EXECUTION ---
-DIRECTION: SHORT
-ENTRY: 46736.25
-SL: 46824.22
-TP: 46560.31
-------------------------------------------------------------
-
-TRADE #3 | 2026-03-19 14:06:00+00:00
-TRIGGER: 15m Touch: S1 Pivot
-ENTRY PRICE: 45966.44
-OUTCOME: Hit Stop Loss 🛑 at 46060.34
-PNL: -93.9 points
-
---- AI RISK ASSESSMENT ---
-1. **Tape Reading:**  
-The price action shows a bearish momentum shift over the last three candles. The market opened near 46050, but selling pressure increased each minute, culminating in a strong bearish candle at 14:06 that closed at its low (45966.44), indicating institutional selling. The candle closed below previous lows and key support, confirming continuation pattern downside.
-
-2. **Direction:**  
-SHORT  
-
-3. **Stop Loss:**  
-A logical stop placement would be above the recent swing high at **46060.34**, which was the highest point before the decline began.
-
-4. **Take Profit:**  
-Using a minimum 2:1 risk-reward ratio:  
-- Risk = 46060.34 (SL) - 45966.44 (Entry) = 93.9 points  
-- Minimum Reward = 93.9 * 2 = 187.8 points  
-- Take Profit Target = 45966.44 - 187.8 ≈ **45778.64**
-
-5. **Execution Confidence:**  
-8  
-
---- EXECUTION ---  
-DIRECTION: SHORT  
-ENTRY: 45966.44  
-SL: 46060.34  
-TP: 45778.64
-------------------------------------------------------------
-
-TRADE #4 | 2026-03-20 14:01:00+00:00
-TRIGGER: 15m Touch: Opening Range Low
-ENTRY PRICE: 45859.23
-OUTCOME: Hit Stop Loss 🛑 at 45888.37
-PNL: -29.14 points
-
---- AI RISK ASSESSMENT ---
-1. **Tape Reading:** The price action shows a clear bearish momentum developing into the breakdown. The candle closed below the opening range low with a bearish close near the lows, indicating selling pressure. The momentum is skewed to the downside with lower lows being made.
-
-2. **Direction:** SHORT
-
-3. **Stop Loss:** 45888.37 (above the high of the current candle to respect the bearish structure)
-
-4. **Take Profit:** 45800.00 (minimum 2:1 risk/reward from entry to stop loss distance of 29.14 points)
-
-5. **Execution Confidence:** 8
-
---- EXECUTION ---
-DIRECTION: SHORT
-ENTRY: 45859.23
-SL: 45888.37
-TP: 45800.00
-------------------------------------------------------------
-
-TRADE #5 | 2026-03-23 14:01:00+00:00
-TRIGGER: 15m Touch: Opening Range High
-ENTRY PRICE: 46528.29
-OUTCOME: Hit Stop Loss 🛑 at 46488.11
-PNL: -40.18 points
-
---- AI RISK ASSESSMENT ---
-1. **Tape Reading:** The price opened near the upper boundary of the opening range and quickly moved higher, making a strong push above the opening range high. The candle closed near its high with strong upward momentum, indicating aggressive buying interest and a clean breakout above previous resistance. Volume would need to be confirmed, but structurally this is a classic breakout pattern.
-
-2. **Direction:** LONG
-
-3. **Stop Loss:** Place stop loss below the recent swing low within the opening range at 46488.11 to protect against a failed breakout while giving room for normal volatility.
-
-4. **Take Profit:** Target minimum 2:1 risk reward means risking ~40 points (46528 - 46488 = ~40 pts), so take profit at least 80 points away from entry. Logical target based on structure is 46608.29 (adding ~80 pts to entry).
-
-5. **Execution Confidence:** 8/10 - Strong momentum breakout above key level with clean candle structure, but always respect volume confirmation which cannot be seen here.
-
---- EXECUTION ---
-DIRECTION: LONG
-ENTRY: 46528.29
-SL: 46488.11
-TP: 46608.29
-------------------------------------------------------------
-
-TRADE #6 | 2026-03-24 14:27:00+00:00
-TRIGGER: 15m Touch: Opening Range High
-ENTRY PRICE: 46111.83
-OUTCOME: Hit Stop Loss 🛑 at 46056.56
-PNL: -55.27 points
-
---- AI RISK ASSESSMENT ---
-1. **Tape Reading:**  
-The price has been consolidating within a range since the open, showing choppy momentum with several rejection candles near key support and resistance levels. Starting around 14:23, we see a clear shift in momentum as buyers step in aggressively — marked by strong green candles and increasing highs. The final three candles (14:25 to 14:27) show accelerating upward momentum, culminating in a clean breakout above the **Opening Range High of 46099.86**, closing at **46111.83**. This close confirms institutional participation and validates the breakout.
-
-2. **Direction:**  
-**LONG**
-
-3. **Stop Loss:**  
-Place stop loss just below the most recent swing low that preceded the breakout move. That occurs at **46056.56** (low of the 14:27 candle), which also aligns with prior minor support. A break below this level would invalidate the bullish breakout structure.
-
-4. **Take Profit:**  
-Using a minimum 2:1 risk-reward setup:  
-Risk = Entry (46111.83) – SL (46056.56) = **55.27 points**  
-Target TP = Entry + (Risk x 2) = 46111.83 + (55.27 x 2) = **46222.37**
-
-5. **Execution Confidence:**  
-**8/10** — Strong momentum into a key level with follow-through confirms strength, but always cautious due to intraday volatility.
-
---- EXECUTION ---  
-DIRECTION: LONG  
-ENTRY: 46111.83  
-SL: 46056.56  
-TP: 46222.37
-------------------------------------------------------------
-
-TRADE #7 | 2026-03-25 14:01:00+00:00
-TRIGGER: 15m Touch: R1 Pivot
-ENTRY PRICE: 46427.47
-OUTCOME: Hit Stop Loss 🛑 at 46366.37
-PNL: -61.1 points
+ENTRY PRICE: 49328.0
+OUTCOME: Hit Stop Loss 🛑 at 49344.00
+PNL: -16.0 points
 
 --- AI RISK ASSESSMENT ---
 **1. Tape Reading:**
-The price action shows a strong bullish momentum candle forming over the last 15 minutes. The candle opened at 46366.37 and made consistent higher highs, closing at 46427.47 near the high of the range (46447.14). This indicates aggressive buying pressure with no retracement, suggesting strong institutional participation. The close above the midpoint of the opening range (46516.33) confirms continuation bias.
+The price opened at 49339, made a minor push higher to 49344, then sold off aggressively to close at 49328, which is below the opening range low of 49337. The candle is bearish with a lower close, showing selling pressure intensifying into the close. Momentum is clearly shifting downward as we're now breaking below established support.
+
+**2. Direction:**
+SHORT
+
+**3. Stop Loss:**
+I'll place my stop above the recent swing high printed in the previous candle - at 49344.0. This respects the immediate price action while giving the trade room to breathe.
+
+**4. Take Profit:**
+With a stop at 49344 and entry at 49328, that's 16 points of risk. For a 2:1 reward, I need 32 points of profit. Targeting 49296.0 (which also aligns with potential extension toward overnight lows).
+
+**5. Execution Confidence:**
+7
+
+--- EXECUTION ---
+DIRECTION: SHORT
+ENTRY: 49328.0
+SL: 49344.0
+TP: 49296.0
+------------------------------------------------------------
+
+TRADE #2 | 2026-02-23 14:14:00+00:00
+TRIGGER: 15m Touch: Opening Range Low
+ENTRY PRICE: 49435.0
+OUTCOME: Hit Stop Loss 🛑 at 49432.00
+PNL: -3.0 points
+
+--- AI RISK ASSESSMENT ---
+1. **Tape Reading:**  
+The price action shows a steady decline over the last 15 minutes, consistently making lower lows and failing to reclaim prior levels. The candles have displayed weak closes relative to previous highs, indicating bearish momentum. However, the most recent interaction with the Opening Range Low at 49434.0 resulted in a close *above* that level (49435.0), suggesting potential rejection and early signs of bounce or short-term reversal.
+
+2. **Direction:**  
+LONG  
+
+3. **Stop Loss:**  
+Place stop loss below the lowest point of the rejection candle and the immediate support zone. The low of the last two candles is 49433.0 — so we'll place our stop just below for structure confirmation.  
+**SL: 49432.0**
+
+4. **Take Profit:**  
+A logical risk reward setup requires at least a 2:1 reward:risk ratio. With a stop at 49432.0 and entry at 49435.0, the risk is 3 points. Therefore, the take profit should be at least 6 points higher than entry.  
+TP = 49435.0 + 6 = **49441.0**  
+(Also aligns with prior resistance-turned-support around 49440.0)
+
+5. **Execution Confidence:**  
+Score: 7  
+
+--- EXECUTION ---  
+DIRECTION: LONG  
+ENTRY: 49435.0  
+SL: 49432.0  
+TP: 49441.0
+------------------------------------------------------------
+
+TRADE #3 | 2026-02-24 14:01:00+00:00
+TRIGGER: 15m Touch: Opening Range High
+ENTRY PRICE: 48934.0
+OUTCOME: Hit Stop Loss 🛑 at 48919.00
+PNL: -15.0 points
+
+--- AI RISK ASSESSMENT ---
+**1. Tape Reading:**
+The price action shows strong bullish momentum approaching the opening range high. The candle closed above the level (48932.0) with a healthy body, indicating institutional buying pressure. The close at 48934.0 represents a clean breakout with follow-through, suggesting continuation potential.
 
 **2. Direction:**
 LONG
 
 **3. Stop Loss:**
-Place stop loss below the low of the 15-minute candle at 46366.37 to protect against a failed breakout scenario.
+Below the recent swing low and opening range low at 48919.0 (the lowest point of the breakout candle), providing a clear invalidation point.
 
 **4. Take Profit:**
-Target the next significant resistance level which would be the Opening Range High of 46718.42, providing a risk-reward ratio well above 2:1 (potential reward significantly exceeds the 61.1 point risk).
+Using a minimum 2:1 risk reward ratio:
+Risk = 48934.0 - 48919.0 = 15 points
+Minimum TP distance = 30 points
+TP = 48934.0 + 30 = 48964.0
 
 **5. Execution Confidence:**
-8
+7
 
 --- EXECUTION ---
 DIRECTION: LONG
-ENTRY: 46427.47
-SL: 46366.37
-TP: 46718.42
+ENTRY: 48934.0
+SL: 48919.0
+TP: 48964.0
 ------------------------------------------------------------
 
-TRADE #8 | 2026-03-26 14:05:00+00:00
-TRIGGER: 15m Touch: Daily Central Pivot
-ENTRY PRICE: 46461.68
-OUTCOME: Hit Stop Loss 🛑 at 46507.72
-PNL: -46.04 points
+TRADE #4 | 2026-02-25 14:02:00+00:00
+TRIGGER: 15m Touch: Opening Range High
+ENTRY PRICE: 49323.0
+OUTCOME: Hit Take Profit 🎯 at 49315.00
+PNL: 8.0 points
 
 --- AI RISK ASSESSMENT ---
 1. **Tape Reading:**  
-The price action over the last five minutes shows a clear bearish momentum shift. Starting near the opening range high (~46513), price made lower highs and lower lows with increased selling pressure evident by the strong close below prior lows. The 14:05 candle was particularly aggressive, opening gap-down, rejecting any recovery attempts, and closing near its low—indicating institutional selling interest. The current price is now testing the **Daily Central Pivot**, which may act as resistance here.
+The price moved higher into the ORH (~49324.0), but failed to close above it. The most recent candle (14:02) showed buying interest early (gap up open), but selling pressure increased into the close, resulting in a rejection candle that closed below the level. This indicates potential short-term weakness and a shift in momentum.
 
 2. **Direction:**  
 SHORT  
 
 3. **Stop Loss:**  
-Above the recent swing high formed at 14:01 high of **46507.72**
+Place stop above the high of the last two candles and the ORH for confirmation of failure. The highest printed level is 49326.00 — so we place our stop just above that for protection.  
+**SL: 49327.0**
 
 4. **Take Profit:**  
-A minimum 2:1 reward implies at least double the risk distance. Risk = 46507.72 - 46461.68 = 46.04 points → TP = 46461.68 - (2 x 46.04) = **46369.60**  
-Logical support lies around previous low 46435.06; however, for clean 2R+ structure, we'll use calculated TP.
+A minimum 2:1 reward implies risking 4 points (49327.0 - 49323.0 = 4 pts), therefore target should be at least 8 pts away from entry.  
+**TP: 49315.0**
 
 5. **Execution Confidence:**  
 7  
 
 --- EXECUTION ---  
 DIRECTION: SHORT  
-ENTRY: 46461.68  
-SL: 46507.72  
-TP: 46369.60
+ENTRY: 49323.0  
+SL: 49327.0  
+TP: 49315.0
 ------------------------------------------------------------
 
-TRADE #9 | 2026-03-27 14:09:00+00:00
+TRADE #5 | 2026-02-26 14:01:00+00:00
+TRIGGER: 15m Touch: Opening Range High
+ENTRY PRICE: 49480.0
+OUTCOME: Hit Stop Loss 🛑 at 49495.00
+PNL: -15.0 points
+
+--- AI RISK ASSESSMENT ---
+1. **Tape Reading:** The price pushed up to test the opening range high at 49494.00 but failed to sustain above this level, closing back down at 49480.00. This indicates selling pressure at the key resistance level. The candle shows a clear rejection pattern with upper wick extension, suggesting bearish momentum is building.
+
+2. **Direction:** SHORT
+
+3. **Stop Loss:** 49495.0 (above the recent high/wick high)
+
+4. **Take Profit:** 49440.0 (based on measured move from high to low of opening range, providing >2:1 risk/reward)
+
+5. **Execution Confidence:** 7
+
+--- EXECUTION ---
+DIRECTION: SHORT
+ENTRY: 49480.0
+SL: 49495.0
+TP: 49440.0
+------------------------------------------------------------
+
+TRADE #6 | 2026-02-27 14:02:00+00:00
 TRIGGER: 15m Touch: Opening Range Low
-ENTRY PRICE: 45469.82
-OUTCOME: Hit Take Profit 🎯 at 45600.00
-PNL: 130.18 points
+ENTRY PRICE: 49124.0
+OUTCOME: Hit Stop Loss 🛑 at 49119.00
+PNL: -5.0 points
 
 --- AI RISK ASSESSMENT ---
 1. **Tape Reading:**  
-The price action over the last 15 minutes shows a clear bearish momentum early, with prices making lower lows and lower highs. The key support level at the Opening Range Low (45440.33) was retested around 14:08–14:09, where price dipped as low as 45438.67 before closing back above that level at 45469.82. This forms a bullish rejection candle—a hammer-like structure—suggesting potential short-term reversal or bounce from the support zone.
+The price opened at 49146, quickly sold down to test the Opening Range Low of 49120, which held as support. The next candle opened lower but closed higher, indicating buying interest at the key level. This shows a rejection momentum off the lows with no follow-through selling, suggesting short-term bullish exhaustion and potential reversal.
+
+2. **Direction:**  
+**LONG**
+
+3. **Stop Loss:**  
+Place stop loss below the tested low — **49119.0** (just below the OR Low of 49120 to avoid noise).
+
+4. **Take Profit:**  
+Target a minimum 2:1 reward/risk ratio. Distance from entry (49124) to SL (49119) = 5 points. So TP = 49124 + (5 * 2) = **49134.0**
+
+5. **Execution Confidence:**  
+**7/10** – Strong structural bounce off key support; limited downside follow-through confirms early-stage reversal bias. Not maximum confidence due to limited data window, but setup aligns with textbook rejection trade.
+
+--- EXECUTION ---
+DIRECTION: LONG
+ENTRY: 49124.0
+SL: 49119.0
+TP: 49134.0
+------------------------------------------------------------
+
+TRADE #7 | 2026-03-02 14:06:00+00:00
+TRIGGER: 15m Touch: Opening Range Low
+ENTRY PRICE: 48399.0
+OUTCOME: Hit Stop Loss 🛑 at 48441.00
+PNL: -42.0 points
+
+--- AI RISK ASSESSMENT ---
+1. **Tape Reading:**  
+The price action shows a steady decline over the last six minutes, consistently making lower lows and lower highs. Each candle has closed progressively lower, demonstrating bearish momentum. The final candle at 14:06 not only touched but closed below the established Opening Range Low of 48403.0, confirming a breakdown. The close at 48399.0 represents a clear violation of support with increased selling pressure.
+
+2. **Direction:**  
+SHORT
+
+3. **Stop Loss:**  
+I will place my stop loss above the most recent swing high, which was at 48441.0 (high from 14:01). This provides a clean invalidation point if the market reverses.
+
+SL: 48441.0
+
+4. **Take Profit:**  
+To maintain a minimum 2:1 risk-reward ratio, I need to calculate the distance between entry (48399.0) and stop loss (48441.0), which is 42 points. Doubling that gives us 84 points for the take profit target.
+
+Take Profit = Entry – (Risk * 2) = 48399.0 – 84 = 48315.0
+
+TP: 48315.0
+
+5. **Execution Confidence:**  
+7
+
+--- EXECUTION ---
+DIRECTION: SHORT
+ENTRY: 48399.0
+SL: 48441.0
+TP: 48315.0
+------------------------------------------------------------
+
+TRADE #8 | 2026-03-03 14:09:00+00:00
+TRIGGER: 15m Touch: Opening Range High
+ENTRY PRICE: 48123.0
+OUTCOME: Hit Take Profit 🎯 at 48243.00
+PNL: 120.0 points
+
+--- AI RISK ASSESSMENT ---
+1. **Tape Reading:**  
+The price action shows a strong bullish momentum building over the last 15 minutes. Starting around 48045, we see higher lows and higher highs with increasing conviction. The key breakout occurs at 14:09 where price opens at 48072, retests prior highs and then blasts through the Opening Range High of 48097.00, closing at 48123.00 — a clear breakout candle with strong buying pressure and no upper-shadow rejection. Volume appears implied via the rapid move and clean structure.
 
 2. **Direction:**  
 LONG  
 
 3. **Stop Loss:**  
-Place stop loss below the recent low of the rejection candle and just beneath the psychological support level: **45438.00**
+Place stop loss below the most recent significant low which acted as support before the breakout — that's the low from 14:07 = **48063.00**. This respects the immediate bullish structure while giving room for noise.
 
 4. **Take Profit:**  
-A logical take profit based on a minimum 2:1 risk-reward ratio would be to target resistance near the opening range high (~45904), but for a more conservative and immediate target, we can use the upper boundary of the initial pullback candles around **45551.00**, giving us a tighter yet reasonable reward. However, to meet at least a 2:1 RR, we aim higher — targeting **45600.00** which gives sufficient room beyond the entry.
+Minimum 2:1 reward:risk means if risk is ~60 points (48123 - 48063), then take profit should be at least 120 pts away. Targeting next major resistance or psychological level — aiming for **48243.00**, aligning with potential intraday extension move.
 
 5. **Execution Confidence:**  
-Score: 7  
+8  
 
 --- EXECUTION ---  
 DIRECTION: LONG  
-ENTRY: 45469.82  
-SL: 45438.00  
-TP: 45600.00
+ENTRY: 48123.0  
+SL: 48063.0  
+TP: 48243.0
 ------------------------------------------------------------
 
-TRADE #10 | 2026-03-30 14:02:00+00:00
-TRIGGER: 15m Touch: Daily Central Pivot
-ENTRY PRICE: 45355.79
-OUTCOME: Hit Stop Loss 🛑 at 45366.00
-PNL: -10.21 points
+TRADE #9 | 2026-03-04 14:16:00+00:00
+TRIGGER: 15m Touch: Opening Range Low
+ENTRY PRICE: 48511.0
+OUTCOME: Hit Stop Loss 🛑 at 48575.00
+PNL: -64.0 points
 
 --- AI RISK ASSESSMENT ---
 1. **Tape Reading:**  
-The price action shows a minor push higher into the first candle's high of 45365.42, followed by a rejection and slight pullback into the second candle which closed lower at 45355.79. The candles indicate indecision near the daily central pivot, with a weak bearish close after testing resistance. Momentum appears slightly bearish but not strongly committed.
+The price action shows a strong bearish momentum developing over the last 15 minutes. After making higher highs early on (up to 48574), selling pressure increased significantly, leading to a breakdown below previous lows. The most recent candles have shown lower lows and lower highs, confirming bearish continuation. The current candle closed below the opening range low of 48514, which is a key institutional level. This close below that level signals aggressive selling interest and confirms a shift in momentum to the downside.
 
 2. **Direction:**  
 SHORT  
 
 3. **Stop Loss:**  
-Above the recent high of the opening range – specifically above the high of the first two candles. A clean invalidation point is the high of 14:01 candle at **45365.42**. Place stop just above that for safety: **45366**
+A logical stop loss would be placed just above the recent swing high formed at 14:09, which printed a high of 48574. To give it clean breathing room without being too wide, I’ll place my stop just above the highest wick in this recent bearish sequence — so above the 48574 high by one point for safety. Therefore:
+
+**SL = 48575**
 
 4. **Take Profit:**  
-A minimum 2:1 reward requires at least double the risk. Risk = ~10.63 pts (45355.79 to 45366), so TP should be at least 21.26 pts from entry. Targeting support toward the opening low or below gives room. Using 21 pts profit approx., target around **45335**  
+To maintain at least a 2:1 risk-reward ratio, we calculate the distance between entry (48511) and stop loss (48575):  
+Risk = 48575 - 48511 = 64 points  
+Minimum reward (2R) = 64 x 2 = 128 points  
+Target price = 48511 - 128 = 48383  
+
+However, looking at prior support areas from earlier in the session, there's potential for more downside towards 48300+ as bears may accelerate. But sticking strictly to 2:1 logic:
+
+**TP = 48383**
 
 5. **Execution Confidence:**  
-Score: 7  
+Score: 8  
 
 --- EXECUTION ---  
 DIRECTION: SHORT  
-ENTRY: 45355.79  
-SL: 45366  
-TP: 45335
+ENTRY: 48511.0  
+SL: 48575.0  
+TP: 48383.0
+------------------------------------------------------------
+
+TRADE #10 | 2026-03-05 14:01:00+00:00
+TRIGGER: 15m Touch: Opening Range Low
+ENTRY PRICE: 48591.0
+OUTCOME: Hit Stop Loss 🛑 at 48605.00
+PNL: -14.0 points
+
+--- AI RISK ASSESSMENT ---
+**1. Tape Reading:**
+The price opened at 48596 and immediately showed selling pressure, making lower highs and lower lows. The candle closed below the opening range low at 48597, confirming a breakdown pattern. The momentum is clearly bearish with no buying support visible at the key level.
+
+**2. Direction:**
+SHORT
+
+**3. Stop Loss:**
+Above the recent swing high at 48605.0
+
+**4. Take Profit:**
+Using a minimum 2:1 risk reward ratio - distance from entry (48591) to stop (48605) is 14 points. Target is 48591 - (14*2) = 48563
+
+**5. Execution Confidence:**
+8
+
+--- EXECUTION ---
+DIRECTION: SHORT
+ENTRY: 48591.0
+SL: 48605.0
+TP: 48563.0
+------------------------------------------------------------
+
+TRADE #11 | 2026-03-06 14:07:00+00:00
+TRIGGER: 15m Touch: Opening Range Low
+ENTRY PRICE: 47709.0
+OUTCOME: Hit Stop Loss 🛑 at 47686.00
+PNL: -23.0 points
+
+--- AI RISK ASSESSMENT ---
+1. **Tape Reading:**  
+The price has been oscillating within a tight range over the last 7 minutes, showing indecision early on but then making a decisive push down to test the Opening Range Low of 47687.0 at 14:07. The candle closed above that level (47709.0), indicating rejection momentum off the support zone. The close was clean and showed buying interest coming in right at the key level. There's also a minor bearish spike below the opening range before the bounce, suggesting exhaustion of short-term selling pressure.
+
+2. **Direction:**  
+**LONG**
+
+3. **Stop Loss:**  
+Place stop loss just below the recent low that marked the test of the Opening Range Low — specifically below the low of the 14:07 candle at **47687.0**. This respects the structure while giving room for noise.
+
+SL: **47686.0**
+
+4. **Take Profit:**  
+A minimum 2:1 reward implies we need at least twice the risk distance. Risk = Entry (47709.0) – SL (47686.0) = **23 points**  
+So, TP = Entry + (Risk x 2) = 47709.0 + 46.0 = **47755.0**
+
+TP: **47755.0**
+
+5. **Execution Confidence:**  
+Score: **8/10** — Strong confluence between structural support, intraday momentum reversal, and clean price action off a key level.
+
+--- EXECUTION ---
+DIRECTION: LONG
+ENTRY: 47709.0
+SL: 47686.0
+TP: 47755.0
+------------------------------------------------------------
+
+TRADE #12 | 2026-03-09 14:01:00+00:00
+TRIGGER: 15m Touch: S1 Pivot
+ENTRY PRICE: 46952.0
+OUTCOME: Hit Stop Loss 🛑 at 46965.00
+PNL: -13.0 points
+
+--- AI RISK ASSESSMENT ---
+**Tape Reading:** The price action shows buying pressure early in the session, pushing above the opening range high before consolidating. The current candle at 14:01 shows a higher high attempt but closed near the middle of its range, indicating some indecision. Momentum appears to be slowing as price approaches the S1 pivot level.
+
+**Direction:** SHORT
+
+**Stop Loss:** 46965.0 (above the recent high of 46955.0 to protect against continued upside momentum)
+
+**Take Profit:** 46885.0 (based on minimum 2:1 risk/reward targeting the lower end of today's opening range)
+
+**Execution Confidence:** 7
+
+--- EXECUTION ---
+DIRECTION: SHORT
+ENTRY: 46952.0
+SL: 46965.0
+TP: 46885.0
+------------------------------------------------------------
+
+TRADE #13 | 2026-03-10 14:04:00+00:00
+TRIGGER: 15m Touch: Opening Range High
+ENTRY PRICE: 47913.0
+OUTCOME: Hit Stop Loss 🛑 at 47804.00
+PNL: -109.0 points
+
+--- AI RISK ASSESSMENT ---
+1. **Tape Reading:**  
+The price showed mild consolidation early (14:01–14:03), staying within a narrow range with minor downward closes. However, at 14:04, there was a strong bullish impulse that drove price sharply above the prior range and cleanly closed above the **Opening Range High of 47868.0**, confirming breakout momentum. The close at 47913.0 marks a decisive break with increased buying pressure and positive tail, indicating institutional participation.
+
+2. **Direction:**  
+**LONG**
+
+3. **Stop Loss:**  
+Place stop loss below the most recent key support which is the low of the 14:03 candle at **47804.0**. This protects against a failed breakout while giving room for noise.
+
+4. **Take Profit:**  
+Target a minimum 2:1 reward. Measured move from the opening range (47750.0 to 47868.0 = 118 pts) projected upward from breakout level gives us:  
+47913.0 + 118*2 = **48149.0**
+
+5. **Execution Confidence:**  
+**8/10** – Strong breakout with clear structure and follow-through; limited risk and defined reward.
+
+--- EXECUTION ---
+DIRECTION: LONG
+ENTRY: 47913.0
+SL: 47804.0
+TP: 48149.0
+------------------------------------------------------------
+
+TRADE #14 | 2026-03-11 14:01:00+00:00
+TRIGGER: 15m Touch: Opening Range High
+ENTRY PRICE: 47816.0
+OUTCOME: Hit Stop Loss 🛑 at 47804.00
+PNL: -12.0 points
+
+--- AI RISK ASSESSMENT ---
+**1. Tape Reading:**
+The price action shows strong bullish momentum leading into the breakout. The candle closed above the opening range high (47813.0) with a clean close at 47816.0, indicating institutional buying pressure. The candle body is solid without significant upper wick, suggesting sustained buying interest rather than a false break. Volume would be confirming this move (assumed based on breakout context).
+
+**2. Direction:**
+LONG
+
+**3. Stop Loss:**
+Placing stop below the breakout level and recent swing low. The most logical placement is below the opening range high (47813.0) with a small buffer to avoid noise - setting at 47804.0 (below the recent low of 47805.0 from 14:01 candle).
+
+**4. Take Profit:**
+Minimum 2:1 risk/reward from entry (47816.0) to stop (47804.0) = 12 point risk.
+Target: 47816.0 + (12 * 2) = 47840.0
+This aligns with potential extension moves in trending markets and maintains reasonable profit objective.
+
+**5. Execution Confidence:**
+8
+
+--- EXECUTION ---
+DIRECTION: LONG
+ENTRY: 47816.0
+SL: 47804.0
+TP: 47840.0
+------------------------------------------------------------
+
+TRADE #15 | 2026-03-12 14:02:00+00:00
+TRIGGER: 15m Touch: Opening Range Low
+ENTRY PRICE: 47111.0
+OUTCOME: Hit Stop Loss 🛑 at 47128.00
+PNL: -17.0 points
+
+--- AI RISK ASSESSMENT ---
+1. **Tape Reading:**  
+The price opened near the top of the first minute candle and quickly moved lower, showing bearish momentum early. The second minute confirmed this with a strong bearish candle that gapped down, made new lows, and closed near its low—indicating aggressive selling pressure. The close below the opening range low confirms a breakdown pattern.
+
+2. **Direction:**  
+SHORT  
+
+3. **Stop Loss:**  
+Place stop loss above the high of the most recent bearish candle (14:02), which is 47128.0  
+
+4. **Take Profit:**  
+Minimum 2:1 risk/reward — distance from entry (47111.0) to stop (47128.0) is 17 points. Take profit target = 47111.0 - (17 * 2) = 47077.0  
+
+5. **Execution Confidence:**  
+7  
+
+--- EXECUTION ---  
+DIRECTION: SHORT  
+ENTRY: 47111.0  
+SL: 47128.0  
+TP: 47077.0
+------------------------------------------------------------
+
+TRADE #16 | 2026-03-13 14:01:00+00:00
+TRIGGER: 15m Touch: Opening Range High
+ENTRY PRICE: 46840.0
+OUTCOME: Hit Stop Loss 🛑 at 46848.00
+PNL: -8.0 points
+
+--- AI RISK ASSESSMENT ---
+**1. Tape Reading:**
+The price action shows a rejection at the opening range high of 46842.0. The candle closed below the touch point with a bearish close at 46840.0, indicating selling pressure emerged after testing the upper boundary. This suggests potential short-term weakness and a possible shift in momentum to the downside.
+
+**2. Direction:**
+SHORT
+
+**3. Stop Loss:**
+Place stop loss above the recent swing high and opening range high at 46848.0
+
+**4. Take Profit:**
+Target the opening range low at 46732.0, providing approximately 108 points of potential profit vs 8 points risk, well above the 2:1 risk/reward requirement.
+
+**5. Execution Confidence:**
+6
+
+--- EXECUTION ---
+DIRECTION: SHORT
+ENTRY: 46840.0
+SL: 46848.0
+TP: 46732.0
+------------------------------------------------------------
+
+TRADE #17 | 2026-03-16 14:36:00+00:00
+TRIGGER: 15m Touch: Opening Range High
+ENTRY PRICE: 46816.0
+OUTCOME: Hit Take Profit 🎯 at 46954.00
+PNL: 138.0 points
+
+--- AI RISK ASSESSMENT ---
+1. **Tape Reading:**  
+The price action shows a strong bullish momentum build-up starting from 14:34 into 14:36. A large bullish candle at 14:34 (H: 46787) pierced the opening range high, and the follow-through at 14:35 and 14:36 confirmed strength with each close above the previous high. The final candle at 14:36 closed at the high of the day (46816), indicating aggressive buying interest and a clean breakout above the morning's high range.
+
+2. **Direction:**  
+**LONG**
+
+3. **Stop Loss:**  
+Place stop loss below the low of the breakout candle (14:34), which acted as the last significant support before the surge. That low is **46747.00**.
+
+4. **Take Profit:**  
+Using a minimum 2:1 risk-reward ratio:  
+Risk = Entry (46816) - SL (46747) = 69 points  
+TP = Entry + (2 x Risk) = 46816 + 138 = **46954**
+
+5. **Execution Confidence:**  
+**8/10** – Strong momentum, clear breakout structure, and confluence with key level make this a high-probability long setup.
+
+--- EXECUTION ---  
+DIRECTION: LONG  
+ENTRY: 46816.0  
+SL: 46747.0  
+TP: 46954.0
+------------------------------------------------------------
+
+TRADE #18 | 2026-03-17 14:01:00+00:00
+TRIGGER: 15m Touch: Opening Range High
+ENTRY PRICE: 46903.0
+OUTCOME: Hit Stop Loss 🛑 at 46917.00
+PNL: -14.0 points
+
+--- AI RISK ASSESSMENT ---
+1. **Tape Reading:** The price opened slightly above the opening range high (46908 vs 46907), showing initial bullish intent. However, it quickly rejected and closed below the ORH at 46903. The candle shows a bearish rejection pattern with upper wick rejection, indicating selling pressure at the level. Momentum appears to be shifting bearish as price failed to sustain above the key resistance.
+
+2. **Direction:** SHORT
+
+3. **Stop Loss:** 46917.0 (above the recent high which would invalidate this bearish setup)
+
+4. **Take Profit:** 46852.0 (full opening range target, providing approximately 51 point reward vs 14 point risk = ~3.6:1 R/R)
+
+5. **Execution Confidence:** 8
+
+--- EXECUTION ---
+DIRECTION: SHORT
+ENTRY: 46903.0
+SL: 46917.0
+TP: 46852.0
+------------------------------------------------------------
+
+TRADE #19 | 2026-03-18 14:01:00+00:00
+TRIGGER: 15m Touch: Opening Range Low
+ENTRY PRICE: 47210.0
+OUTCOME: Hit Take Profit 🎯 at 47220.00
+PNL: 10.0 points
+
+--- AI RISK ASSESSMENT ---
+**1. Tape Reading:**
+The price opened at 47210, made a slight higher high at 47212, then tested down to 47205 before closing back at the opening level of 47210. This creates a bullish rejection pattern at the opening range low, showing buying interest coming in at support. The candle has a small lower wick with no upper wick, indicating clean rejection momentum.
+
+**2. Direction:**
+LONG
+
+**3. Stop Loss:**
+Below the recent swing low at 47205, specifically at 47204 to avoid slippage
+
+**4. Take Profit:**
+Measuring the bounce from 47205 low to current price 47210 (5 point move), with 2:1 risk reward targeting 10 points profit. Adding this to entry gives us 47220 as take profit level. Additionally, 47220 aligns with potential resistance near the opening range high zone.
+
+**5. Execution Confidence:**
+8 - Strong rejection pattern with clear momentum shift, good risk/reward setup
+
+--- EXECUTION ---
+DIRECTION: LONG
+ENTRY: 47210.0
+SL: 47204.0
+TP: 47220.0
+------------------------------------------------------------
+
+TRADE #20 | 2026-03-19 14:05:00+00:00
+TRIGGER: 15m Touch: Opening Range Low
+ENTRY PRICE: 46130.0
+OUTCOME: Hit Stop Loss 🛑 at 46122.00
+PNL: -8.0 points
+
+--- AI RISK ASSESSMENT ---
+1. **Tape Reading:**  
+The price action shows a gradual decline over the last five minutes, probing the Opening Range Low at 46122.00 and closing above it at 46130.00. The candle closed with a rejection bounce off the low, indicating buying interest. Momentum appears to shift from bearish to potentially bullish at key support.
+
+2. **Direction:**  
+LONG  
+
+3. **Stop Loss:**  
+Place stop loss below the recent swing low at 46122.00 to protect against a failed bounce.
+
+4. **Take Profit:**  
+Target a move back toward the opening range high of 46212.00, offering more than a 2:1 risk-reward ratio.
+
+5. **Execution Confidence:**  
+7  
+
+--- EXECUTION ---  
+DIRECTION: LONG  
+ENTRY: 46130.0  
+SL: 46122.0  
+TP: 46212.0
+------------------------------------------------------------
+
+TRADE #21 | 2026-03-20 14:03:00+00:00
+TRIGGER: 15m Touch: Opening Range High
+ENTRY PRICE: 45895.0
+OUTCOME: Hit Take Profit 🎯 at 46035.00
+PNL: 140.0 points
+
+--- AI RISK ASSESSMENT ---
+1. **Tape Reading:**  
+The price action shows strong bullish momentum building over the last three minutes. Each candle closes higher than its open, with increasing highs and sustained buying pressure. The final candle closed above the Opening Range High of 45882.0, confirming a breakout. The momentum is clean and aggressive without any significant pullback or hesitation near resistance.
+
+2. **Direction:**  
+LONG  
+
+3. **Stop Loss:**  
+Place stop loss below the most recent swing low, which is the low of the first 15-minute candle at **45825.0**. This respects the structure while giving room for noise.
+
+4. **Take Profit:**  
+Target a minimum 2:1 reward ratio. Distance from entry (45895.0) to stop (45825.0) = 70 points. Therefore, take profit at **46035.0** (45895.0 + 140 points).
+
+5. **Execution Confidence:**  
+8  
+
+--- EXECUTION ---  
+DIRECTION: LONG  
+ENTRY: 45895.0  
+SL: 45825.0  
+TP: 46035.0
+------------------------------------------------------------
+
+TRADE #22 | 2026-03-23 14:05:00+00:00
+TRIGGER: 15m Touch: Opening Range High
+ENTRY PRICE: 46147.0
+OUTCOME: Closed Manually (End of Session) at 46248.00
+PNL: 101.0 points
+
+--- AI RISK ASSESSMENT ---
+1. **Tape Reading:**  
+The price action shows a strong bullish momentum shift starting from 14:03 onwards. After testing the opening range low around 45287, buyers stepped in aggressively. The candle at 14:05 closed significantly above the prior resistance level (Opening Range High of 45357), confirming a breakout with strong buying pressure and positive momentum.
+
+2. **Direction:**  
+LONG  
+
+3. **Stop Loss:**  
+Place stop loss below the most recent support zone formed before the breakout — specifically beneath the low of the 14:03 candle which acted as a turning point. That low was 45287.00. To ensure we're not stopped out by noise, place it just below that level for safety: **45280.0**
+
+4. **Take Profit:**  
+With a stop loss at 45280.0 and entry at 46147.0, the risk per unit is 867 points. For a minimum 2:1 Reward/Risk, the take profit should be at least 1734 points above entry. Therefore:  
+TP = 46147 + 1734 = **47881.0**
+
+5. **Execution Confidence:**  
+8  
+
+--- EXECUTION ---  
+DIRECTION: LONG  
+ENTRY: 46147.0  
+SL: 45280.0  
+TP: 47881.0
+------------------------------------------------------------
+
+TRADE #23 | 2026-03-24 14:08:00+00:00
+TRIGGER: 15m Touch: Opening Range High
+ENTRY PRICE: 46204.0
+OUTCOME: Hit Take Profit 🎯 at 46184.00
+PNL: 20.0 points
+
+--- AI RISK ASSESSMENT ---
+1. **Tape Reading:**  
+The price showed strong bullish momentum early, pushing up to 46203.00 at 14:07 before consolidating into a bearish rejection at the 15-minute high near the Opening Range High (46206.0). The candle at 14:08 closed below both the prior candle and the recent high, indicating a shift in momentum with selling pressure stepping in. The structure shows a clear rejection at key resistance.
+
+2. **Direction:**  
+SHORT
+
+3. **Stop Loss:**  
+Above the recent swing high at **46213.0**, which is the highest printed level in the current move. Placing stop just above that ensures we are out if momentum flips back bullish.  
+**SL: 46214.0**
+
+4. **Take Profit:**  
+Minimum 2:1 risk reward means at least 19 points from entry (46204.0 - 46214.0 = -10 risk), so TP should be at least 46184.0 for 20+ points gain. A logical support area based on earlier reaction lows around **46160.0–46170.0** supports this target range. Using **46184.0** as TP gives us more than 2:1.
+
+5. **Execution Confidence:**  
+7
+
+--- EXECUTION ---  
+DIRECTION: SHORT  
+ENTRY: 46204.0  
+SL: 46214.0  
+TP: 46184.0
+------------------------------------------------------------
+
+TRADE #24 | 2026-03-25 14:01:00+00:00
+TRIGGER: 15m Touch: Opening Range High
+ENTRY PRICE: 46536.0
+OUTCOME: Hit Stop Loss 🛑 at 46549.00
+PNL: -13.0 points
+
+--- AI RISK ASSESSMENT ---
+1. **Tape Reading:** The price approached the Opening Range High (46541.0) but closed below it at 46536.0, indicating rejection momentum. The candle has a bearish close with upper wick rejection, suggesting sellers are active near the resistance level.
+
+2. **Direction:** SHORT
+
+3. **Stop Loss:** Place stop loss above the recent high at 46549.0 to protect against continuation breakout.
+
+4. **Take Profit:** Target minimum 2:1 risk/reward ratio. Risk is 13 points (46549 - 46536), so reward target is 26 points from entry: 46510.0
+
+5. **Execution Confidence:** 7
+
+--- EXECUTION ---
+DIRECTION: SHORT
+ENTRY: 46536.0
+SL: 46549.0
+TP: 46510.0
+------------------------------------------------------------
+
+TRADE #25 | 2026-03-26 14:26:00+00:00
+TRIGGER: 15m Touch: Opening Range Low
+ENTRY PRICE: 46072.0
+OUTCOME: Hit Stop Loss 🛑 at 46139.00
+PNL: -67.0 points
+
+--- AI RISK ASSESSMENT ---
+1. **Tape Reading:**  
+The price action over the last 15 minutes shows a bearish momentum build, starting with minor pullbacks but progressively making lower lows. From 14:20 onward, we see a sharp breakdown below previous support, culminating in a strong bearish candle at 14:26 that closed well below the opening range low (46096.0), confirming institutional selling pressure. The candle structure shows aggressive selling with a long lower wick earlier, followed by a clean break and close below key support—indicating a shift in control to sellers.
+
+2. **Direction:**  
+SHORT  
+
+3. **Stop Loss:**  
+Place stop above the recent swing high established just before the breakdown—specifically, the high of the 14:19 candle at **46139.0**. This respects the immediate structure and invalidates the short if price reverses sharply.
+
+4. **Take Profit:**  
+A minimum 2:1 reward requires at least **66 pts** of risk (46139.0 - 46072.0 = 67 pts). Therefore, take profit target is set at **45938.0**, which also aligns with potential deeper structural support from earlier lows.
+
+5. **Execution Confidence:**  
+8  
+
+--- EXECUTION ---  
+DIRECTION: SHORT  
+ENTRY: 46072.0  
+SL: 46139.0  
+TP: 45938.0
+------------------------------------------------------------
+
+TRADE #26 | 2026-03-27 14:01:00+00:00
+TRIGGER: 15m Touch: Opening Range Low
+ENTRY PRICE: 45750.0
+OUTCOME: Hit Stop Loss 🛑 at 45761.00
+PNL: -11.0 points
+
+--- AI RISK ASSESSMENT ---
+1. **Tape Reading:** The price action shows a bearish momentum continuation. The candle closed below the opening range low with a bearish close, indicating seller control. The candle has a lower high and lower low structure, showing clear downside momentum building into the breakdown.
+
+2. **Direction:** SHORT
+
+3. **Stop Loss:** 45761.0 (above the high of the current candle to respect the bearish momentum)
+
+4. **Take Profit:** 45718.0 (targeting 32 points down vs 11 points risk = better than 2:1 reward)
+
+5. **Execution Confidence:** 8
+
+--- EXECUTION ---
+DIRECTION: SHORT
+ENTRY: 45750.0
+SL: 45761.0
+TP: 45718.0
+------------------------------------------------------------
+
+TRADE #27 | 2026-03-30 14:17:00+00:00
+TRIGGER: 15m Touch: Opening Range High
+ENTRY PRICE: 45439.0
+OUTCOME: Hit Take Profit 🎯 at 45519.00
+PNL: 80.0 points
+
+--- AI RISK ASSESSMENT ---
+1. **Tape Reading:**  
+The price action shows a strong bullish momentum building into the breakout. After consolidating around the opening range low, buyers stepped in aggressively, pushing price above the opening range high (45432.0) with a large green candle at 14:17 closing at 45439.0. The structure indicates institutional buying interest and a clear shift in momentum.
+
+2. **Direction:**  
+LONG  
+
+3. **Stop Loss:**  
+Place stop loss below the most recent swing low at 45399.0, which acted as support twice recently and marks a key structural level.
+
+4. **Take Profit:**  
+Target a minimum 2:1 risk reward. Risk = 45439.0 - 45399.0 = 40 points. Therefore, take profit at 45439.0 + (40 * 2) = 45519.0  
+
+5. **Execution Confidence:**  
+8  
+
+--- EXECUTION ---  
+DIRECTION: LONG  
+ENTRY: 45439.0  
+SL: 45399.0  
+TP: 45519.0
+------------------------------------------------------------
+
+TRADE #28 | 2026-03-31 14:11:00+00:00
+TRIGGER: 15m Touch: Opening Range High
+ENTRY PRICE: 45632.0
+OUTCOME: Hit Take Profit 🎯 at 45706.00
+PNL: 74.0 points
+
+--- AI RISK ASSESSMENT ---
+1. **Tape Reading:**  
+The price action shows strong bullish momentum leading into the breakout. The candle at 14:11 printed a large green candle with a long upper wick, closing significantly above the opening range high of 45618.0. Prior to this, there was consolidation between 45550 and 45616, indicating accumulation. The close above the ORH confirms institutional participation and a shift in momentum to the upside.
+
+2. **Direction:**  
+LONG  
+
+3. **Stop Loss:**  
+Place stop loss below the most recent key support which is the low of the 14:11 candle at **45595.0**. This protects against a failed breakout while giving room for noise.
+
+4. **Take Profit:**  
+Target a minimum 2:1 risk reward. Risk = 45632 - 45595 = 37 points. So take profit at **45706.0** (45632 + (37 * 2)).
+
+5. **Execution Confidence:**  
+8  
+
+--- EXECUTION ---  
+DIRECTION: LONG  
+ENTRY: 45632.0  
+SL: 45595.0  
+TP: 45706.0
+------------------------------------------------------------
+
+TRADE #29 | 2026-04-01 14:06:00+00:00
+TRIGGER: 15m Touch: Opening Range High
+ENTRY PRICE: 46666.0
+OUTCOME: Hit Stop Loss 🛑 at 46670.00
+PNL: -4.0 points
+
+--- AI RISK ASSESSMENT ---
+1. **Tape Reading:**  
+The price action shows a steady climb toward the Opening Range High of 46669.0, with momentum appearing to weaken into the level. The candle at 14:06 opened at 46662.0, made a high of 46669.0 (touching the ORH), but closed at 46666.0 — below the level. This forms a clear rejection candle with upper wick rejection and a close below the tested level. Buyers failed to sustain above the key resistance, suggesting potential short-term bearish continuation.
+
+2. **Direction:**  
+SHORT
+
+3. **Stop Loss:**  
+Place stop loss above the high of the rejecting candle to confirm invalidation of the bearish setup. The high was 46669.0.  
+**SL: 46670.0**
+
+4. **Take Profit:**  
+A minimum 2:1 risk-reward ratio requires at least 26 points of profit (since risk is 4 points from entry to stop). A logical support area lies near the opening range low at 46535.0, which is more than enough distance for multiple take-profit levels. For simplicity and strong reward potential, we'll target:  
+**TP: 46535.0**
+
+5. **Execution Confidence:**  
+7/10 – Strong tape-based rejection off a key level; however, it's early in the session and volatility could shift quickly.
+
+--- EXECUTION ---
+DIRECTION: SHORT
+ENTRY: 46666.0
+SL: 46670.0
+TP: 46535.0
 ------------------------------------------------------------
 

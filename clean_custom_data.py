@@ -5,21 +5,23 @@ def clean_and_filter_massive_csv(raw_filepath: str, days_to_keep: int = 30):
     print(f"🧹 Loading massive MT4/MT5 data from {raw_filepath}...")
     
     try:
-        # Read the MetaTrader CSV
+        # Read the MetaTrader CSV using the correct UTF-16 encoding
+        # Mapping: Col 0 = DateTime, Col 1 = Open, Col 2 = High, Col 3 = Low, Col 4 = Close, Col 5 = TickVolume
         df = pd.read_csv(raw_filepath, header=None, usecols=[0, 1, 2, 3, 4, 5], 
-                         names=['date', 'time', 'open', 'high', 'low', 'close'])
+                         names=['datetime', 'open', 'high', 'low', 'close', 'volume'],
+                         encoding='utf-16')
     except FileNotFoundError:
         print(f"❌ Error: Could not find {raw_filepath}.")
         return
 
     print("🔄 Reformatting timestamps and enforcing UTC...")
-    df['datetime_str'] = df['date'].astype(str) + ' ' + df['time'].astype(str)
-    df['datetime'] = pd.to_datetime(df['datetime_str'], format='mixed')
+    
+    # Parse the exact MT5 format (e.g., "2025.12.17 03:03")
+    df['datetime'] = pd.to_datetime(df['datetime'], format='%Y.%m.%d %H:%M')
     
     if df['datetime'].dt.tz is None:
          df['datetime'] = df['datetime'].dt.tz_localize('UTC')
 
-    df['volume'] = 0
     df = df[['datetime', 'open', 'high', 'low', 'close', 'volume']]
     
     # --- ISOLATE THE LAST 30 DAYS ---
