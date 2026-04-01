@@ -13,6 +13,7 @@ def run_master_backtest(csv_filepath: str):
     print("-" * 60)
     
     total_setups = 0
+    all_logged_setups = []  # <--- NEW: List to hold our trades for the text file
 
     for i in range(1, len(unique_dates)):
         prev_date_str = str(unique_dates[i-1])
@@ -31,7 +32,7 @@ def run_master_backtest(csv_filepath: str):
             )
         except ValueError: continue
 
-        # 2. Run the NY Session Simulator (This isolates the Opening Range and checks the State Machine)
+        # 2. Run the NY Session Simulator 
         daily_setups = simulate_ny_session(current_day_data, current_date_str, pivots)
         
         # 3. Process any found setups
@@ -53,9 +54,37 @@ def run_master_backtest(csv_filepath: str):
                     print(f"❌ Failed to log setup: {e}")
                     
                 print("-" * 50)
+                
+                # Save to our local list
+                all_logged_setups.append(setup)
                 total_setups += 1
 
     print(f"🏁 Backtest Complete. Processed {total_setups} total setups over {len(unique_dates)} days.")
+
+    # ---------------------------------------------------------
+    # NEW: WRITE EVERYTHING TO A TEXT FILE
+    # ---------------------------------------------------------
+    output_filename = "backtest_results.txt"
+    if all_logged_setups:
+        print(f"💾 Saving detailed results to {output_filename}...")
+        with open(output_filename, "w", encoding="utf-8") as f:
+            f.write("=" * 60 + "\n")
+            f.write("🏆 US30 COPILOT - QUANTITATIVE BACKTEST RESULTS\n")
+            f.write("=" * 60 + "\n\n")
+            
+            for i, trade in enumerate(all_logged_setups):
+                f.write(f"TRADE #{i+1} | {trade.get('timestamp', 'Unknown Time')}\n")
+                f.write(f"TRIGGER: {trade.get('trigger', 'Unknown')}\n")
+                f.write(f"ENTRY PRICE: {trade.get('context', {}).get('close_price', 'N/A')}\n")
+                f.write(f"PROFIT (MFE): {trade.get('mfe_points', 'N/A')}\n")
+                f.write(f"DRAWDOWN (MAE): {trade.get('mae_points', 'N/A')}\n\n")
+                f.write("--- AI RISK ASSESSMENT ---\n")
+                f.write(f"{trade.get('ai_risk_analysis', 'No analysis provided.')}\n")
+                f.write("-" * 60 + "\n\n")
+        
+        print(f"✅ Done! You can now open {output_filename} to review your trades.")
+    else:
+        print("⚠️ No setups found. Text file was not created.")
 
 if __name__ == "__main__":
     DATA_FILE = "data/historical_us30_1m.csv"
