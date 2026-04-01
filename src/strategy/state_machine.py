@@ -1,55 +1,60 @@
 class US30SessionTracker:
-    def __init__(self, asia_high: float, asia_low: float, daily_pivots: list):
+    def __init__(self, or_high: float, or_low: float, daily_pivots: dict):
         """
-        Initializes the session tracker with the static levels for the day.
+        Initializes the tracker with the Opening Range (first 30 mins of NY) 
+        and the Daily Pivots.
         """
-        self.asia_high = asia_high
-        self.asia_low = asia_low
+        self.or_high = or_high
+        self.or_low = or_low
         self.pivots = daily_pivots
-        
-        # Narrative State Memory
-        self.low_swept = False
-        self.high_tested_once = False
-        self.liquidity_grabbed = False
-        
-        # Final Trigger
-        self.setup_ready = False
 
-    def update_state(self, current_candle_15m: dict, current_candle_1m: dict):
+    def update_state(self, candle_15m: dict, current_1m: dict) -> dict | None:
         """
-        Evaluates the current market state and updates the narrative sequence.
-        Returns a JSON-ready dictionary for the AI agent if the setup is triggered.
+        Evaluates the current 15m candle. If it touches a key Opening Range 
+        level or Daily Pivot, it triggers a setup payload for the AI.
         """
+        high = candle_15m['high']
+        low = candle_15m['low']
+        close = candle_15m['close']
         
-        # Condition 1: Downside Magnet Cleared (Asia Low Swept)
-        if not self.low_swept:
-            if current_candle_1m['low'] < self.asia_low:
-                self.low_swept = True
+        interacted_level = None
 
-        # Condition 2: Asia High Tested (Fake-out)
-        # Price breaks the high, but the 15m candle fails to close above it
-        if self.low_swept and not self.high_tested_once:
-            if current_candle_1m['high'] > self.asia_high and current_candle_15m['close'] <= self.asia_high:
-                self.high_tested_once = True
+        # 1. Did we touch the Opening Range?
+        if low <= self.or_high <= high:
+            interacted_level = "Opening Range High"
+        elif low <= self.or_low <= high:
+            interacted_level = "Opening Range Low"
+            
+        # 2. Did we touch a Daily Pivot?
+        elif low <= self.pivots['P'] <= high:
+            interacted_level = "Daily Central Pivot"
+        elif low <= self.pivots['S1'] <= high:
+            interacted_level = "S1 Pivot"
+        elif low <= self.pivots['R1'] <= high:
+            interacted_level = "R1 Pivot"
 
-        # Condition 3: Pivot Bounce (Liquidity Grab)
-        # Price wicks below a daily pivot and closes above it
-        if self.high_tested_once and not self.liquidity_grabbed:
-            for pivot in self.pivots:
-                if current_candle_1m['low'] <= pivot and current_candle_1m['close'] > pivot:
-                    self.liquidity_grabbed = True
-                    break  # Stop checking pivots once one is bounced
+        # 3. If a level was touched, build the payload for the AI
+        if interacted_level:
+            
+            # Basic logic to help the AI: Did we close above or below the level we touched?
+            close_status = "Unknown"
+            if interacted_level == "Opening Range High":
+                close_status = "Closed ABOVE Level (Breakout)" if close > self.or_high else "Closed BELOW Level (Rejection)"
+            elif interacted_level == "Opening Range Low":
+                close_status = "Closed BELOW Level (Breakdown)" if close < self.or_low else "Closed ABOVE Level (Rejection/Bounce)"
 
-        # Condition 4: The Final Trigger (15m close above Asia High)
-        if self.liquidity_grabbed and not self.setup_ready:
-            if current_candle_15m['close'] > self.asia_high:
-                self.setup_ready = True
-                
-                # Package the state for the AI Agent
-                return {
-                    "asset": "US30",
-                    "trigger": "15m Close Above Asian High",
-                    "narrative_confirmed": ["Low Swept", "High Tested", "Pivot Bounced"]
+            return {
+                "asset": "US30",
+                "trigger": f"15m Touch: {interacted_level}",
+                "narrative_confirmed": [
+                    f"Price interacted with {interacted_level}",
+                    f"Candle resolved as: {close_status}"
+                ],
+                "context": {
+                    "or_high": round(self.or_high, 2),
+                    "or_low": round(self.or_low, 2),
+                    "close_price": round(close, 2)
                 }
-                
+            }
+            
         return None

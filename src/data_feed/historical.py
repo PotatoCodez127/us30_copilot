@@ -1,41 +1,38 @@
-import pandas as pd
-from src.math_engine.asian_range import calculate_asian_range
-from src.math_engine.pivots import calculate_daily_pivots
 from src.strategy.state_machine import US30SessionTracker
 
-def load_and_prep_data(filepath: str) -> pd.DataFrame:
+def simulate_ny_session(df_1m, date_str, pivots):
     """
-    Loads historical 1-minute CSV data and ensures strict UTC timezone compliance.
-    Expects CSV to have a 'datetime' column and standard OHLCV columns.
+    Simulates the NY Session. First calculates the Opening Range (13:30 to 14:00 UTC),
+    then runs the State Machine on the rest of the session.
     """
-    df = pd.read_csv(filepath)
-    df['datetime'] = pd.to_datetime(df['datetime'], utc=True)
-    df.set_index('datetime', inplace=True)
+    # 1. Isolate the Opening Range (First 30 minutes of NY Session)
+    # NY Opens at 9:30 AM EST, which is strictly 13:30 UTC in our standard engine
+    opening_range = df_1m.loc[f"{date_str} 13:30:00":f"{date_str} 14:00:00"]
     
-    # Ensure column names are lowercase for consistency
-    df.columns = [col.lower() for col in df.columns]
+    if opening_range.empty:
+        return []
+        
+    or_high = opening_range['high'].max()
+    or_low = opening_range['low'].min()
     
-    return df.sort_index()
-
-def simulate_ny_session(df_1m: pd.DataFrame, date_str: str, pivots: dict, asia_range: dict):
-    """
-    Simulates the NY Session (13:30 to 20:00 UTC) candle by candle and tracks MFE/MAE.
-    """
+    # 2. Initialize the new State Machine
     tracker = US30SessionTracker(
-        asia_high=asia_range['asia_high'],
-        asia_low=asia_range['asia_low'],
-        daily_pivots=[pivots['S2'], pivots['S1'], pivots['P'], pivots['R1'], pivots['R2']]
+        or_high=or_high,
+        or_low=or_low,
+        daily_pivots=pivots
     )
     
-    session_data = df_1m.loc[f"{date_str} 13:30:00":f"{date_str} 20:00:00"]
+    # 3. Simulate the rest of the day (After the Opening Range establishes)
+    trading_session = df_1m.loc[f"{date_str} 14:01:00":f"{date_str} 20:00:00"]
     setups_found = []
     
-    for i in range(len(session_data)):
-        current_time = session_data.index[i]
-        candle_1m = session_data.iloc[i].to_dict()
+    for i in range(len(trading_session)):
+        current_time = trading_session.index[i]
+        candle_1m = trading_session.iloc[i].to_dict()
         
+        # Build 15m candle
         floor_15m = current_time.floor('15min')
-        current_15m_window = session_data.loc[floor_15m:current_time]
+        current_15m_window = trading_session.loc[floor_15m:current_time]
         
         candle_15m = {
             'open': current_15m_window['open'].iloc[0],
@@ -48,28 +45,27 @@ def simulate_ny_session(df_1m: pd.DataFrame, date_str: str, pivots: dict, asia_r
         
         if ai_payload:
             ai_payload['timestamp'] = str(current_time)
-            
-            # --- NEW: TRADE MANAGEMENT LOGIC ---
             entry_price = candle_15m['close']
             
-            # Slice the dataframe to look only at the time AFTER our entry
-            if i + 1 < len(session_data):
-                future_data = session_data.iloc[i+1:]
+            # --- TRADE MANAGEMENT (MFE/MAE) ---
+            if i + 1 < len(trading_session):
+                future_data = trading_session.iloc[i+1:]
                 absolute_highest = future_data['high'].max()
                 absolute_lowest = future_data['low'].min()
                 
-                # Calculate excursion points (Assuming a LONG setup)
-                # We wrap these in float() to fix the JSON serialization error
-                mfe = float(round(absolute_highest - entry_price, 2))
-                mae = float(round(absolute_lowest - entry_price, 2))
-            else:
-                mfe, mae = 0.0, 0.0
+                # We calculate absolute maximums in both directions since the AI will pick Long/Short
+                mfe_up = float(round(absolute_highest - entry_price, 2))
+                mae_down = float(round(absolute_lowest - entry_price, 2))
+                mfe_down = float(round(entry_price - absolute_lowest, 2))
+                mae_up = float(round(entry_price - absolute_highest, 2))
                 
-            ai_payload['mfe_points'] = mfe
-            ai_payload['mae_points'] = mae
-            # -----------------------------------
+                # We store both profiles for the database to track
+                ai_payload['mfe_points'] = f"Long: {mfe_up} | Short: {mfe_down}"
+                ai_payload['mae_points'] = f"Long: {mae_down} | Short: {mae_up}"
+            else:
+                ai_payload['mfe_points'], ai_payload['mae_points'] = "0", "0"
             
             setups_found.append(ai_payload)
-            break # We only track the first valid setup of the day to keep data clean
+            break # We lock in the first valid setup of the day
             
     return setups_found

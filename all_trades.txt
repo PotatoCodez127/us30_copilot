@@ -1,0 +1,1004 @@
+All Trades Found: 200
+Total Candidates: 200 | Win Rate: 100% | Required R:R: 1.0:1
+======================================================================
+
+#1 | 2026-03-17 14:15:00+00:00 | LONG off Opening Range Low
+    Entry: 47120.58 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 47220.58 | Stop Loss: 47040.58
+----------------------------------------------------------------------
+#2 | 2026-03-17 14:15:00+00:00 | SHORT off Opening Range Low
+    Entry: 47120.58 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 47020.58 | Stop Loss: 47200.58
+----------------------------------------------------------------------
+#3 | 2026-03-17 14:30:00+00:00 | LONG off R1 Pivot
+    Entry: 47208.31 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 47308.31 | Stop Loss: 47128.31
+----------------------------------------------------------------------
+#4 | 2026-03-17 14:30:00+00:00 | SHORT off R1 Pivot
+    Entry: 47208.31 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 47108.31 | Stop Loss: 47288.31
+----------------------------------------------------------------------
+#5 | 2026-03-17 15:00:00+00:00 | LONG off R1 Pivot
+    Entry: 47137.23 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 47237.23 | Stop Loss: 47057.23
+----------------------------------------------------------------------
+#6 | 2026-03-17 15:00:00+00:00 | SHORT off R1 Pivot
+    Entry: 47137.23 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 47037.23 | Stop Loss: 47217.23
+----------------------------------------------------------------------
+#7 | 2026-03-17 15:15:00+00:00 | LONG off R1 Pivot
+    Entry: 47131.1 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 47231.1 | Stop Loss: 47051.1
+----------------------------------------------------------------------
+#8 | 2026-03-17 15:15:00+00:00 | SHORT off R1 Pivot
+    Entry: 47131.1 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 47031.1 | Stop Loss: 47211.1
+----------------------------------------------------------------------
+#9 | 2026-03-17 15:30:00+00:00 | LONG off Opening Range Low
+    Entry: 47070.29 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 47170.29 | Stop Loss: 46990.29
+----------------------------------------------------------------------
+#10 | 2026-03-17 15:30:00+00:00 | SHORT off Opening Range Low
+    Entry: 47070.29 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 46970.29 | Stop Loss: 47150.29
+----------------------------------------------------------------------
+#11 | 2026-03-17 15:45:00+00:00 | LONG off Opening Range Low
+    Entry: 47053.98 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 47153.98 | Stop Loss: 46973.98
+----------------------------------------------------------------------
+#12 | 2026-03-17 15:45:00+00:00 | SHORT off Opening Range Low
+    Entry: 47053.98 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 46953.98 | Stop Loss: 47133.98
+----------------------------------------------------------------------
+#13 | 2026-03-17 16:15:00+00:00 | LONG off Opening Range Low
+    Entry: 47070.03 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 47170.03 | Stop Loss: 46990.03
+----------------------------------------------------------------------
+#14 | 2026-03-17 16:15:00+00:00 | SHORT off Opening Range Low
+    Entry: 47070.03 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 46970.03 | Stop Loss: 47150.03
+----------------------------------------------------------------------
+#15 | 2026-03-17 16:30:00+00:00 | LONG off Opening Range Low
+    Entry: 47084.86 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 47184.86 | Stop Loss: 47004.86
+----------------------------------------------------------------------
+#16 | 2026-03-17 16:30:00+00:00 | SHORT off Opening Range Low
+    Entry: 47084.86 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 46984.86 | Stop Loss: 47164.86
+----------------------------------------------------------------------
+#17 | 2026-03-17 16:45:00+00:00 | LONG off Opening Range Low
+    Entry: 47051.51 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 47151.51 | Stop Loss: 46971.51
+----------------------------------------------------------------------
+#18 | 2026-03-17 16:45:00+00:00 | SHORT off Opening Range Low
+    Entry: 47051.51 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 46951.51 | Stop Loss: 47131.51
+----------------------------------------------------------------------
+#19 | 2026-03-17 17:00:00+00:00 | LONG off Opening Range Low
+    Entry: 47107.72 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 47207.72 | Stop Loss: 47027.72
+----------------------------------------------------------------------
+#20 | 2026-03-17 17:00:00+00:00 | SHORT off Opening Range Low
+    Entry: 47107.72 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 47007.72 | Stop Loss: 47187.72
+----------------------------------------------------------------------
+#21 | 2026-03-17 17:15:00+00:00 | LONG off Opening Range Low
+    Entry: 47101.76 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 47201.76 | Stop Loss: 47021.76
+----------------------------------------------------------------------
+#22 | 2026-03-17 17:15:00+00:00 | SHORT off Opening Range Low
+    Entry: 47101.76 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 47001.76 | Stop Loss: 47181.76
+----------------------------------------------------------------------
+#23 | 2026-03-17 17:30:00+00:00 | LONG off Opening Range Low
+    Entry: 47059.69 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 47159.69 | Stop Loss: 46979.69
+----------------------------------------------------------------------
+#24 | 2026-03-17 17:30:00+00:00 | SHORT off Opening Range Low
+    Entry: 47059.69 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 46959.69 | Stop Loss: 47139.69
+----------------------------------------------------------------------
+#25 | 2026-03-17 17:45:00+00:00 | LONG off Opening Range Low
+    Entry: 47073.06 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 47173.06 | Stop Loss: 46993.06
+----------------------------------------------------------------------
+#26 | 2026-03-17 17:45:00+00:00 | SHORT off Opening Range Low
+    Entry: 47073.06 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 46973.06 | Stop Loss: 47153.06
+----------------------------------------------------------------------
+#27 | 2026-03-17 18:00:00+00:00 | LONG off Opening Range Low
+    Entry: 47101.75 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 47201.75 | Stop Loss: 47021.75
+----------------------------------------------------------------------
+#28 | 2026-03-17 18:00:00+00:00 | SHORT off Opening Range Low
+    Entry: 47101.75 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 47001.75 | Stop Loss: 47181.75
+----------------------------------------------------------------------
+#29 | 2026-03-17 18:15:00+00:00 | LONG off Opening Range Low
+    Entry: 47016.5 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 47116.5 | Stop Loss: 46936.5
+----------------------------------------------------------------------
+#30 | 2026-03-17 18:15:00+00:00 | SHORT off Opening Range Low
+    Entry: 47016.5 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 46916.5 | Stop Loss: 47096.5
+----------------------------------------------------------------------
+#31 | 2026-03-17 18:45:00+00:00 | LONG off Opening Range Low
+    Entry: 47053.81 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 47153.81 | Stop Loss: 46973.81
+----------------------------------------------------------------------
+#32 | 2026-03-17 18:45:00+00:00 | SHORT off Opening Range Low
+    Entry: 47053.81 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 46953.81 | Stop Loss: 47133.81
+----------------------------------------------------------------------
+#33 | 2026-03-18 14:00:00+00:00 | LONG off Opening Range Low
+    Entry: 46613.7 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 46713.7 | Stop Loss: 46533.7
+----------------------------------------------------------------------
+#34 | 2026-03-18 14:00:00+00:00 | SHORT off Opening Range Low
+    Entry: 46613.7 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 46513.7 | Stop Loss: 46693.7
+----------------------------------------------------------------------
+#35 | 2026-03-19 14:00:00+00:00 | LONG off S1 Pivot
+    Entry: 45935.81 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 46035.81 | Stop Loss: 45855.81
+----------------------------------------------------------------------
+#36 | 2026-03-19 14:00:00+00:00 | SHORT off S1 Pivot
+    Entry: 45935.81 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 45835.81 | Stop Loss: 46015.81
+----------------------------------------------------------------------
+#37 | 2026-03-19 14:15:00+00:00 | LONG off Opening Range Low
+    Entry: 45771.84 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 45871.84 | Stop Loss: 45691.84
+----------------------------------------------------------------------
+#38 | 2026-03-19 14:15:00+00:00 | SHORT off Opening Range Low
+    Entry: 45771.84 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 45671.84 | Stop Loss: 45851.84
+----------------------------------------------------------------------
+#39 | 2026-03-19 14:30:00+00:00 | LONG off Opening Range Low
+    Entry: 45870.25 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 45970.25 | Stop Loss: 45790.25
+----------------------------------------------------------------------
+#40 | 2026-03-19 14:30:00+00:00 | SHORT off Opening Range Low
+    Entry: 45870.25 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 45770.25 | Stop Loss: 45950.25
+----------------------------------------------------------------------
+#41 | 2026-03-19 15:00:00+00:00 | LONG off S1 Pivot
+    Entry: 45973.51 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 46073.51 | Stop Loss: 45893.51
+----------------------------------------------------------------------
+#42 | 2026-03-19 15:00:00+00:00 | SHORT off S1 Pivot
+    Entry: 45973.51 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 45873.51 | Stop Loss: 46053.51
+----------------------------------------------------------------------
+#43 | 2026-03-19 15:15:00+00:00 | LONG off S1 Pivot
+    Entry: 45893.91 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 45993.91 | Stop Loss: 45813.91
+----------------------------------------------------------------------
+#44 | 2026-03-19 15:15:00+00:00 | SHORT off S1 Pivot
+    Entry: 45893.91 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 45793.91 | Stop Loss: 45973.91
+----------------------------------------------------------------------
+#45 | 2026-03-19 15:30:00+00:00 | LONG off Opening Range Low
+    Entry: 45787.25 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 45887.25 | Stop Loss: 45707.25
+----------------------------------------------------------------------
+#46 | 2026-03-19 15:30:00+00:00 | SHORT off Opening Range Low
+    Entry: 45787.25 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 45687.25 | Stop Loss: 45867.25
+----------------------------------------------------------------------
+#47 | 2026-03-19 15:45:00+00:00 | LONG off Opening Range Low
+    Entry: 45853.09 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 45953.09 | Stop Loss: 45773.09
+----------------------------------------------------------------------
+#48 | 2026-03-19 15:45:00+00:00 | SHORT off Opening Range Low
+    Entry: 45853.09 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 45753.09 | Stop Loss: 45933.09
+----------------------------------------------------------------------
+#49 | 2026-03-19 17:00:00+00:00 | LONG off Opening Range Low
+    Entry: 45746.06 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 45846.06 | Stop Loss: 45666.06
+----------------------------------------------------------------------
+#50 | 2026-03-19 17:00:00+00:00 | SHORT off Opening Range Low
+    Entry: 45746.06 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 45646.06 | Stop Loss: 45826.06
+----------------------------------------------------------------------
+#51 | 2026-03-19 17:15:00+00:00 | LONG off Opening Range Low
+    Entry: 45862.13 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 45962.13 | Stop Loss: 45782.13
+----------------------------------------------------------------------
+#52 | 2026-03-19 17:15:00+00:00 | SHORT off Opening Range Low
+    Entry: 45862.13 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 45762.13 | Stop Loss: 45942.13
+----------------------------------------------------------------------
+#53 | 2026-03-19 18:30:00+00:00 | LONG off Opening Range Low
+    Entry: 45784.04 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 45884.04 | Stop Loss: 45704.04
+----------------------------------------------------------------------
+#54 | 2026-03-19 18:30:00+00:00 | SHORT off Opening Range Low
+    Entry: 45784.04 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 45684.04 | Stop Loss: 45864.04
+----------------------------------------------------------------------
+#55 | 2026-03-19 18:45:00+00:00 | LONG off Opening Range Low
+    Entry: 45943.54 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 46043.54 | Stop Loss: 45863.54
+----------------------------------------------------------------------
+#56 | 2026-03-19 18:45:00+00:00 | SHORT off Opening Range Low
+    Entry: 45943.54 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 45843.54 | Stop Loss: 46023.54
+----------------------------------------------------------------------
+#57 | 2026-03-19 19:00:00+00:00 | LONG off Opening Range High
+    Entry: 46201.82 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 46301.82 | Stop Loss: 46121.82
+----------------------------------------------------------------------
+#58 | 2026-03-19 19:00:00+00:00 | SHORT off Opening Range High
+    Entry: 46201.82 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 46101.82 | Stop Loss: 46281.82
+----------------------------------------------------------------------
+#59 | 2026-03-19 19:15:00+00:00 | LONG off Opening Range High
+    Entry: 46064.57 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 46164.57 | Stop Loss: 45984.57
+----------------------------------------------------------------------
+#60 | 2026-03-19 19:15:00+00:00 | SHORT off Opening Range High
+    Entry: 46064.57 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 45964.57 | Stop Loss: 46144.57
+----------------------------------------------------------------------
+#61 | 2026-03-20 14:00:00+00:00 | LONG off Opening Range Low
+    Entry: 45738.5 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 45838.5 | Stop Loss: 45658.5
+----------------------------------------------------------------------
+#62 | 2026-03-20 14:00:00+00:00 | SHORT off Opening Range Low
+    Entry: 45738.5 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 45638.5 | Stop Loss: 45818.5
+----------------------------------------------------------------------
+#63 | 2026-03-20 14:15:00+00:00 | LONG off S1 Pivot
+    Entry: 45722.76 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 45822.76 | Stop Loss: 45642.76
+----------------------------------------------------------------------
+#64 | 2026-03-20 14:15:00+00:00 | SHORT off S1 Pivot
+    Entry: 45722.76 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 45622.76 | Stop Loss: 45802.76
+----------------------------------------------------------------------
+#65 | 2026-03-20 14:30:00+00:00 | LONG off Opening Range Low
+    Entry: 45785.06 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 45885.06 | Stop Loss: 45705.06
+----------------------------------------------------------------------
+#66 | 2026-03-20 14:30:00+00:00 | SHORT off Opening Range Low
+    Entry: 45785.06 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 45685.06 | Stop Loss: 45865.06
+----------------------------------------------------------------------
+#67 | 2026-03-20 14:45:00+00:00 | LONG off S1 Pivot
+    Entry: 45720.84 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 45820.84 | Stop Loss: 45640.84
+----------------------------------------------------------------------
+#68 | 2026-03-20 14:45:00+00:00 | SHORT off S1 Pivot
+    Entry: 45720.84 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 45620.84 | Stop Loss: 45800.84
+----------------------------------------------------------------------
+#69 | 2026-03-20 15:00:00+00:00 | LONG off S1 Pivot
+    Entry: 45831.56 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 45931.56 | Stop Loss: 45751.56
+----------------------------------------------------------------------
+#70 | 2026-03-20 15:00:00+00:00 | SHORT off S1 Pivot
+    Entry: 45831.56 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 45731.56 | Stop Loss: 45911.56
+----------------------------------------------------------------------
+#71 | 2026-03-20 15:15:00+00:00 | LONG off Opening Range Low
+    Entry: 45726.09 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 45826.09 | Stop Loss: 45646.09
+----------------------------------------------------------------------
+#72 | 2026-03-20 15:15:00+00:00 | SHORT off Opening Range Low
+    Entry: 45726.09 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 45626.09 | Stop Loss: 45806.09
+----------------------------------------------------------------------
+#73 | 2026-03-20 15:30:00+00:00 | LONG off S1 Pivot
+    Entry: 45761.2 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 45861.2 | Stop Loss: 45681.2
+----------------------------------------------------------------------
+#74 | 2026-03-20 15:30:00+00:00 | SHORT off S1 Pivot
+    Entry: 45761.2 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 45661.2 | Stop Loss: 45841.2
+----------------------------------------------------------------------
+#75 | 2026-03-20 15:45:00+00:00 | LONG off S1 Pivot
+    Entry: 45795.53 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 45895.53 | Stop Loss: 45715.53
+----------------------------------------------------------------------
+#76 | 2026-03-20 15:45:00+00:00 | SHORT off S1 Pivot
+    Entry: 45795.53 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 45695.53 | Stop Loss: 45875.53
+----------------------------------------------------------------------
+#77 | 2026-03-20 16:15:00+00:00 | LONG off Opening Range Low
+    Entry: 45825.56 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 45925.56 | Stop Loss: 45745.56
+----------------------------------------------------------------------
+#78 | 2026-03-20 16:15:00+00:00 | SHORT off Opening Range Low
+    Entry: 45825.56 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 45725.56 | Stop Loss: 45905.56
+----------------------------------------------------------------------
+#79 | 2026-03-20 16:30:00+00:00 | LONG off S1 Pivot
+    Entry: 45804.57 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 45904.57 | Stop Loss: 45724.57
+----------------------------------------------------------------------
+#80 | 2026-03-20 16:30:00+00:00 | SHORT off S1 Pivot
+    Entry: 45804.57 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 45704.57 | Stop Loss: 45884.57
+----------------------------------------------------------------------
+#81 | 2026-03-20 16:45:00+00:00 | LONG off Opening Range Low
+    Entry: 45838.38 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 45938.38 | Stop Loss: 45758.38
+----------------------------------------------------------------------
+#82 | 2026-03-20 16:45:00+00:00 | SHORT off Opening Range Low
+    Entry: 45838.38 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 45738.38 | Stop Loss: 45918.38
+----------------------------------------------------------------------
+#83 | 2026-03-20 17:00:00+00:00 | LONG off Opening Range Low
+    Entry: 45822.63 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 45922.63 | Stop Loss: 45742.63
+----------------------------------------------------------------------
+#84 | 2026-03-20 17:00:00+00:00 | SHORT off Opening Range Low
+    Entry: 45822.63 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 45722.63 | Stop Loss: 45902.63
+----------------------------------------------------------------------
+#85 | 2026-03-20 17:15:00+00:00 | LONG off Opening Range Low
+    Entry: 45824.09 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 45924.09 | Stop Loss: 45744.09
+----------------------------------------------------------------------
+#86 | 2026-03-20 17:15:00+00:00 | SHORT off Opening Range Low
+    Entry: 45824.09 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 45724.09 | Stop Loss: 45904.09
+----------------------------------------------------------------------
+#87 | 2026-03-20 17:30:00+00:00 | LONG off S1 Pivot
+    Entry: 45772.73 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 45872.73 | Stop Loss: 45692.73
+----------------------------------------------------------------------
+#88 | 2026-03-20 17:30:00+00:00 | SHORT off S1 Pivot
+    Entry: 45772.73 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 45672.73 | Stop Loss: 45852.73
+----------------------------------------------------------------------
+#89 | 2026-03-20 17:45:00+00:00 | LONG off S1 Pivot
+    Entry: 45785.98 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 45885.98 | Stop Loss: 45705.98
+----------------------------------------------------------------------
+#90 | 2026-03-20 17:45:00+00:00 | SHORT off S1 Pivot
+    Entry: 45785.98 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 45685.98 | Stop Loss: 45865.98
+----------------------------------------------------------------------
+#91 | 2026-03-20 18:00:00+00:00 | LONG off S1 Pivot
+    Entry: 45714.75 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 45814.75 | Stop Loss: 45634.75
+----------------------------------------------------------------------
+#92 | 2026-03-20 18:00:00+00:00 | SHORT off S1 Pivot
+    Entry: 45714.75 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 45614.75 | Stop Loss: 45794.75
+----------------------------------------------------------------------
+#93 | 2026-03-23 14:00:00+00:00 | LONG off Opening Range High
+    Entry: 46477.42 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 46577.42 | Stop Loss: 46397.42
+----------------------------------------------------------------------
+#94 | 2026-03-23 14:00:00+00:00 | SHORT off Opening Range High
+    Entry: 46477.42 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 46377.42 | Stop Loss: 46557.42
+----------------------------------------------------------------------
+#95 | 2026-03-23 14:15:00+00:00 | LONG off Opening Range High
+    Entry: 46514.34 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 46614.34 | Stop Loss: 46434.34
+----------------------------------------------------------------------
+#96 | 2026-03-23 14:15:00+00:00 | SHORT off Opening Range High
+    Entry: 46514.34 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 46414.34 | Stop Loss: 46594.34
+----------------------------------------------------------------------
+#97 | 2026-03-23 14:30:00+00:00 | LONG off Opening Range High
+    Entry: 46485.95 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 46585.95 | Stop Loss: 46405.95
+----------------------------------------------------------------------
+#98 | 2026-03-23 14:30:00+00:00 | SHORT off Opening Range High
+    Entry: 46485.95 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 46385.95 | Stop Loss: 46565.95
+----------------------------------------------------------------------
+#99 | 2026-03-23 14:45:00+00:00 | LONG off Opening Range High
+    Entry: 46581.67 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 46681.67 | Stop Loss: 46501.67
+----------------------------------------------------------------------
+#100 | 2026-03-23 14:45:00+00:00 | SHORT off Opening Range High
+    Entry: 46581.67 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 46481.67 | Stop Loss: 46661.67
+----------------------------------------------------------------------
+#101 | 2026-03-23 15:30:00+00:00 | LONG off Opening Range High
+    Entry: 46492.36 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 46592.36 | Stop Loss: 46412.36
+----------------------------------------------------------------------
+#102 | 2026-03-23 15:30:00+00:00 | SHORT off Opening Range High
+    Entry: 46492.36 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 46392.36 | Stop Loss: 46572.36
+----------------------------------------------------------------------
+#103 | 2026-03-24 14:15:00+00:00 | LONG off Opening Range High
+    Entry: 46066.76 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 46166.76 | Stop Loss: 45986.76
+----------------------------------------------------------------------
+#104 | 2026-03-24 14:15:00+00:00 | SHORT off Opening Range High
+    Entry: 46066.76 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 45966.76 | Stop Loss: 46146.76
+----------------------------------------------------------------------
+#105 | 2026-03-24 14:30:00+00:00 | LONG off Opening Range High
+    Entry: 46172.39 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 46272.39 | Stop Loss: 46092.39
+----------------------------------------------------------------------
+#106 | 2026-03-24 14:30:00+00:00 | SHORT off Opening Range High
+    Entry: 46172.39 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 46072.39 | Stop Loss: 46252.39
+----------------------------------------------------------------------
+#107 | 2026-03-24 14:45:00+00:00 | LONG off Opening Range High
+    Entry: 46199.91 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 46299.91 | Stop Loss: 46119.91
+----------------------------------------------------------------------
+#108 | 2026-03-24 14:45:00+00:00 | SHORT off Opening Range High
+    Entry: 46199.91 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 46099.91 | Stop Loss: 46279.91
+----------------------------------------------------------------------
+#109 | 2026-03-24 15:00:00+00:00 | LONG off Daily Pivot
+    Entry: 46275.11 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 46375.11 | Stop Loss: 46195.11
+----------------------------------------------------------------------
+#110 | 2026-03-24 15:00:00+00:00 | SHORT off Daily Pivot
+    Entry: 46275.11 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 46175.11 | Stop Loss: 46355.11
+----------------------------------------------------------------------
+#111 | 2026-03-24 16:00:00+00:00 | LONG off Daily Pivot
+    Entry: 46287.68 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 46387.68 | Stop Loss: 46207.68
+----------------------------------------------------------------------
+#112 | 2026-03-24 16:00:00+00:00 | SHORT off Daily Pivot
+    Entry: 46287.68 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 46187.68 | Stop Loss: 46367.68
+----------------------------------------------------------------------
+#113 | 2026-03-24 16:30:00+00:00 | LONG off Daily Pivot
+    Entry: 46308.47 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 46408.47 | Stop Loss: 46228.47
+----------------------------------------------------------------------
+#114 | 2026-03-24 16:30:00+00:00 | SHORT off Daily Pivot
+    Entry: 46308.47 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 46208.47 | Stop Loss: 46388.47
+----------------------------------------------------------------------
+#115 | 2026-03-24 17:00:00+00:00 | LONG off Daily Pivot
+    Entry: 46141.46 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 46241.46 | Stop Loss: 46061.46
+----------------------------------------------------------------------
+#116 | 2026-03-24 17:00:00+00:00 | SHORT off Daily Pivot
+    Entry: 46141.46 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 46041.46 | Stop Loss: 46221.46
+----------------------------------------------------------------------
+#117 | 2026-03-24 17:30:00+00:00 | LONG off Opening Range High
+    Entry: 46106.15 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 46206.15 | Stop Loss: 46026.15
+----------------------------------------------------------------------
+#118 | 2026-03-24 17:30:00+00:00 | SHORT off Opening Range High
+    Entry: 46106.15 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 46006.15 | Stop Loss: 46186.15
+----------------------------------------------------------------------
+#119 | 2026-03-24 17:45:00+00:00 | LONG off Opening Range High
+    Entry: 46216.31 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 46316.31 | Stop Loss: 46136.31
+----------------------------------------------------------------------
+#120 | 2026-03-24 17:45:00+00:00 | SHORT off Opening Range High
+    Entry: 46216.31 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 46116.31 | Stop Loss: 46296.31
+----------------------------------------------------------------------
+#121 | 2026-03-24 18:00:00+00:00 | LONG off Daily Pivot
+    Entry: 46199.94 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 46299.94 | Stop Loss: 46119.94
+----------------------------------------------------------------------
+#122 | 2026-03-24 18:00:00+00:00 | SHORT off Daily Pivot
+    Entry: 46199.94 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 46099.94 | Stop Loss: 46279.94
+----------------------------------------------------------------------
+#123 | 2026-03-24 18:15:00+00:00 | LONG off Daily Pivot
+    Entry: 46243.65 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 46343.65 | Stop Loss: 46163.65
+----------------------------------------------------------------------
+#124 | 2026-03-24 18:15:00+00:00 | SHORT off Daily Pivot
+    Entry: 46243.65 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 46143.65 | Stop Loss: 46323.65
+----------------------------------------------------------------------
+#125 | 2026-03-24 18:30:00+00:00 | LONG off Daily Pivot
+    Entry: 46293.53 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 46393.53 | Stop Loss: 46213.53
+----------------------------------------------------------------------
+#126 | 2026-03-24 18:30:00+00:00 | SHORT off Daily Pivot
+    Entry: 46293.53 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 46193.53 | Stop Loss: 46373.53
+----------------------------------------------------------------------
+#127 | 2026-03-24 18:45:00+00:00 | LONG off Daily Pivot
+    Entry: 46261.42 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 46361.42 | Stop Loss: 46181.42
+----------------------------------------------------------------------
+#128 | 2026-03-24 18:45:00+00:00 | SHORT off Daily Pivot
+    Entry: 46261.42 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 46161.42 | Stop Loss: 46341.42
+----------------------------------------------------------------------
+#129 | 2026-03-24 19:15:00+00:00 | LONG off Daily Pivot
+    Entry: 46239.42 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 46339.42 | Stop Loss: 46159.42
+----------------------------------------------------------------------
+#130 | 2026-03-24 19:15:00+00:00 | SHORT off Daily Pivot
+    Entry: 46239.42 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 46139.42 | Stop Loss: 46319.42
+----------------------------------------------------------------------
+#131 | 2026-03-24 19:30:00+00:00 | LONG off Daily Pivot
+    Entry: 46185.28 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 46285.28 | Stop Loss: 46105.28
+----------------------------------------------------------------------
+#132 | 2026-03-24 19:30:00+00:00 | SHORT off Daily Pivot
+    Entry: 46185.28 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 46085.28 | Stop Loss: 46265.28
+----------------------------------------------------------------------
+#133 | 2026-03-25 14:00:00+00:00 | LONG off R1 Pivot
+    Entry: 46476.73 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 46576.73 | Stop Loss: 46396.73
+----------------------------------------------------------------------
+#134 | 2026-03-25 14:00:00+00:00 | SHORT off R1 Pivot
+    Entry: 46476.73 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 46376.73 | Stop Loss: 46556.73
+----------------------------------------------------------------------
+#135 | 2026-03-25 14:15:00+00:00 | LONG off R1 Pivot
+    Entry: 46446.58 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 46546.58 | Stop Loss: 46366.58
+----------------------------------------------------------------------
+#136 | 2026-03-25 14:15:00+00:00 | SHORT off R1 Pivot
+    Entry: 46446.58 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 46346.58 | Stop Loss: 46526.58
+----------------------------------------------------------------------
+#137 | 2026-03-25 14:30:00+00:00 | LONG off R1 Pivot
+    Entry: 46482.09 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 46582.09 | Stop Loss: 46402.09
+----------------------------------------------------------------------
+#138 | 2026-03-25 14:30:00+00:00 | SHORT off R1 Pivot
+    Entry: 46482.09 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 46382.09 | Stop Loss: 46562.09
+----------------------------------------------------------------------
+#139 | 2026-03-25 15:00:00+00:00 | LONG off R1 Pivot
+    Entry: 46357.37 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 46457.37 | Stop Loss: 46277.37
+----------------------------------------------------------------------
+#140 | 2026-03-25 15:00:00+00:00 | SHORT off R1 Pivot
+    Entry: 46357.37 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 46257.37 | Stop Loss: 46437.37
+----------------------------------------------------------------------
+#141 | 2026-03-25 15:15:00+00:00 | LONG off Opening Range Low
+    Entry: 46480.15 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 46580.15 | Stop Loss: 46400.15
+----------------------------------------------------------------------
+#142 | 2026-03-25 15:15:00+00:00 | SHORT off Opening Range Low
+    Entry: 46480.15 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 46380.15 | Stop Loss: 46560.15
+----------------------------------------------------------------------
+#143 | 2026-03-25 15:30:00+00:00 | LONG off R1 Pivot
+    Entry: 46405.42 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 46505.42 | Stop Loss: 46325.42
+----------------------------------------------------------------------
+#144 | 2026-03-25 15:30:00+00:00 | SHORT off R1 Pivot
+    Entry: 46405.42 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 46305.42 | Stop Loss: 46485.42
+----------------------------------------------------------------------
+#145 | 2026-03-25 15:45:00+00:00 | LONG off R1 Pivot
+    Entry: 46431.76 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 46531.76 | Stop Loss: 46351.76
+----------------------------------------------------------------------
+#146 | 2026-03-25 15:45:00+00:00 | SHORT off R1 Pivot
+    Entry: 46431.76 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 46331.76 | Stop Loss: 46511.76
+----------------------------------------------------------------------
+#147 | 2026-03-25 16:00:00+00:00 | LONG off R1 Pivot
+    Entry: 46398.8 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 46498.8 | Stop Loss: 46318.8
+----------------------------------------------------------------------
+#148 | 2026-03-25 16:00:00+00:00 | SHORT off R1 Pivot
+    Entry: 46398.8 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 46298.8 | Stop Loss: 46478.8
+----------------------------------------------------------------------
+#149 | 2026-03-25 16:15:00+00:00 | LONG off R1 Pivot
+    Entry: 46430.63 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 46530.63 | Stop Loss: 46350.63
+----------------------------------------------------------------------
+#150 | 2026-03-25 16:15:00+00:00 | SHORT off R1 Pivot
+    Entry: 46430.63 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 46330.63 | Stop Loss: 46510.63
+----------------------------------------------------------------------
+#151 | 2026-03-25 16:30:00+00:00 | LONG off R1 Pivot
+    Entry: 46493.48 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 46593.48 | Stop Loss: 46413.48
+----------------------------------------------------------------------
+#152 | 2026-03-25 16:30:00+00:00 | SHORT off R1 Pivot
+    Entry: 46493.48 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 46393.48 | Stop Loss: 46573.48
+----------------------------------------------------------------------
+#153 | 2026-03-25 17:15:00+00:00 | LONG off R1 Pivot
+    Entry: 46497.89 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 46597.89 | Stop Loss: 46417.89
+----------------------------------------------------------------------
+#154 | 2026-03-25 17:15:00+00:00 | SHORT off R1 Pivot
+    Entry: 46497.89 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 46397.89 | Stop Loss: 46577.89
+----------------------------------------------------------------------
+#155 | 2026-03-25 18:45:00+00:00 | LONG off R1 Pivot
+    Entry: 46431.24 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 46531.24 | Stop Loss: 46351.24
+----------------------------------------------------------------------
+#156 | 2026-03-25 18:45:00+00:00 | SHORT off R1 Pivot
+    Entry: 46431.24 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 46331.24 | Stop Loss: 46511.24
+----------------------------------------------------------------------
+#157 | 2026-03-25 19:00:00+00:00 | LONG off R1 Pivot
+    Entry: 46430.33 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 46530.33 | Stop Loss: 46350.33
+----------------------------------------------------------------------
+#158 | 2026-03-25 19:00:00+00:00 | SHORT off R1 Pivot
+    Entry: 46430.33 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 46330.33 | Stop Loss: 46510.33
+----------------------------------------------------------------------
+#159 | 2026-03-25 19:30:00+00:00 | LONG off R1 Pivot
+    Entry: 46399.08 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 46499.08 | Stop Loss: 46319.08
+----------------------------------------------------------------------
+#160 | 2026-03-25 19:30:00+00:00 | SHORT off R1 Pivot
+    Entry: 46399.08 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 46299.08 | Stop Loss: 46479.08
+----------------------------------------------------------------------
+#161 | 2026-03-25 19:45:00+00:00 | LONG off R1 Pivot
+    Entry: 46430.48 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 46530.48 | Stop Loss: 46350.48
+----------------------------------------------------------------------
+#162 | 2026-03-25 19:45:00+00:00 | SHORT off R1 Pivot
+    Entry: 46430.48 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 46330.48 | Stop Loss: 46510.48
+----------------------------------------------------------------------
+#163 | 2026-03-26 14:00:00+00:00 | LONG off Daily Pivot
+    Entry: 46495.21 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 46595.21 | Stop Loss: 46415.21
+----------------------------------------------------------------------
+#164 | 2026-03-26 14:00:00+00:00 | SHORT off Daily Pivot
+    Entry: 46495.21 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 46395.21 | Stop Loss: 46575.21
+----------------------------------------------------------------------
+#165 | 2026-03-26 14:15:00+00:00 | LONG off Opening Range High
+    Entry: 46456.4 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 46556.4 | Stop Loss: 46376.4
+----------------------------------------------------------------------
+#166 | 2026-03-26 14:15:00+00:00 | SHORT off Opening Range High
+    Entry: 46456.4 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 46356.4 | Stop Loss: 46536.4
+----------------------------------------------------------------------
+#167 | 2026-03-26 14:30:00+00:00 | LONG off Opening Range High
+    Entry: 46408.79 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 46508.79 | Stop Loss: 46328.79
+----------------------------------------------------------------------
+#168 | 2026-03-26 14:30:00+00:00 | SHORT off Opening Range High
+    Entry: 46408.79 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 46308.79 | Stop Loss: 46488.79
+----------------------------------------------------------------------
+#169 | 2026-03-26 16:15:00+00:00 | LONG off Opening Range Low
+    Entry: 46066.81 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 46166.81 | Stop Loss: 45986.81
+----------------------------------------------------------------------
+#170 | 2026-03-26 16:15:00+00:00 | SHORT off Opening Range Low
+    Entry: 46066.81 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 45966.81 | Stop Loss: 46146.81
+----------------------------------------------------------------------
+#171 | 2026-03-27 14:00:00+00:00 | LONG off Opening Range Low
+    Entry: 45531.14 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 45631.14 | Stop Loss: 45451.14
+----------------------------------------------------------------------
+#172 | 2026-03-27 14:00:00+00:00 | SHORT off Opening Range Low
+    Entry: 45531.14 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 45431.14 | Stop Loss: 45611.14
+----------------------------------------------------------------------
+#173 | 2026-03-27 16:00:00+00:00 | LONG off Opening Range Low
+    Entry: 45485.54 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 45585.54 | Stop Loss: 45405.54
+----------------------------------------------------------------------
+#174 | 2026-03-27 16:00:00+00:00 | SHORT off Opening Range Low
+    Entry: 45485.54 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 45385.54 | Stop Loss: 45565.54
+----------------------------------------------------------------------
+#175 | 2026-03-27 16:15:00+00:00 | LONG off Opening Range Low
+    Entry: 45466.53 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 45566.53 | Stop Loss: 45386.53
+----------------------------------------------------------------------
+#176 | 2026-03-27 16:15:00+00:00 | SHORT off Opening Range Low
+    Entry: 45466.53 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 45366.53 | Stop Loss: 45546.53
+----------------------------------------------------------------------
+#177 | 2026-03-27 16:30:00+00:00 | LONG off Opening Range Low
+    Entry: 45447.26 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 45547.26 | Stop Loss: 45367.26
+----------------------------------------------------------------------
+#178 | 2026-03-27 16:30:00+00:00 | SHORT off Opening Range Low
+    Entry: 45447.26 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 45347.26 | Stop Loss: 45527.26
+----------------------------------------------------------------------
+#179 | 2026-03-27 16:45:00+00:00 | LONG off Opening Range Low
+    Entry: 45480.74 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 45580.74 | Stop Loss: 45400.74
+----------------------------------------------------------------------
+#180 | 2026-03-27 16:45:00+00:00 | SHORT off Opening Range Low
+    Entry: 45480.74 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 45380.74 | Stop Loss: 45560.74
+----------------------------------------------------------------------
+#181 | 2026-03-27 17:15:00+00:00 | LONG off Opening Range Low
+    Entry: 45364.67 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 45464.67 | Stop Loss: 45284.67
+----------------------------------------------------------------------
+#182 | 2026-03-27 17:15:00+00:00 | SHORT off Opening Range Low
+    Entry: 45364.67 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 45264.67 | Stop Loss: 45444.67
+----------------------------------------------------------------------
+#183 | 2026-03-30 14:00:00+00:00 | LONG off Daily Pivot
+    Entry: 45383.68 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 45483.68 | Stop Loss: 45303.68
+----------------------------------------------------------------------
+#184 | 2026-03-30 14:00:00+00:00 | SHORT off Daily Pivot
+    Entry: 45383.68 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 45283.68 | Stop Loss: 45463.68
+----------------------------------------------------------------------
+#185 | 2026-03-30 14:15:00+00:00 | LONG off Daily Pivot
+    Entry: 45414.57 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 45514.57 | Stop Loss: 45334.57
+----------------------------------------------------------------------
+#186 | 2026-03-30 14:15:00+00:00 | SHORT off Daily Pivot
+    Entry: 45414.57 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 45314.57 | Stop Loss: 45494.57
+----------------------------------------------------------------------
+#187 | 2026-03-30 14:30:00+00:00 | LONG off Daily Pivot
+    Entry: 45340.19 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 45440.19 | Stop Loss: 45260.19
+----------------------------------------------------------------------
+#188 | 2026-03-30 14:30:00+00:00 | SHORT off Daily Pivot
+    Entry: 45340.19 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 45240.19 | Stop Loss: 45420.19
+----------------------------------------------------------------------
+#189 | 2026-03-30 14:45:00+00:00 | LONG off Daily Pivot
+    Entry: 45523.67 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 45623.67 | Stop Loss: 45443.67
+----------------------------------------------------------------------
+#190 | 2026-03-30 14:45:00+00:00 | SHORT off Daily Pivot
+    Entry: 45523.67 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 45423.67 | Stop Loss: 45603.67
+----------------------------------------------------------------------
+#191 | 2026-03-30 17:00:00+00:00 | LONG off Daily Pivot
+    Entry: 45364.6 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 45464.6 | Stop Loss: 45284.6
+----------------------------------------------------------------------
+#192 | 2026-03-30 17:00:00+00:00 | SHORT off Daily Pivot
+    Entry: 45364.6 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 45264.6 | Stop Loss: 45444.6
+----------------------------------------------------------------------
+#193 | 2026-03-30 17:30:00+00:00 | LONG off Opening Range Low
+    Entry: 45355.37 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 45455.37 | Stop Loss: 45275.37
+----------------------------------------------------------------------
+#194 | 2026-03-30 17:30:00+00:00 | SHORT off Opening Range Low
+    Entry: 45355.37 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 45255.37 | Stop Loss: 45435.37
+----------------------------------------------------------------------
+#195 | 2026-03-30 18:15:00+00:00 | LONG off Opening Range Low
+    Entry: 45268.95 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 45368.95 | Stop Loss: 45188.95
+----------------------------------------------------------------------
+#196 | 2026-03-30 18:15:00+00:00 | SHORT off Opening Range Low
+    Entry: 45268.95 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 45168.95 | Stop Loss: 45348.95
+----------------------------------------------------------------------
+#197 | 2026-03-30 18:30:00+00:00 | LONG off Opening Range Low
+    Entry: 45282.29 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 45382.29 | Stop Loss: 45202.29
+----------------------------------------------------------------------
+#198 | 2026-03-30 18:30:00+00:00 | SHORT off Opening Range Low
+    Entry: 45282.29 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 45182.29 | Stop Loss: 45362.29
+----------------------------------------------------------------------
+#199 | 2026-03-30 18:45:00+00:00 | LONG off Opening Range Low
+    Entry: 45245.09 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 45345.09 | Stop Loss: 45165.09
+----------------------------------------------------------------------
+#200 | 2026-03-30 18:45:00+00:00 | SHORT off Opening Range Low
+    Entry: 45245.09 | Profit: +100.0 | Drawdown: 80.0
+    Risk/Reward: 1.25 to 1
+    Take Profit: 45145.09 | Stop Loss: 45325.09
+----------------------------------------------------------------------
