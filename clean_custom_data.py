@@ -43,4 +43,5 @@ def clean_and_filter_massive_csv(raw_filepath: str, days_to_keep: int = 30):
 
 if __name__ == "__main__":
     RAW_FILE = "US30M1.csv"
-    clean_and_filter_massive_csv(RAW_FILE, days_to_keep=30)
+    # INCREASED: Pulling 200 days to guarantee 100+ trades!
+    clean_and_filter_massive_csv(RAW_FILE, days_to_keep=200)

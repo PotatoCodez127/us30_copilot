@@ -8,3 +8,4 @@ python-dotenv
 yfinance
 matplotlib
 MetaTrader5
+streamlit

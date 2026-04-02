@@ -1,19 +1,6 @@
-timestamp,trigger,outcome,pnl,holding_time
-2026-02-20 14:01:00+00:00,15m Touch: Opening Range Low,Hit Stop Loss 🛑 at 49344.00,-16.0,3.0
-2026-02-24 14:01:00+00:00,15m Touch: Opening Range High,Hit Stop Loss 🛑 at 48919.00,-15.0,15.0
-2026-02-25 14:02:00+00:00,15m Touch: Opening Range High,Hit Stop Loss 🛑 at 49311.00,-12.0,3.0
-2026-02-26 14:01:00+00:00,15m Touch: Opening Range High,Hit Stop Loss 🛑 at 49494.00,-14.0,14.0
-2026-02-27 14:02:00+00:00,15m Touch: Opening Range Low,Hit Stop Loss 🛑 at 49148.00,-24.0,5.0
-2026-03-02 14:06:00+00:00,15m Touch: Opening Range Low,Hit Stop Loss 🛑 at 48461.00,-62.0,73.0
-2026-03-03 14:09:00+00:00,15m Touch: Opening Range High,Hit Take Profit 🎯 at 48233.00,110.0,36.0
-2026-03-04 14:16:00+00:00,15m Touch: Opening Range Low,Hit Take Profit 🎯 at 48455.00,56.0,4.0
-2026-03-06 14:07:00+00:00,15m Touch: Opening Range Low,Hit Stop Loss 🛑 at 47735.00,-26.0,8.0
-2026-03-10 14:04:00+00:00,15m Touch: Opening Range High,Hit Stop Loss 🛑 at 47834.00,-79.0,3.0
-2026-03-11 14:01:00+00:00,15m Touch: Opening Range High,Hit Take Profit 🎯 at 47838.00,22.0,2.0
-2026-03-12 14:02:00+00:00,15m Touch: Opening Range Low,Hit Stop Loss 🛑 at 47139.00,-28.0,24.0
-2026-03-13 14:01:00+00:00,15m Touch: Opening Range High,Hit Stop Loss 🛑 at 46832.00,-8.0,4.0
-2026-03-19 14:05:00+00:00,15m Touch: Opening Range Low,Hit Take Profit 🎯 at 46018.00,112.0,58.0
-2026-03-20 14:03:00+00:00,15m Touch: Opening Range High,Hit Stop Loss 🛑 at 45865.00,-30.0,44.0
-2026-03-24 14:08:00+00:00,15m Touch: Opening Range High,Hit Stop Loss 🛑 at 46160.00,-44.0,7.0
-2026-03-26 14:26:00+00:00,15m Touch: Opening Range Low,Hit Stop Loss 🛑 at 46116.00,-44.0,47.0
-2026-04-01 14:06:00+00:00,15m Touch: Opening Range High,Hit Take Profit 🎯 at 46688.00,22.0,8.0
+timestamp,trigger,outcome,pnl_points,dollar_pnl,holding_time,sl_distance,tp_distance
+2026-03-03 14:09:00+00:00,15m Touch: Opening Range High,Hit Hard Stop Loss 🛑 at 48058.50,-66.0,-1100.78,84.0,64.5,124.5
+2026-03-10 14:04:00+00:00,15m Touch: Opening Range High,Hit Hard Stop Loss 🛑 at 47802.50,-112.0,-1058.82,8.0,110.5,216.5
+2026-03-13 14:01:00+00:00,15m Touch: Opening Range High,Hit Trailing Stop 🏃‍♂️💨 at 47050.50,209.0,1863.01,156.0,109.5,214.5
+2026-03-20 14:03:00+00:00,15m Touch: Opening Range High,Hit Trailing Stop 🏃‍♂️💨 at 46010.50,114.0,1524.48,162.0,71.5,138.5
+2026-03-24 14:08:00+00:00,15m Touch: Opening Range High,Hit Hard Stop Loss 🛑 at 46153.50,-52.0,-1128.71,7.0,50.5,96.5
