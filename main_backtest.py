@@ -54,20 +54,17 @@ def run_master_backtest(csv_filepath: str):
                 # 2. LONG ONLY FILTER
                 if dir_match and dir_match.group(1).upper() == 'LONG' and sl_match and tp_match: 
                     direction = dir_match.group(1).upper()
-                    sl = float(sl_match.group(1).replace(',', ''))
-                    tp = float(tp_match.group(1).replace(',', ''))
                     
                     # Entry Slippage
                     entry_price = base_entry + SLIPPAGE_POINTS
                     
-                    if tp <= entry_price or sl >= entry_price: continue
+                    # --- NEW STRATEGY: STANDARDIZED STOP LOSS ---
+                    # Override the AI's dynamic stop to a fixed 95 points
+                    sl = entry_price - 95.0 
+                    risk_in_points = 95.0
                     
-                    risk_in_points = abs(entry_price - sl)
-                    
-                    # 3. THE "CHOP ZONE" FILTER (Minimum 50pt Stop)
-                    if risk_in_points < 50: 
-                        print(f"{Color.YELLOW}▶ SKIPPED: AI set stop too tight ({risk_in_points:.1f} pts). Evading chop.{Color.RESET}")
-                        continue 
+                    # Set a fixed initial target for trailing to begin (1:2 R:R)
+                    tp = entry_price + 190.0
                     
                     dollar_risk = ACCOUNT_SIZE * RISK_PERCENT
                     lot_size = dollar_risk / risk_in_points
@@ -79,14 +76,25 @@ def run_master_backtest(csv_filepath: str):
                     future_data = current_day_data.loc[setup['timestamp'] : f"{current_date_str} 20:00:00+00:00"]
                     outcome, exit_price, exit_time = "Closed at End of Day", future_data['close'].iloc[-1] if not future_data.empty else entry_price, future_data.index[-1] if not future_data.empty else trigger_time
                     
-                    # 4. HOME RUN TRAILING PROTOCOL
+                    # 4. HOME RUN TRAILING PROTOCOL & TIME EJECTION
                     tp_hit = False
                     highest_seen = entry_price
                     
                     for idx, candle in future_data.iloc[1:].iterrows():
-                        high, low = candle['high'], candle['low']
+                        high, low, current_close = candle['high'], candle['low'], candle['close']
                         highest_seen = max(highest_seen, high)
                         
+                        # --- NEW STRATEGY: TIME-BASED EJECTION ---
+                        mins_in_trade = (idx - trigger_time).total_seconds() / 60.0
+                        if mins_in_trade >= 45 and not tp_hit:
+                            # If 30 mins have passed and we are not in clear profit (> 10 pts), cut it
+                            if current_close < (entry_price + 10.0):
+                                outcome = "Time Ejection ⏳ (Stalled Trade)"
+                                exit_price = current_close - SLIPPAGE_POINTS
+                                exit_time = idx
+                                break
+
+                        # Trailing Stop Logic
                         if not tp_hit and high >= tp:
                             tp_hit = True
                             sl = entry_price + 5.0 # Move to Break-Even + 5
@@ -94,6 +102,7 @@ def run_master_backtest(csv_filepath: str):
                         if tp_hit:
                             sl = max(sl, highest_seen - 50.0) # Trail by 50 pts
                         
+                        # Stop Loss Execution
                         if low <= sl:
                             outcome = "Hit Trailing Stop 🏃‍♂️💨" if tp_hit else "Hit Hard Stop Loss 🛑"
                             exit_price = sl - SLIPPAGE_POINTS # Exit Slippage
