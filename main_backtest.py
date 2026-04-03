@@ -8,12 +8,9 @@ from src.ai_agent.ollama_client import analyze_setup_with_ollama
 class Color:
     GREEN, CYAN, YELLOW, RED, MAGENTA, WHITE, RESET = '\033[92m', '\033[96m', '\033[93m', '\033[91m', '\033[95m', '\033[97m', '\033[0m'
 
-# --- REALISTIC ACCOUNT & FRICTION PARAMETERS ---
-ACCOUNT_SIZE = 100000.0
-RISK_PERCENT = 0.01  # Risk 1% per trade ($1,000)
-COMMISSION_PER_LOT = 5.00 
+# --- MARKET FRICTION ---
 SLIPPAGE_POINTS = 1.5 
-# -----------------------------------------------
+# -----------------------
 
 # --- INSTITUTIONAL LIQUIDITY LEVELS (TradingView HTF Grid) ---
 def generate_tradingview_levels():
@@ -37,19 +34,8 @@ def generate_tradingview_levels():
 # Initialize the synchronized grid
 Q4_LEVELS = generate_tradingview_levels()
 
-def is_too_close_to_support(entry_price: float, levels: list, minimum_clearance: float = 50.0) -> bool:
-    """
-    Checks if the short entry is too close to a major psychological support level.
-    Returns True if we are shorting into a brick wall.
-    """
-    for level in levels:
-        # If the level is below our entry price, and the distance is less than our minimum clearance
-        if entry_price > level and (entry_price - level) < minimum_clearance:
-            return True
-    return False
-
 def run_master_backtest(csv_filepath: str):
-    print(f"{Color.CYAN}🚀 Initializing Final Production Engine (God Mode)...{Color.RESET}")
+    print(f"{Color.CYAN}🚀 Initializing Final Production Engine (Pure Points Mode)...{Color.RESET}")
     df = load_and_prep_data(csv_filepath)
     unique_dates = pd.Series(df.index.date).unique()
     all_logged_setups = []
@@ -85,18 +71,12 @@ def run_master_backtest(csv_filepath: str):
                 # --- ASYMMETRIC FILTER: THE AMPUTATION ---
                 if 'Opening Range High' in setup['trigger']: continue # Kill topside breakouts
                 
-                # --- NEW Q4 PROXIMITY FILTER ---
-                # Check if our entry price is too close to a Q4 level (e.g., within 50 points)
-                base_entry = setup.get('context', {}).get('close_price', 0)
-                if is_too_close_to_support(base_entry, Q4_LEVELS, minimum_clearance=50.0):
-                    print(f"{Color.YELLOW}⏭️ SKIPPED: Selling into Q4 Support at {base_entry}{Color.RESET}")
-                    continue
-                
                 print(f"{Color.GREEN}🟢 SETUP TRIGGERED: {current_date_str} at {setup['timestamp']}{Color.RESET}")
                 ai_analysis = analyze_setup_with_ollama(setup)
                 
+                base_entry = setup.get('context', {}).get('close_price', 0)
                 setup['trade_outcome'] = "Skipped"
-                setup['pnl_points'], setup['holding_time_mins'], setup['dollar_pnl'] = 0.0, 0, 0.0
+                setup['pnl_points'], setup['holding_time_mins'] = 0.0, 0
                 setup['sl_distance'], setup['tp_distance'] = 0.0, 0.0
                 
                 dir_match = re.search(r'DIRECTION:\s*(LONG|SHORT|NONE)', ai_analysis, re.IGNORECASE)
@@ -109,10 +89,6 @@ def run_master_backtest(csv_filepath: str):
                     
                     # --- STANDARDIZED RISK ---
                     risk_in_points = 95.0
-                    dollar_risk = ACCOUNT_SIZE * RISK_PERCENT
-                    lot_size = dollar_risk / risk_in_points
-                    total_commission = lot_size * COMMISSION_PER_LOT
-
                     setup['sl_distance'] = risk_in_points
                     setup['tp_distance'] = 190.0
 
@@ -123,7 +99,7 @@ def run_master_backtest(csv_filepath: str):
                     pnl_points = 0.0
                     
                     # ==========================================
-                    # LONG EXECUTION LOGIC (Kept for robustness)
+                    # LONG EXECUTION LOGIC 
                     # ==========================================
                     if direction == 'LONG':
                         entry_price = base_entry + SLIPPAGE_POINTS
@@ -195,18 +171,16 @@ def run_master_backtest(csv_filepath: str):
                         pnl_points = entry_price - exit_price # Inverse calculation for shorts
 
                     # --- FINAL MATH & LOGGING ---
-                    dollar_pnl = (pnl_points * lot_size) - total_commission
                     setup['trade_outcome'] = f"[{direction}] {outcome} at {exit_price:.2f}"
                     setup['pnl_points'] = round(pnl_points, 2)
-                    setup['dollar_pnl'] = round(dollar_pnl, 2)
                     setup['holding_time_mins'] = round((exit_time - trigger_time).total_seconds() / 60.0, 1)
                     
-                    color = Color.GREEN if dollar_pnl > 0 else Color.RED
-                    print(f"{color}▶ EXECUTED {direction}: {outcome} | Pts: {setup['pnl_points']} | PNL: ${setup['dollar_pnl']}{Color.RESET}")
+                    color = Color.GREEN if pnl_points > 0 else Color.RED
+                    print(f"{color}▶ EXECUTED {direction}: {outcome} | PnL: {setup['pnl_points']} pts{Color.RESET}")
                     
                     all_logged_setups.append(setup)
                     
-                    # --- TRIGGER THE LOCKOUT ---
+                    # --- 3. TRIGGER THE LOCKOUT ---
                     trade_taken_today = True 
 
     if all_logged_setups:
@@ -216,7 +190,6 @@ def run_master_backtest(csv_filepath: str):
             'trigger': t['trigger'],
             'outcome': t['trade_outcome'],
             'pnl_points': t['pnl_points'],
-            'dollar_pnl': t['dollar_pnl'],
             'holding_time': t['holding_time_mins'],
             'sl_distance': t.get('sl_distance', 0),
             'tp_distance': t.get('tp_distance', 0)
