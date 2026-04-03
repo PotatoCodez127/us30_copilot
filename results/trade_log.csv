@@ -1,34 +1,32 @@
 timestamp,trigger,outcome,pnl_points,holding_time,sl_distance,tp_distance
-2025-12-18 14:33:00+00:00,5m Confirmed Close: Opening Range Low,[SHORT] Time Ejection ⏳ at 48008.50,-31.0,45.0,95.0,190.0
-2025-12-19 14:09:00+00:00,5m Confirmed Close: Opening Range Low,[SHORT] Time Ejection ⏳ at 47949.50,-4.0,45.0,95.0,190.0
-2025-12-29 14:21:00+00:00,5m Confirmed Close: Opening Range Low,[SHORT] Time Ejection ⏳ at 48684.50,8.0,130.0,95.0,190.0
-2026-01-05 14:25:00+00:00,5m Confirmed Close: Opening Range Low,[SHORT] Time Ejection ⏳ at 48378.50,6.0,78.0,95.0,190.0
-2026-01-07 14:33:00+00:00,5m Confirmed Close: Opening Range Low,[SHORT] Time Ejection ⏳ at 49517.50,-40.0,45.0,95.0,190.0
-2026-01-08 14:04:00+00:00,5m Confirmed Close: Opening Range Low,[SHORT] Time Ejection ⏳ at 48810.50,-5.0,45.0,95.0,190.0
-2026-01-09 14:15:00+00:00,5m Confirmed Close: Opening Range Low,[SHORT] Time Ejection ⏳ at 49304.50,-46.0,45.0,95.0,190.0
-2026-01-14 14:01:00+00:00,5m Confirmed Close: Opening Range Low,[SHORT] Hit Hard Stop 🛑 at 49100.00,-96.5,33.0,95.0,190.0
-2026-01-15 14:03:00+00:00,5m Confirmed Close: Opening Range Low,[SHORT] Hit Hard Stop 🛑 at 49268.00,-96.5,24.0,95.0,190.0
-2026-01-16 14:24:00+00:00,5m Confirmed Close: Opening Range Low,[SHORT] Time Ejection ⏳ at 49428.50,-2.0,45.0,95.0,190.0
-2026-01-21 14:45:00+00:00,5m Confirmed Close: Opening Range Low,[SHORT] Time Ejection ⏳ at 48366.50,8.0,56.0,95.0,190.0
-2026-01-22 14:10:00+00:00,5m Confirmed Close: Opening Range Low,[SHORT] Time Ejection ⏳ at 49223.50,-22.0,45.0,95.0,190.0
-2026-01-23 14:33:00+00:00,5m Confirmed Close: Opening Range Low,[SHORT] Hit Trailing Stop 🏃‍♂️💨 at 49080.50,163.0,132.0,95.0,190.0
-2026-01-27 14:02:00+00:00,5m Confirmed Close: Opening Range Low,[SHORT] Hit Trailing Stop 🏃‍♂️💨 at 49079.50,166.0,148.0,95.0,190.0
-2026-02-04 14:25:00+00:00,5m Confirmed Close: Opening Range Low,[SHORT] Time Ejection ⏳ at 49354.50,8.0,47.0,95.0,190.0
-2026-02-10 14:04:00+00:00,5m Confirmed Close: Opening Range Low,[SHORT] Time Ejection ⏳ at 50135.50,5.0,119.0,95.0,190.0
-2026-02-11 14:55:00+00:00,5m Confirmed Close: Opening Range Low,[SHORT] Hit Hard Stop 🛑 at 50304.00,-96.5,35.0,95.0,190.0
-2026-02-12 14:26:00+00:00,5m Confirmed Close: Opening Range Low,[SHORT] Time Ejection ⏳ at 50252.50,7.0,66.0,95.0,190.0
-2026-02-16 14:02:00+00:00,5m Confirmed Close: Opening Range Low,[SHORT] Time Ejection ⏳ at 49686.50,1.0,45.0,95.0,190.0
-2026-02-18 14:22:00+00:00,5m Confirmed Close: Opening Range Low,[SHORT] Time Ejection ⏳ at 49685.50,7.0,68.0,95.0,190.0
-2026-02-19 14:01:00+00:00,5m Confirmed Close: Opening Range Low,[SHORT] Hit Hard Stop 🛑 at 49563.00,-96.5,42.0,95.0,190.0
-2026-02-20 14:01:00+00:00,5m Confirmed Close: Opening Range Low,[SHORT] Time Ejection ⏳ at 49319.50,7.0,50.0,95.0,190.0
-2026-02-23 14:15:00+00:00,5m Confirmed Close: Opening Range Low,[SHORT] Time Ejection ⏳ at 49412.50,8.0,76.0,95.0,190.0
-2026-02-27 14:49:00+00:00,5m Confirmed Close: Opening Range Low,[SHORT] Hit Trailing Stop 🏃‍♂️💨 at 48940.50,168.0,56.0,95.0,190.0
-2026-03-02 14:06:00+00:00,5m Confirmed Close: Opening Range Low,[SHORT] Time Ejection ⏳ at 48399.50,-2.0,45.0,95.0,190.0
-2026-03-04 14:16:00+00:00,5m Confirmed Close: Opening Range Low,[SHORT] Time Ejection ⏳ at 48508.50,1.0,45.0,95.0,190.0
-2026-03-05 14:01:00+00:00,5m Confirmed Close: Opening Range Low,[SHORT] Hit Trailing Stop 🏃‍♂️💨 at 48356.50,233.0,149.0,95.0,190.0
-2026-03-06 14:31:00+00:00,5m Confirmed Close: Opening Range Low,[SHORT] Time Ejection ⏳ at 47689.50,-9.0,45.0,95.0,190.0
-2026-03-12 14:02:00+00:00,5m Confirmed Close: Opening Range Low,[SHORT] Hit Hard Stop 🛑 at 47206.00,-96.5,41.0,95.0,190.0
-2026-03-18 14:06:00+00:00,5m Confirmed Close: Opening Range Low,[SHORT] Hit Trailing Stop 🏃‍♂️💨 at 47063.50,141.0,70.0,95.0,190.0
-2026-03-19 14:18:00+00:00,5m Confirmed Close: Opening Range Low,[SHORT] Time Ejection ⏳ at 46127.50,-11.0,49.0,95.0,190.0
-2026-03-26 14:26:00+00:00,5m Confirmed Close: Opening Range Low,[SHORT] Time Ejection ⏳ at 46107.50,-37.0,45.0,95.0,190.0
-2026-03-27 14:01:00+00:00,5m Confirmed Close: Opening Range Low,[SHORT] Time Ejection ⏳ at 45822.50,-74.0,45.0,95.0,190.0
+2025-12-18 14:33:00+00:00,5m Confirmed Close: Opening Range Low,[SHORT] Time Ejection ⏳ at 47991.50,-7.0,28.0,75.0,200.0
+2025-12-19 14:09:00+00:00,5m Confirmed Close: Opening Range Low,[SHORT] Time Ejection ⏳ at 47986.50,-26.0,20.0,75.0,200.0
+2025-12-24 14:20:00+00:00,5m Confirmed Close: Opening Range High,[LONG] Time Ejection ⏳ at 48410.50,-13.0,20.0,75.0,200.0
+2025-12-26 14:22:00+00:00,5m Confirmed Close: Opening Range High,[LONG] Time Ejection ⏳ at 48666.50,10.0,20.0,75.0,200.0
+2026-01-02 14:01:00+00:00,5m Confirmed Close: Opening Range High,[LONG] Time Ejection ⏳ at 48249.50,-34.0,20.0,75.0,200.0
+2026-01-06 14:12:00+00:00,5m Confirmed Close: Opening Range High,[LONG] Time Ejection ⏳ at 48895.50,-5.0,20.0,75.0,200.0
+2026-01-08 14:04:00+00:00,5m Confirmed Close: Opening Range Low,[SHORT] Time Ejection ⏳ at 48834.50,-24.0,20.0,75.0,200.0
+2026-01-14 14:01:00+00:00,5m Confirmed Close: Opening Range Low,[SHORT] Time Ejection ⏳ at 49077.50,-61.0,20.0,75.0,200.0
+2026-01-21 14:45:00+00:00,5m Confirmed Close: Opening Range Low,[SHORT] Time Ejection ⏳ at 48394.50,-19.0,20.0,75.0,200.0
+2026-01-23 14:33:00+00:00,5m Confirmed Close: Opening Range Low,[SHORT] Time Ejection ⏳ at 49291.50,-36.0,20.0,75.0,200.0
+2026-02-03 14:13:00+00:00,5m Confirmed Close: Opening Range High,[LONG] Time Ejection ⏳ at 49387.50,5.0,61.0,75.0,200.0
+2026-02-05 14:01:00+00:00,5m Confirmed Close: Opening Range High,[LONG] Time Ejection ⏳ at 49494.50,-51.0,20.0,75.0,200.0
+2026-02-06 14:06:00+00:00,5m Confirmed Close: Opening Range High,[LONG] Time Ejection ⏳ at 49156.50,-41.0,20.0,75.0,200.0
+2026-02-11 14:55:00+00:00,5m Confirmed Close: Opening Range Low,[SHORT] Time Ejection ⏳ at 50243.50,-29.0,20.0,75.0,200.0
+2026-02-19 14:01:00+00:00,5m Confirmed Close: Opening Range Low,[SHORT] Time Ejection ⏳ at 49523.50,-52.0,20.0,75.0,200.0
+2026-02-23 14:15:00+00:00,5m Confirmed Close: Opening Range Low,[SHORT] Time Ejection ⏳ at 49425.50,7.0,85.0,75.0,200.0
+2026-02-25 14:19:00+00:00,5m Confirmed Close: Opening Range High,[LONG] Time Ejection ⏳ at 49330.50,5.0,20.0,75.0,200.0
+2026-02-27 14:49:00+00:00,5m Confirmed Close: Opening Range Low,[SHORT] Time Ejection ⏳ at 49115.50,3.0,20.0,75.0,200.0
+2026-03-02 14:06:00+00:00,5m Confirmed Close: Opening Range Low,[SHORT] Time Ejection ⏳ at 48389.50,12.0,20.0,75.0,200.0
+2026-03-05 14:01:00+00:00,5m Confirmed Close: Opening Range Low,[SHORT] Time Ejection ⏳ at 48655.50,-60.0,20.0,75.0,200.0
+2026-03-06 14:31:00+00:00,5m Confirmed Close: Opening Range Low,[SHORT] Time Ejection ⏳ at 47677.50,8.0,30.0,75.0,200.0
+2026-03-10 14:04:00+00:00,5m Confirmed Close: Opening Range High,[LONG] Hit Hard Stop 🛑 at 47793.00,-76.5,10.0,75.0,200.0
+2026-03-11 14:01:00+00:00,5m Confirmed Close: Opening Range High,[LONG] Time Ejection ⏳ at 47742.50,-72.0,20.0,75.0,200.0
+2026-03-12 14:02:00+00:00,5m Confirmed Close: Opening Range Low,[SHORT] Time Ejection ⏳ at 47121.50,0.0,20.0,75.0,200.0
+2026-03-16 14:36:00+00:00,5m Confirmed Close: Opening Range High,[LONG] Time Ejection ⏳ at 46810.50,0.0,20.0,75.0,200.0
+2026-03-19 14:18:00+00:00,5m Confirmed Close: Opening Range Low,[SHORT] Time Ejection ⏳ at 46111.50,13.0,40.0,75.0,200.0
+2026-03-24 14:11:00+00:00,5m Confirmed Close: Opening Range High,[LONG] Hit Hard Stop 🛑 at 46131.00,-76.5,5.0,75.0,200.0
+2026-03-25 14:02:00+00:00,5m Confirmed Close: Opening Range High,[LONG] Time Ejection ⏳ at 46515.50,-27.0,45.0,75.0,200.0
+2026-03-26 14:26:00+00:00,5m Confirmed Close: Opening Range Low,[SHORT] Time Ejection ⏳ at 46085.50,9.0,21.0,75.0,200.0
+2026-03-31 14:11:00+00:00,5m Confirmed Close: Opening Range High,[LONG] Hit Break-Even 🛡️ at 45623.00,3.5,61.0,75.0,200.0
+2026-04-01 14:08:00+00:00,5m Confirmed Close: Opening Range High,[LONG] Time Ejection ⏳ at 46677.50,7.0,20.0,75.0,200.0
