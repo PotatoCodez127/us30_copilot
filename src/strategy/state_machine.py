@@ -8,14 +8,14 @@ class US30SessionTracker:
         self.or_low = or_low
         self.pivots = daily_pivots
 
-    def update_state(self, candle_15m: dict, current_1m: dict) -> dict | None:
+    def update_state(self, candle_5m: dict, current_1m: dict) -> dict | None:
         """
-        Evaluates the current 15m candle. Checks for confirmed CLOSES above/below 
-        the Opening Range, or touches on Daily Pivots.
+        Evaluates the current 5m candle. Checks for confirmed CLOSES above/below 
+        the Opening Range to filter out split-second liquidity sweeps.
         """
-        high = candle_15m['high']
-        low = candle_15m['low']
-        close = candle_15m['close']
+        high = candle_5m['high']
+        low = candle_5m['low']
+        close = candle_5m['close']
         
         interacted_level = None
         close_status = "Unknown"
@@ -23,27 +23,27 @@ class US30SessionTracker:
         # 1. Did we CLOSE beyond the Opening Range? (Filtering Fakeouts)
         if close > self.or_high:
             interacted_level = "Opening Range High"
-            close_status = "Closed ABOVE Level (Confirmed Breakout)"
+            close_status = "Closed ABOVE Level (Confirmed 5m Breakout)"
         elif close < self.or_low:
             interacted_level = "Opening Range Low"
-            close_status = "Closed BELOW Level (Confirmed Breakdown)"
+            close_status = "Closed BELOW Level (Confirmed 5m Breakdown)"
             
         # 2. Did we touch a Daily Pivot? (Kept as touch for pivots)
         elif low <= self.pivots['P'] <= high:
             interacted_level = "Daily Central Pivot"
-            close_status = f"Closed at {close}"
+            close_status = f"Touched at {close}"
         elif low <= self.pivots['S1'] <= high:
             interacted_level = "S1 Pivot"
-            close_status = f"Closed at {close}"
+            close_status = f"Touched at {close}"
         elif low <= self.pivots['R1'] <= high:
             interacted_level = "R1 Pivot"
-            close_status = f"Closed at {close}"
+            close_status = f"Touched at {close}"
 
         # 3. If a level was confirmed, build the payload for the AI
         if interacted_level:
             return {
                 "asset": "US30",
-                "trigger": f"15m Confirmed Close: {interacted_level}" if "Opening" in interacted_level else f"15m Touch: {interacted_level}",
+                "trigger": f"5m Confirmed Close: {interacted_level}" if "Opening" in interacted_level else f"5m Touch: {interacted_level}",
                 "narrative_confirmed": [
                     f"Price interacted with {interacted_level}",
                     f"Candle resolved as: {close_status}"
