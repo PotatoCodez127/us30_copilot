@@ -28,7 +28,7 @@ def generate_tradingview_levels():
 Q4_LEVELS = generate_tradingview_levels()
 
 def run_master_backtest(csv_filepath: str):
-    print(f"{Color.CYAN}🚀 Initializing Full Discovery Engine (Unrestricted Raw Data)...{Color.RESET}")
+    print(f"{Color.CYAN}🚀 Initializing 15m Confirmed Engine (1 Trade Per Day)...{Color.RESET}")
     df = load_and_prep_data(csv_filepath)
     unique_dates = pd.Series(df.index.date).unique()
     all_logged_setups = []
@@ -45,20 +45,22 @@ def run_master_backtest(csv_filepath: str):
 
         daily_setups = simulate_ny_session(current_day_data, current_date_str, pivots)
         
-        # trade_taken_today = False  <-- LOCKOUT REMOVED
+        # --- ENABLE DAILY LOCKOUT ---
+        trade_taken_today = False 
         
         if daily_setups:
             for setup in daily_setups:
                 
-                # if trade_taken_today: continue <-- LOCKOUT REMOVED
+                # --- ENFORCE DAILY LOCKOUT ---
+                if trade_taken_today:
+                    continue 
 
                 trigger_time = pd.to_datetime(setup['timestamp'])
                 
-                # --- ALL FORENSIC FILTERS OFF FOR DISCOVERY ---
-                # We are letting the engine take EVERY setup (Pivots, Top/Bottom, All Hours)
+                # --- ALL FORENSIC FILTERS OFF FOR DISCOVERY (Except 1 Trade/Day) ---
                 raw_entry = setup.get('context', {}).get('close_price', 0)
                 
-                print(f"{Color.YELLOW}🔍 DISCOVERY TRIGGERED: {current_date_str} at {setup['timestamp']} | Level: {setup['trigger']}{Color.RESET}")
+                print(f"{Color.YELLOW}🔍 SETUP TRIGGERED: {current_date_str} at {setup['timestamp']} | Level: {setup['trigger']}{Color.RESET}")
                 
                 # --- AI CONFIRMATION ---
                 ai_analysis = analyze_setup_with_ollama(setup)
@@ -74,7 +76,7 @@ def run_master_backtest(csv_filepath: str):
                 if dir_match and dir_match.group(1).upper() in ['LONG', 'SHORT'] and sl_match and tp_match: 
                     direction = dir_match.group(1).upper()
                     
-                    # --- REALISTIC RISK MAPPING KEEPT INTACT ---
+                    # --- REALISTIC RISK MAPPING KEPT INTACT ---
                     risk_in_points = 75.0
                     setup['sl_distance'] = risk_in_points
                     setup['tp_distance'] = 125.0 
@@ -180,6 +182,9 @@ def run_master_backtest(csv_filepath: str):
                     print(f"{color}▶ EXECUTED {direction}: {outcome} | PnL: {setup['pnl_points']} pts{Color.RESET}")
                     
                     all_logged_setups.append(setup)
+                    
+                    # --- TRIGGER LOCKOUT FOR THE REST OF THE DAY ---
+                    trade_taken_today = True 
 
     if all_logged_setups:
         os.makedirs('results', exist_ok=True)
