@@ -13,10 +13,6 @@ SLIPPAGE_POINTS = 1.5
 # -----------------------
 
 def generate_tradingview_levels():
-    """
-    Dynamically generates the Q4 and EQ support/resistance levels 
-    to perfectly match the TradingView 'US30 HTF Trade Levels' indicator.
-    """
     q4_start = 48362
     eq_start = 48555
     spacing = 385
@@ -32,7 +28,7 @@ def generate_tradingview_levels():
 Q4_LEVELS = generate_tradingview_levels()
 
 def run_master_backtest(csv_filepath: str):
-    print(f"{Color.CYAN}🚀 Initializing Final Production Engine (Optimized Risk Mode)...{Color.RESET}")
+    print(f"{Color.CYAN}🚀 Initializing Full Discovery Engine (Unrestricted Raw Data)...{Color.RESET}")
     df = load_and_prep_data(csv_filepath)
     unique_dates = pd.Series(df.index.date).unique()
     all_logged_setups = []
@@ -49,28 +45,20 @@ def run_master_backtest(csv_filepath: str):
 
         daily_setups = simulate_ny_session(current_day_data, current_date_str, pivots)
         
-        trade_taken_today = False 
+        # trade_taken_today = False  <-- LOCKOUT REMOVED
         
         if daily_setups:
             for setup in daily_setups:
                 
-                if trade_taken_today:
-                    continue
+                # if trade_taken_today: continue <-- LOCKOUT REMOVED
 
                 trigger_time = pd.to_datetime(setup['timestamp'])
                 
-                # 1. STRICT FORENSIC FILTERS
-                if trigger_time.hour != 14: continue 
-                if 'Pivot' in setup['trigger']: continue 
-                
-                # --- ASYMMETRIC FILTER: THE AMPUTATION ---
-                if 'Opening Range High' in setup['trigger']: 
-                    continue # The data proves topside breakouts are traps. Kill them.
-
-                # --- MOMENTUM ENTRY PRICING ---
+                # --- ALL FORENSIC FILTERS OFF FOR DISCOVERY ---
+                # We are letting the engine take EVERY setup (Pivots, Top/Bottom, All Hours)
                 raw_entry = setup.get('context', {}).get('close_price', 0)
                 
-                print(f"{Color.GREEN}🟢 SETUP TRIGGERED: {current_date_str} at {setup['timestamp']}{Color.RESET}")
+                print(f"{Color.YELLOW}🔍 DISCOVERY TRIGGERED: {current_date_str} at {setup['timestamp']} | Level: {setup['trigger']}{Color.RESET}")
                 
                 # --- AI CONFIRMATION ---
                 ai_analysis = analyze_setup_with_ollama(setup)
@@ -83,14 +71,13 @@ def run_master_backtest(csv_filepath: str):
                 sl_match = re.search(r'SL:\s*[\$]?([\d,]+\.?\d*)', ai_analysis)
                 tp_match = re.search(r'TP:\s*[\$]?([\d,]+\.?\d*)', ai_analysis)
                 
-                # 2. OMNI-DIRECTIONAL EXECUTION
                 if dir_match and dir_match.group(1).upper() in ['LONG', 'SHORT'] and sl_match and tp_match: 
                     direction = dir_match.group(1).upper()
                     
-                    # --- REALISTIC RISK MAPPING ---
+                    # --- REALISTIC RISK MAPPING KEEPT INTACT ---
                     risk_in_points = 75.0
                     setup['sl_distance'] = risk_in_points
-                    setup['tp_distance'] = 125.0 # Global tracking for analytics
+                    setup['tp_distance'] = 125.0 
 
                     future_data = current_day_data.loc[setup['timestamp'] : f"{current_date_str} 20:00:00+00:00"]
                     trigger_idx = future_data.index[0] if not future_data.empty else trigger_time
@@ -104,7 +91,7 @@ def run_master_backtest(csv_filepath: str):
                     if direction == 'LONG':
                         entry_price = raw_entry + SLIPPAGE_POINTS
                         sl = entry_price - risk_in_points 
-                        tp = entry_price + 125.0 # Set specific LONG target
+                        tp = entry_price + 125.0 
                         exit_price = future_data['close'].iloc[-1] if not future_data.empty else entry_price
                         exit_time = future_data.index[-1] if not future_data.empty else trigger_idx
 
@@ -116,29 +103,26 @@ def run_master_backtest(csv_filepath: str):
                             high, low, current_close = candle['high'], candle['low'], candle['close']
                             highest_seen = max(highest_seen, high)
                             
-                            # OPTIMIZED TIME EJECTION: 35 mins, only eject if underwater
+                            # HARD TAKE PROFIT
+                            if high >= tp:
+                                outcome, exit_price, exit_time = "Hit Hard Take Profit 🎯", tp, idx
+                                break
+                            
+                            # TIME EJECTION: 90 mins
                             mins_held = (idx - trigger_time).total_seconds() / 60.0
-                            if mins_held >= 90 and not tp_hit:
+                            if mins_held >= 90:
                                 if current_close < entry_price: 
                                     outcome, exit_price, exit_time = "Time Ejection ⏳", current_close - SLIPPAGE_POINTS, idx
                                     break
                                     
-                            # Intermediate Break-Even (1:1 RR)
+                            # Break-Even
                             if not be_hit and high >= (entry_price + risk_in_points):
                                 be_hit = True
                                 sl = max(sl, entry_price + 5.0)
-
-                            # Trailing Stop Activation
-                            if not tp_hit and high >= tp:
-                                tp_hit = True
-                                sl = max(sl, entry_price + 5.0) 
-                                
-                            if tp_hit:
-                                sl = max(sl, highest_seen - 75.0) # Widened trail
                             
-                            # Hard Stop
+                            # Stop Loss
                             if low <= sl:
-                                outcome = "Hit Trailing Stop 🏃‍♂️💨" if tp_hit else ("Hit Break-Even 🛡️" if be_hit else "Hit Hard Stop 🛑")
+                                outcome = "Hit Break-Even 🛡️" if be_hit else "Hit Hard Stop 🛑"
                                 exit_price, exit_time = sl - SLIPPAGE_POINTS, idx
                                 break
                                 
@@ -150,7 +134,7 @@ def run_master_backtest(csv_filepath: str):
                     elif direction == 'SHORT':
                         entry_price = raw_entry - SLIPPAGE_POINTS
                         sl = entry_price + risk_in_points 
-                        tp = entry_price - 125.0 # Set specific SHORT target
+                        tp = entry_price - 125.0 
                         exit_price = future_data['close'].iloc[-1] if not future_data.empty else entry_price
                         exit_time = future_data.index[-1] if not future_data.empty else trigger_idx
 
@@ -162,29 +146,26 @@ def run_master_backtest(csv_filepath: str):
                             high, low, current_close = candle['high'], candle['low'], candle['close']
                             lowest_seen = min(lowest_seen, low)
                             
-                            # OPTIMIZED TIME EJECTION: 35 mins, only eject if underwater
+                            # HARD TAKE PROFIT
+                            if low <= tp:
+                                outcome, exit_price, exit_time = "Hit Hard Take Profit 🎯", tp, idx
+                                break
+                            
+                            # TIME EJECTION: 90 mins
                             mins_held = (idx - trigger_time).total_seconds() / 60.0
-                            if mins_held >= 35 and not tp_hit:
+                            if mins_held >= 90:
                                 if current_close > entry_price: 
                                     outcome, exit_price, exit_time = "Time Ejection ⏳", current_close + SLIPPAGE_POINTS, idx
                                     break
 
-                            # Intermediate Break-Even (1:1 RR)
+                            # Break-Even
                             if not be_hit and low <= (entry_price - risk_in_points):
                                 be_hit = True
                                 sl = min(sl, entry_price - 5.0)
-
-                            # Trailing Stop Activation
-                            if not tp_hit and low <= tp:
-                                tp_hit = True
-                                sl = min(sl, entry_price - 5.0) 
-                                
-                            if tp_hit:
-                                sl = min(sl, lowest_seen + 75.0) # Widened trail
                             
-                            # Hard Stop
+                            # Stop Loss
                             if high >= sl:
-                                outcome = "Hit Trailing Stop 🏃‍♂️💨" if tp_hit else ("Hit Break-Even 🛡️" if be_hit else "Hit Hard Stop 🛑")
+                                outcome = "Hit Break-Even 🛡️" if be_hit else "Hit Hard Stop 🛑"
                                 exit_price, exit_time = sl + SLIPPAGE_POINTS, idx
                                 break
                                 
@@ -199,9 +180,6 @@ def run_master_backtest(csv_filepath: str):
                     print(f"{color}▶ EXECUTED {direction}: {outcome} | PnL: {setup['pnl_points']} pts{Color.RESET}")
                     
                     all_logged_setups.append(setup)
-                    
-                    # --- 3. TRIGGER THE LOCKOUT ---
-                    trade_taken_today = True 
 
     if all_logged_setups:
         os.makedirs('results', exist_ok=True)
