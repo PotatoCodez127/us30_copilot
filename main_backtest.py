@@ -15,6 +15,39 @@ COMMISSION_PER_LOT = 5.00
 SLIPPAGE_POINTS = 1.5 
 # -----------------------------------------------
 
+# --- INSTITUTIONAL LIQUIDITY LEVELS (TradingView HTF Grid) ---
+def generate_tradingview_levels():
+    """
+    Dynamically generates the Q4 and EQ support/resistance levels 
+    to perfectly match the TradingView 'US30 HTF Trade Levels' indicator.
+    """
+    q4_start = 48362
+    eq_start = 48555
+    spacing = 385
+    levels_count = 14
+    
+    levels = []
+    # Generate the 15 up and 15 down lines just like the Pine Script
+    for i in range(-levels_count, levels_count + 1):
+        levels.append(q4_start + (i * spacing)) # Q4 Base Levels
+        levels.append(eq_start + (i * spacing)) # EQ 50% Levels
+        
+    return sorted(levels)
+
+# Initialize the synchronized grid
+Q4_LEVELS = generate_tradingview_levels()
+
+def is_too_close_to_support(entry_price: float, levels: list, minimum_clearance: float = 50.0) -> bool:
+    """
+    Checks if the short entry is too close to a major psychological support level.
+    Returns True if we are shorting into a brick wall.
+    """
+    for level in levels:
+        # If the level is below our entry price, and the distance is less than our minimum clearance
+        if entry_price > level and (entry_price - level) < minimum_clearance:
+            return True
+    return False
+
 def run_master_backtest(csv_filepath: str):
     print(f"{Color.CYAN}🚀 Initializing Final Production Engine (God Mode)...{Color.RESET}")
     df = load_and_prep_data(csv_filepath)
@@ -33,14 +66,13 @@ def run_master_backtest(csv_filepath: str):
 
         daily_setups = simulate_ny_session(current_day_data, current_date_str, pivots)
         
-        # --- 1. NEW COMPONENT: SESSION LOCKOUT FLAG ---
+        # --- 1. SESSION LOCKOUT FLAG ---
         trade_taken_today = False 
         
         if daily_setups:
             for setup in daily_setups:
                 
                 # --- 2. ENFORCE THE LOCKOUT ---
-                # If we already executed a trade today, ignore all remaining noise
                 if trade_taken_today:
                     continue
 
@@ -49,13 +81,20 @@ def run_master_backtest(csv_filepath: str):
                 # 1. STRICT FORENSIC FILTERS
                 if trigger_time.hour != 14: continue # 10 AM NY hour only
                 if 'Pivot' in setup['trigger']: continue # No pivot noise
-
-                if 'Opening Range High' in setup['trigger']: continue # Kill the unprofitable trigger
+                
+                # --- ASYMMETRIC FILTER: THE AMPUTATION ---
+                if 'Opening Range High' in setup['trigger']: continue # Kill topside breakouts
+                
+                # --- NEW Q4 PROXIMITY FILTER ---
+                # Check if our entry price is too close to a Q4 level (e.g., within 50 points)
+                base_entry = setup.get('context', {}).get('close_price', 0)
+                if is_too_close_to_support(base_entry, Q4_LEVELS, minimum_clearance=50.0):
+                    print(f"{Color.YELLOW}⏭️ SKIPPED: Selling into Q4 Support at {base_entry}{Color.RESET}")
+                    continue
                 
                 print(f"{Color.GREEN}🟢 SETUP TRIGGERED: {current_date_str} at {setup['timestamp']}{Color.RESET}")
                 ai_analysis = analyze_setup_with_ollama(setup)
                 
-                base_entry = setup.get('context', {}).get('close_price', 0)
                 setup['trade_outcome'] = "Skipped"
                 setup['pnl_points'], setup['holding_time_mins'], setup['dollar_pnl'] = 0.0, 0, 0.0
                 setup['sl_distance'], setup['tp_distance'] = 0.0, 0.0
@@ -84,7 +123,7 @@ def run_master_backtest(csv_filepath: str):
                     pnl_points = 0.0
                     
                     # ==========================================
-                    # LONG EXECUTION LOGIC
+                    # LONG EXECUTION LOGIC (Kept for robustness)
                     # ==========================================
                     if direction == 'LONG':
                         entry_price = base_entry + SLIPPAGE_POINTS
@@ -120,7 +159,7 @@ def run_master_backtest(csv_filepath: str):
                         pnl_points = exit_price - entry_price
 
                     # ==========================================
-                    # SHORT EXECUTION LOGIC
+                    # SHORT EXECUTION LOGIC (The Alpha)
                     # ==========================================
                     elif direction == 'SHORT':
                         entry_price = base_entry - SLIPPAGE_POINTS
@@ -166,6 +205,8 @@ def run_master_backtest(csv_filepath: str):
                     print(f"{color}▶ EXECUTED {direction}: {outcome} | Pts: {setup['pnl_points']} | PNL: ${setup['dollar_pnl']}{Color.RESET}")
                     
                     all_logged_setups.append(setup)
+                    
+                    # --- TRIGGER THE LOCKOUT ---
                     trade_taken_today = True 
 
     if all_logged_setups:
