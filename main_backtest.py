@@ -28,7 +28,7 @@ def generate_tradingview_levels():
 Q4_LEVELS = generate_tradingview_levels()
 
 def run_master_backtest(csv_filepath: str):
-    print(f"{Color.CYAN}🚀 Initializing 15m Confirmed Engine (1 Trade Per Day)...{Color.RESET}")
+    print(f"{Color.CYAN}🚀 Initializing 11 AM Sniper Engine (5m Momentum + Regime Filter)...{Color.RESET}")
     df = load_and_prep_data(csv_filepath)
     unique_dates = pd.Series(df.index.date).unique()
     all_logged_setups = []
@@ -56,9 +56,19 @@ def run_master_backtest(csv_filepath: str):
                     continue 
 
                 trigger_time = pd.to_datetime(setup['timestamp'])
-                
-                # --- ALL FORENSIC FILTERS OFF FOR DISCOVERY (Except 1 Trade/Day) ---
                 raw_entry = setup.get('context', {}).get('close_price', 0)
+                
+                # 1. STRICT FORENSIC FILTERS
+                # KILL THE 10 AM TRAP. Only trade 11 AM to 1 PM NY Time (15:00, 16:00, 17:00 UTC).
+                if trigger_time.hour not in [15, 16, 17]: 
+                    continue 
+                
+                # --- NEW: THE DAILY REGIME FILTER ---
+                central_pivot = pivots['P']
+                if 'Opening Range Low' in setup['trigger'] and raw_entry > central_pivot:
+                    continue # Do not short if we are sitting above the Daily Pivot (Bullish trap)
+                if 'Opening Range High' in setup['trigger'] and raw_entry < central_pivot:
+                    continue # Do not long if we are sitting below the Daily Pivot (Bearish trap)
                 
                 print(f"{Color.YELLOW}🔍 SETUP TRIGGERED: {current_date_str} at {setup['timestamp']} | Level: {setup['trigger']}{Color.RESET}")
                 
