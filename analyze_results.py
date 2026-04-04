@@ -5,8 +5,9 @@ class Color:
     GREEN, CYAN, YELLOW, RED, MAGENTA, WHITE, RESET = '\033[92m', '\033[96m', '\033[93m', '\033[91m', '\033[95m', '\033[97m', '\033[0m'
 
 # --- ACCOUNT PARAMETERS ---
-ACCOUNT_SIZE = 100.0
-RISK_PERCENT = 0.1  # 1%
+# You can scale these to match a Prop Firm challenge (e.g., 100000.0 and 0.01 for 1% risk)
+ACCOUNT_SIZE = 100
+RISK_PERCENT = 0.1  # 1% Risk per trade
 COMMISSION_PER_LOT = 0.00
 
 def analyze():
@@ -20,10 +21,12 @@ def analyze():
         print("Trade log is empty.")
         return
 
+    # Ensure timestamp is datetime
+    df['timestamp'] = pd.to_datetime(df['timestamp'], utc=True)
+    
     # --- DYNAMIC DOLLAR PNL RECONSTRUCTION ---
     dollar_risk = ACCOUNT_SIZE * RISK_PERCENT
     
-    # Handle SL distance safely with new 75-point baseline
     if 'sl_distance' in df.columns:
         valid_sl = df['sl_distance'].apply(lambda x: x if x > 0 else 75.0) 
     else:
@@ -32,22 +35,30 @@ def analyze():
     lot_size = dollar_risk / valid_sl
     commissions = lot_size * COMMISSION_PER_LOT
     
-    # Calculate Dynamic Dollar PnL based on the raw points
     df['dollar_pnl'] = (df['pnl_points'] * lot_size) - commissions
+
+    # --- EQUITY CURVE & DRAWDOWN MATH ---
+    df['cumulative_pnl'] = df['dollar_pnl'].cumsum()
+    df['equity'] = ACCOUNT_SIZE + df['cumulative_pnl']
+    df['peak_equity'] = df['equity'].cummax()
+    
+    # Calculate Drawdown
+    df['drawdown_dollars'] = df['peak_equity'] - df['equity']
+    df['drawdown_pct'] = (df['drawdown_dollars'] / df['peak_equity']) * 100
+    
+    max_dd_pct = df['drawdown_pct'].max()
+    max_dd_dollars = df['drawdown_dollars'].max()
+    total_return_pct = (df['cumulative_pnl'].iloc[-1] / ACCOUNT_SIZE) * 100 if not df.empty else 0
 
     # --- CORE METRICS: SEPARATING WINS, LOSSES, AND SCRATCHES ---
     if 'outcome' in df.columns:
         is_be = df['outcome'].str.contains('Break-Even', na=False, case=False)
         is_time_eject = df['outcome'].str.contains('Time Ejection', na=False, case=False)
         
-        # Pure runners
         wins = df[(df['dollar_pnl'] > 0) & ~is_be & ~is_time_eject]
-        # Pure full losses
         losses = df[(df['dollar_pnl'] < 0) & ~is_be & ~is_time_eject]
-        # Scratches (Break-Evens and Ejections that hover around 0 PnL)
         scratches = df[is_be | is_time_eject]
     else:
-        # Fallback if outcome text is missing
         wins = df[df['dollar_pnl'] > (dollar_risk * 0.2)] 
         losses = df[df['dollar_pnl'] < -(dollar_risk * 0.2)]
         scratches = df[(df['dollar_pnl'] >= -(dollar_risk * 0.2)) & (df['dollar_pnl'] <= (dollar_risk * 0.2))]
@@ -63,36 +74,62 @@ def analyze():
     
     realized_rr = abs(avg_win / avg_loss) if avg_loss != 0 else 0
     
-    avg_sl = df['sl_distance'].mean() if 'sl_distance' in df.columns else 75.0
-    avg_tp = df['tp_distance'].mean() if 'tp_distance' in df.columns else 200.0
-    intended_rr = abs(avg_tp / avg_sl) if avg_sl != 0 else 0
+    start_date = df['timestamp'].min().strftime('%Y-%m-%d')
+    end_date = df['timestamp'].max().strftime('%Y-%m-%d')
 
     print(f"\n{Color.MAGENTA}===========================================================================")
-    print(f"🏆 US30 COPILOT - DEEP FORENSIC QUANT ANALYSIS 🏆")
+    print(f"🏆 US30 COPILOT - INSTITUTIONAL QUANT ANALYSIS 🏆")
     print(f"==========================================================================={Color.RESET}")
-    print(f"Total Trades:           {total_trades}")
+    print(f"Date Range:             {Color.CYAN}{start_date} to {end_date}{Color.RESET}")
+    print(f"Total Trades Taken:     {total_trades}")
     print(f"True Win Rate:          {Color.GREEN}{win_rate:.2f}%{Color.RESET} (Runners)")
-    print(f"Scratch/BE Rate:        {Color.YELLOW}{scratch_rate:.2f}%{Color.RESET} (Shield Activations/Ejections)")
+    print(f"Scratch/BE Rate:        {Color.YELLOW}{scratch_rate:.2f}%{Color.RESET} (Shield Activations)")
     print(f"Hard Loss Rate:         {Color.RED}{loss_rate:.2f}%{Color.RESET} (Stopped Out)")
     
+    print(f"{Color.CYAN}---------------------------------------------------------------------------")
+    print(f"🏦 ACCOUNT METRICS (Starting Bal: ${ACCOUNT_SIZE:,.2f} | Risk/Trade: {RISK_PERCENT*100:.1f}%)")
+    print(f"---------------------------------------------------------------------------{Color.RESET}")
+    
     color = Color.GREEN if net_profit > 0 else Color.RED
-    print(f"\nNet Profit:             {color}${net_profit:,.2f}{Color.RESET}")
+    print(f"Net Profit:             {color}${net_profit:,.2f}{Color.RESET}")
+    print(f"Total Account Return:   {color}{total_return_pct:+.2f}%{Color.RESET}")
+    print(f"Max Drawdown:           {Color.RED}-{max_dd_pct:.2f}%{Color.RESET} (${max_dd_dollars:,.2f})")
+    
     print(f"Average True Win:       +{Color.GREEN}${avg_win:,.2f}{Color.RESET}")
     print(f"Average True Loss:      {Color.RED}-${abs(avg_loss):,.2f}{Color.RESET}")
     print(f"Realized Account R:R:   {realized_rr:.2f} to 1")
+
+    # --- MONTHLY BREAKDOWN ---
+    print(f"\n{Color.MAGENTA}===========================================================================")
+    print(f"📅 MONTHLY PERFORMANCE BREAKDOWN")
+    print(f"==========================================================================={Color.RESET}")
+    df['year_month'] = df['timestamp'].dt.strftime('%Y-%m')
     
-    print(f"{Color.CYAN}---------------------------------------------------------------------------")
-    print(f"🤖 AI INTENDED TAPE METRICS:")
-    print(f"Avg Intended Stop Loss: -{avg_sl:.1f} points")
-    print(f"Avg Intended Take Prof: +{avg_tp:.1f} points")
-    print(f"Intended Points R:R:    {intended_rr:.2f} to 1{Color.RESET}")
+    # Calculate starting equity for each month to find monthly % return
+    monthly_grouped = []
+    current_eq = ACCOUNT_SIZE
+    
+    for month, group in df.groupby('year_month'):
+        m_pnl = group['dollar_pnl'].sum()
+        m_trades = len(group)
+        m_wins = len(group[(group['dollar_pnl'] > 0) & ~group['outcome'].str.contains('Break-Even|Time Ejection', na=False, case=False)])
+        m_wr = (m_wins / m_trades) * 100 if m_trades > 0 else 0
+        m_pct_return = (m_pnl / current_eq) * 100
+        
+        monthly_grouped.append({
+            'month': month, 'pnl': m_pnl, 'pct': m_pct_return, 'trades': m_trades, 'wr': m_wr
+        })
+        current_eq += m_pnl # Update equity for the next month's baseline
+        
+    for m in monthly_grouped:
+        c = Color.GREEN if m['pnl'] > 0 else Color.RED
+        print(f"➤ {m['month']} | PnL: {c}${m['pnl']:>8,.2f} ({m['pct']:>+6.2f}%){Color.RESET} | WR: {m['wr']:>5.1f}% | Trades: {m['trades']}")
 
     # --- OUTCOME EXIT DISTRIBUTION ---
     print(f"\n{Color.MAGENTA}===========================================================================")
-    print(f"🛡️  TRADE EXIT DISTRIBUTION (Why are we leaving trades?)")
+    print(f"🛡️  TRADE EXIT DISTRIBUTION")
     print(f"==========================================================================={Color.RESET}")
     if 'outcome' in df.columns:
-        # Extract everything between "] " and " at" to get the pure string (e.g., "Hit Trailing Stop")
         df['clean_outcome'] = df['outcome'].str.extract(r'\] (.*?) at', expand=False).fillna('Unknown')
         exit_grouped = df.groupby('clean_outcome').agg(
             trades=('dollar_pnl', 'count'),
@@ -103,25 +140,6 @@ def analyze():
             c = Color.GREEN if row['avg_pnl'] > 0 else (Color.RED if row['avg_pnl'] < -5 else Color.YELLOW)
             pct = (row['trades'] / total_trades) * 100
             print(f"➤ {exit_type:<25} | {pct:>5.1f}% | Avg PnL: {c}${row['avg_pnl']:>6,.2f}{Color.RESET}")
-
-    # --- TIME OF DAY DISTRIBUTION ---
-    print(f"\n{Color.MAGENTA}===========================================================================")
-    print(f"⏰ TIME OF DAY DISTRIBUTION (UTC)")
-    print(f"==========================================================================={Color.RESET}")
-    df['timestamp'] = pd.to_datetime(df['timestamp'])
-    df['hour'] = df['timestamp'].dt.hour
-    
-    time_grouped = df.groupby('hour').agg(
-        pnl=('dollar_pnl', 'sum'),
-        trades=('dollar_pnl', 'count'),
-        wins=('dollar_pnl', lambda x: (x > 0).sum()) # Note: This includes scratches with slight pos PnL
-    )
-    
-    for hour, row in time_grouped.iterrows():
-        wr = (row['wins'] / row['trades']) * 100 if row['trades'] > 0 else 0
-        c = Color.GREEN if row['pnl'] > 0 else Color.RED
-        ny_hour = hour - 4 # Quick UTC to NY conversion
-        print(f"➤ {hour:02d}:00 UTC (NY {ny_hour:02d}:00) | {c}${row['pnl']:>9,.2f}{Color.RESET} | +PnL Rate: {wr:>5.1f}% | Trades: {row['trades']}")
 
     # --- EDGE ISOLATION ---
     print(f"\n{Color.MAGENTA}===========================================================================")
@@ -136,30 +154,6 @@ def analyze():
         c = Color.GREEN if row['pnl'] > 0 else Color.RED
         print(f"➤ {trigger} | {c}${row['pnl']:>9,.2f}{Color.RESET} | Trades: {row['trades']}")
 
-    # --- AUTOPSY OF LOSSES VS ANATOMY OF WINS ---
-    print(f"\n{Color.MAGENTA}===========================================================================")
-    print(f"☠️  AUTOPSY OF LOSSES vs. ANATOMY OF WINS")
-    print(f"==========================================================================={Color.RESET}")
-    avg_hold_win = wins['holding_time'].mean() if not wins.empty else 0
-    avg_hold_scratch = scratches['holding_time'].mean() if not scratches.empty else 0
-    avg_hold_loss = losses['holding_time'].mean() if not losses.empty else 0
-    
-    print(f"Avg Hold Time (WINS):      {avg_hold_win:.1f} minutes")
-    print(f"Avg Hold Time (SCRATCH):   {avg_hold_scratch:.1f} minutes")
-    print(f"Avg Hold Time (LOSSES):    {avg_hold_loss:.1f} minutes")
-    
-    print(f"{Color.CYAN}---------------------------------------------------------------------------{Color.RESET}")
-    avg_sl_win = wins['sl_distance'].mean() if 'sl_distance' in wins.columns and not wins.empty else 75.0
-    avg_sl_loss = losses['sl_distance'].mean() if 'sl_distance' in losses.columns and not losses.empty else 75.0
-    print(f"Avg SL Distance (WINS):     {avg_sl_win:.1f} points")
-    print(f"Avg SL Distance (LOSSES):   {avg_sl_loss:.1f} points")
-    
-    print(f"{Color.CYAN}---------------------------------------------------------------------------{Color.RESET}")
-    print(f"💡 ALGORITHMIC PATTERN RECOGNITION:")
-    if avg_hold_win > avg_hold_loss * 1.5:
-        print(f"➤ HOLD PATTERN: Winning trades take significantly longer to play out than losses (A healthy profile).")
-    if scratch_rate > loss_rate:
-        print(f"➤ RISK SHIELD: Your Break-Even/Ejection logic is intercepting more trades than your hard stop.")
     print(f"{Color.MAGENTA}===========================================================================\n{Color.RESET}")
 
 if __name__ == "__main__":
