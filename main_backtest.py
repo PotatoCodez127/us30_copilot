@@ -88,6 +88,7 @@ def run_master_backtest(csv_filepath: str):
                     
                     # --- REALISTIC RISK MAPPING KEPT INTACT ---
                     risk_in_points = 75.0
+                    # risk_in_points = 50.0
                     setup['sl_distance'] = risk_in_points
                     setup['tp_distance'] = 125.0 
 
