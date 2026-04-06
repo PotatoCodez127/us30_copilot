@@ -195,7 +195,7 @@ def run_master_backtest(csv_filepath: str):
                     all_logged_setups.append(setup)
                     
                     # --- TRIGGER LOCKOUT FOR THE REST OF THE DAY ---
-                    trade_taken_today = True 
+                    trade_taken_today = True
 
     if all_logged_setups:
         os.makedirs('results', exist_ok=True)
