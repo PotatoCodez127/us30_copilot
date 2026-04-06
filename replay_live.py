@@ -40,7 +40,6 @@ def run_replay_test(target_date: str):
     print(f"Opening Range: High {or_high:.2f} | Low {or_low:.2f} | Daily Pivot: {pivots['P']:.2f}")
     
     tracker = US30SessionTracker(or_high=or_high, or_low=or_low, daily_pivots=pivots)
-    
     sniper_window = current_day_data.loc[f"{target_date} 15:00:00":f"{target_date} 17:59:00"]
     setup_logged = False
     
@@ -74,7 +73,6 @@ def run_replay_test(target_date: str):
                 print(f"\n{Color.GREEN}🎯 LIVE LOGIC TRIGGERED EXACTLY AT: {current_time}{Color.RESET}")
                 print(f"Trigger: {payload['trigger']}")
                 
-                # --- THE MISSING TAPE GENERATOR ---
                 tape_start = current_time - pd.Timedelta(minutes=15)
                 recent_tape = current_day_data.loc[tape_start:current_time]
                 tape_str = "\n".join([
@@ -85,11 +83,8 @@ def run_replay_test(target_date: str):
                 payload['mfe_points'] = "0"
                 payload['mae_points'] = "0"
                 payload['timestamp'] = str(current_time)
-                # ----------------------------------
                 
                 ai_analysis = analyze_setup_with_ollama(payload)
-                
-                # --- SYNCHRONIZED REGEX ---
                 dir_match = re.search(r'DIRECTION:\s*(LONG|SHORT|NONE)', ai_analysis, re.IGNORECASE)
                 sl_match = re.search(r'SL:\s*[\$]?([\d,]+\.?\d*)', ai_analysis)
                 tp_match = re.search(r'TP:\s*[\$]?([\d,]+\.?\d*)', ai_analysis)
@@ -116,24 +111,28 @@ def run_replay_test(target_date: str):
                         for idx, candle in future_data.iloc[1:].iterrows():
                             high, low, current_close = candle['high'], candle['low'], candle['close']
                             
+                            # 1. HARD TAKE PROFIT (Broker priority)
                             if high >= tp:
                                 outcome, pnl_points = "Hit Hard Take Profit 🎯", tp - entry_price
                                 break
                             
+                            # 2. Break-Even Shield Update
+                            if not be_hit and high >= (entry_price + risk_in_points):
+                                be_hit = True
+                                sl = max(sl, entry_price + 5.0)
+                            
+                            # 3. HARD STOP LOSS (Broker priority)
+                            if low <= sl:
+                                outcome = "Hit Break-Even 🛡️" if be_hit else "Hit Hard Stop 🛑"
+                                pnl_points = (sl - SLIPPAGE_POINTS) - entry_price
+                                break
+                            
+                            # 4. TIME EJECTION: 90 mins (Manual priority)
                             mins_held = (idx - current_time).total_seconds() / 60.0
                             if mins_held >= 90:
                                 if current_close < entry_price:
                                     outcome, pnl_points = "Time Ejection ⏳", (current_close - SLIPPAGE_POINTS) - entry_price
                                     break
-                                    
-                            if not be_hit and high >= (entry_price + risk_in_points):
-                                be_hit = True
-                                sl = max(sl, entry_price + 5.0)
-                                
-                            if low <= sl:
-                                outcome = "Hit Break-Even 🛡️" if be_hit else "Hit Hard Stop 🛑"
-                                pnl_points = (sl - SLIPPAGE_POINTS) - entry_price
-                                break
                                 
                     elif direction == 'SHORT':
                         entry_price = raw_entry - SLIPPAGE_POINTS
@@ -144,27 +143,31 @@ def run_replay_test(target_date: str):
                         for idx, candle in future_data.iloc[1:].iterrows():
                             high, low, current_close = candle['high'], candle['low'], candle['close']
                             
+                            # 1. HARD TAKE PROFIT (Broker priority)
                             if low <= tp:
                                 outcome, pnl_points = "Hit Hard Take Profit 🎯", entry_price - tp
                                 break
                             
+                            # 2. Break-Even Shield Update
+                            if not be_hit and low <= (entry_price - risk_in_points):
+                                be_hit = True
+                                sl = min(sl, entry_price - 5.0)
+                            
+                            # 3. HARD STOP LOSS (Broker priority)
+                            if high >= sl:
+                                outcome = "Hit Break-Even 🛡️" if be_hit else "Hit Hard Stop 🛑"
+                                pnl_points = entry_price - (sl + SLIPPAGE_POINTS)
+                                break
+                            
+                            # 4. TIME EJECTION: 90 mins (Manual priority)
                             mins_held = (idx - current_time).total_seconds() / 60.0
                             if mins_held >= 90:
                                 if current_close > entry_price:
                                     outcome, pnl_points = "Time Ejection ⏳", entry_price - (current_close + SLIPPAGE_POINTS)
                                     break
-                                    
-                            if not be_hit and low <= (entry_price - risk_in_points):
-                                be_hit = True
-                                sl = min(sl, entry_price - 5.0)
-                                
-                            if high >= sl:
-                                outcome = "Hit Break-Even 🛡️" if be_hit else "Hit Hard Stop 🛑"
-                                pnl_points = entry_price - (sl + SLIPPAGE_POINTS)
-                                break
 
                     color = Color.GREEN if pnl_points > 0 else Color.RED
                     print(f"{color}▶ REPLAY OUTCOME: {outcome} | PnL: {round(pnl_points, 2)} pts{Color.RESET}\n")
 
 if __name__ == "__main__":
-    run_replay_test("2026-03-27")
+    run_replay_test("2026-01-29") # You can test that exact date!
