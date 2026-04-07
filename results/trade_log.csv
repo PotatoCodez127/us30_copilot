@@ -1,70 +1,72 @@
 timestamp,trigger,outcome,pnl_points,holding_time,sl_distance,tp_distance
-2025-12-18 15:04:00+00:00,15m Confirmed Close: Opening Range Low,[SHORT] Hit Hard Stop 🛑 at 48055.00,-76.5,26.0,75.0,125.0
-2025-12-19 15:01:00+00:00,15m Confirmed Close: Opening Range Low,[SHORT] Hit Hard Stop 🛑 at 48003.00,-76.5,75.0,75.0,125.0
+2025-12-18 15:02:00+00:00,15m Confirmed Close: Opening Range Low,[SHORT] Hit Hard Stop 🛑 at 48055.00,-76.5,28.0,75.0,125.0
+2025-12-19 15:00:00+00:00,15m Confirmed Close: Opening Range Low,[SHORT] Hit Hard Stop 🛑 at 48012.00,-76.5,84.0,75.0,125.0
 2025-12-22 15:03:00+00:00,15m Confirmed Close: Opening Range High,[LONG] Hit Hard Take Profit 🎯 at 48284.50,125.0,87.0,75.0,125.0
-2025-12-23 15:37:00+00:00,15m Confirmed Close: Opening Range Low,[SHORT] Hit Break-Even 🛡️ at 48284.00,3.5,53.0,75.0,125.0
-2025-12-24 15:28:00+00:00,15m Confirmed Close: Opening Range High,[LONG] Hit Hard Take Profit 🎯 at 48551.50,125.0,82.0,75.0,125.0
+2025-12-23 15:35:00+00:00,15m Confirmed Close: Opening Range Low,[SHORT] Hit Break-Even 🛡️ at 48299.00,3.5,55.0,75.0,125.0
+2025-12-24 15:27:00+00:00,15m Confirmed Close: Opening Range High,[LONG] Hit Hard Take Profit 🎯 at 48549.50,125.0,83.0,75.0,125.0
 2025-12-26 15:00:00+00:00,15m Confirmed Close: Opening Range High,[LONG] Time Ejection ⏳ at 48669.50,-6.0,94.0,75.0,125.0
-2025-12-29 15:03:00+00:00,15m Confirmed Close: Opening Range Low,[SHORT] Hit Break-Even 🛡️ at 48656.00,3.5,88.0,75.0,125.0
-2025-12-30 16:38:00+00:00,15m Confirmed Close: Opening Range Low,[SHORT] Hit Hard Stop 🛑 at 48468.00,-76.5,14.0,75.0,125.0
+2025-12-29 15:00:00+00:00,15m Confirmed Close: Opening Range Low,[LONG] Hit Hard Stop 🛑 at 48582.00,-76.5,67.0,75.0,125.0
+2025-12-30 16:31:00+00:00,15m Confirmed Close: Opening Range Low,[SHORT] Hit Break-Even 🛡️ at 48412.00,3.5,16.0,75.0,125.0
 2025-12-31 16:28:00+00:00,15m Confirmed Close: Opening Range High,[LONG] Hit Hard Stop 🛑 at 48321.00,-76.5,4.0,75.0,125.0
-2026-01-02 16:31:00+00:00,15m Confirmed Close: Opening Range Low,[SHORT] Hit Break-Even 🛡️ at 48062.00,3.5,2.0,75.0,125.0
+2026-01-02 16:30:00+00:00,15m Confirmed Close: Opening Range Low,[SHORT] Hit Break-Even 🛡️ at 48155.00,3.5,1.0,75.0,125.0
 2026-01-05 15:57:00+00:00,15m Confirmed Close: Opening Range High,[LONG] Hit Hard Take Profit 🎯 at 48557.50,125.0,33.0,75.0,125.0
-2026-01-06 15:02:00+00:00,15m Confirmed Close: Opening Range High,[LONG] Time Ejection ⏳ at 48946.50,-4.0,93.0,75.0,125.0
-2026-01-07 15:21:00+00:00,15m Confirmed Close: Opening Range High,[LONG] Hit Break-Even 🛡️ at 49525.00,3.5,71.0,75.0,125.0
+2026-01-06 15:00:00+00:00,15m Confirmed Close: Opening Range High,[LONG] Time Ejection ⏳ at 48906.50,-38.0,90.0,75.0,125.0
+2026-01-07 15:01:00+00:00,15m Confirmed Close: Opening Range High,[LONG] Hit Break-Even 🛡️ at 49511.00,3.5,91.0,75.0,125.0
 2026-01-08 16:00:00+00:00,15m Confirmed Close: Opening Range Low,[SHORT] Hit Hard Stop 🛑 at 48881.00,-76.5,31.0,75.0,125.0
-2026-01-09 15:01:00+00:00,15m Confirmed Close: Opening Range High,[LONG] Hit Hard Take Profit 🎯 at 49437.50,125.0,41.0,75.0,125.0
-2026-01-12 16:32:00+00:00,15m Confirmed Close: Opening Range Low,[SHORT] Hit Break-Even 🛡️ at 49072.00,3.5,4.0,75.0,125.0
-2026-01-13 15:30:00+00:00,15m Confirmed Close: Opening Range High,[LONG] Hit Hard Stop 🛑 at 49567.00,-76.5,16.0,75.0,125.0
-2026-01-14 15:48:00+00:00,15m Confirmed Close: Opening Range Low,[SHORT] Hit Hard Stop 🛑 at 49084.00,-76.5,42.0,75.0,125.0
-2026-01-15 16:30:00+00:00,15m Confirmed Close: Opening Range High,[LONG] Hit Hard Stop 🛑 at 49254.00,-76.5,2.0,75.0,125.0
+2026-01-09 15:00:00+00:00,15m Confirmed Close: Opening Range High,[LONG] Hit Hard Take Profit 🎯 at 49429.50,125.0,42.0,75.0,125.0
+2026-01-12 16:31:00+00:00,15m Confirmed Close: Opening Range Low,[SHORT] Hit Break-Even 🛡️ at 49072.00,3.5,5.0,75.0,125.0
+2026-01-13 15:31:00+00:00,15m Confirmed Close: Opening Range High,[LONG] Hit Hard Stop 🛑 at 49596.00,-76.5,8.0,75.0,125.0
+2026-01-14 15:47:00+00:00,15m Confirmed Close: Opening Range Low,[SHORT] Hit Hard Stop 🛑 at 49092.00,-76.5,43.0,75.0,125.0
+2026-01-15 16:29:00+00:00,15m Confirmed Close: Opening Range High,[LONG] Hit Break-Even 🛡️ at 49233.00,3.5,1.0,75.0,125.0
 2026-01-16 16:32:00+00:00,15m Confirmed Close: Opening Range High,[LONG] Hit Hard Stop 🛑 at 49483.00,-76.5,3.0,75.0,125.0
 2026-01-20 15:33:00+00:00,15m Confirmed Close: Opening Range Low,[SHORT] Hit Hard Stop 🛑 at 48727.00,-76.5,57.0,75.0,125.0
-2026-01-21 15:19:00+00:00,15m Confirmed Close: Opening Range Low,[SHORT] Hit Hard Stop 🛑 at 48447.00,-76.5,45.0,75.0,125.0
-2026-01-22 15:27:00+00:00,15m Confirmed Close: Opening Range High,[LONG] Hit Hard Take Profit 🎯 at 49398.50,125.0,63.0,75.0,125.0
-2026-01-23 15:03:00+00:00,15m Confirmed Close: Opening Range Low,[SHORT] Hit Hard Take Profit 🎯 at 49121.50,125.0,68.0,75.0,125.0
+2026-01-21 15:16:00+00:00,15m Confirmed Close: Opening Range Low,[SHORT] Hit Hard Stop 🛑 at 48446.00,-76.5,48.0,75.0,125.0
+2026-01-22 15:24:00+00:00,15m Confirmed Close: Opening Range High,[LONG] Hit Hard Take Profit 🎯 at 49396.50,125.0,66.0,75.0,125.0
+2026-01-23 15:02:00+00:00,15m Confirmed Close: Opening Range Low,[SHORT] Hit Hard Take Profit 🎯 at 49124.50,125.0,69.0,75.0,125.0
 2026-01-26 15:10:00+00:00,15m Confirmed Close: Opening Range High,[LONG] Hit Hard Take Profit 🎯 at 49258.50,125.0,81.0,75.0,125.0
 2026-01-27 15:01:00+00:00,15m Confirmed Close: Opening Range Low,[SHORT] Hit Hard Take Profit 🎯 at 49012.50,125.0,90.0,75.0,125.0
-2026-01-28 15:00:00+00:00,15m Confirmed Close: Opening Range Low,[SHORT] Time Ejection ⏳ at 49106.50,-127.0,90.0,75.0,125.0
-2026-01-29 16:28:00+00:00,15m Confirmed Close: Opening Range Low,[SHORT] Hit Hard Stop 🛑 at 49033.00,-76.5,2.0,75.0,125.0
+2026-01-28 15:00:00+00:00,15m Confirmed Close: Opening Range Low,[SHORT] Hit Hard Stop 🛑 at 49056.00,-76.5,90.0,75.0,125.0
+2026-01-29 16:05:00+00:00,15m Confirmed Close: Opening Range Low,[SHORT] Hit Hard Stop 🛑 at 49048.00,-76.5,25.0,75.0,125.0
 2026-01-30 15:31:00+00:00,15m Confirmed Close: Opening Range Low,[SHORT] Hit Hard Stop 🛑 at 48849.00,-76.5,45.0,75.0,125.0
-2026-02-02 15:52:00+00:00,15m Confirmed Close: Opening Range High,[LONG] Hit Hard Stop 🛑 at 48808.00,-76.5,38.0,75.0,125.0
-2026-02-03 15:04:00+00:00,15m Confirmed Close: Opening Range High,[LONG] Hit Hard Stop 🛑 at 49330.00,-76.5,71.0,75.0,125.0
-2026-02-04 16:33:00+00:00,15m Confirmed Close: Opening Range High,[LONG] Hit Break-Even 🛡️ at 49514.00,3.5,4.0,75.0,125.0
-2026-02-05 15:01:00+00:00,15m Confirmed Close: Opening Range Low,[SHORT] Hit Hard Take Profit 🎯 at 49194.50,125.0,89.0,75.0,125.0
+2026-02-02 15:45:00+00:00,15m Confirmed Close: Opening Range High,[LONG] Hit Hard Stop 🛑 at 48809.00,-76.5,45.0,75.0,125.0
+2026-02-03 15:00:00+00:00,15m Confirmed Close: Opening Range High,[LONG] Hit Hard Stop 🛑 at 49339.00,-76.5,70.0,75.0,125.0
+2026-02-04 16:31:00+00:00,15m Confirmed Close: Opening Range High,[LONG] Hit Break-Even 🛡️ at 49516.00,3.5,6.0,75.0,125.0
+2026-02-05 15:00:00+00:00,15m Confirmed Close: Opening Range Low,[SHORT] Hit Hard Take Profit 🎯 at 49210.50,125.0,90.0,75.0,125.0
 2026-02-06 15:21:00+00:00,15m Confirmed Close: Opening Range High,[LONG] Hit Hard Stop 🛑 at 49122.00,-76.5,16.0,75.0,125.0
-2026-02-09 15:01:00+00:00,15m Confirmed Close: Opening Range High,[LONG] Hit Hard Stop 🛑 at 50019.00,-76.5,65.0,75.0,125.0
-2026-02-10 15:01:00+00:00,15m Confirmed Close: Opening Range Low,[SHORT] Hit Hard Stop 🛑 at 50113.00,-76.5,32.0,75.0,125.0
+2026-02-09 15:00:00+00:00,15m Confirmed Close: Opening Range High,[LONG] Hit Hard Stop 🛑 at 50029.00,-76.5,65.0,75.0,125.0
+2026-02-10 15:00:00+00:00,15m Confirmed Close: Opening Range Low,[SHORT] Hit Hard Stop 🛑 at 50110.00,-76.5,33.0,75.0,125.0
 2026-02-11 15:19:00+00:00,15m Touch: Daily Central Pivot,[LONG] Hit Hard Take Profit 🎯 at 50387.50,125.0,14.0,75.0,125.0
-2026-02-12 15:42:00+00:00,15m Confirmed Close: Opening Range High,[LONG] Hit Hard Stop 🛑 at 50245.00,-76.5,38.0,75.0,125.0
-2026-02-17 15:01:00+00:00,15m Confirmed Close: Opening Range Low,[SHORT] Hit Break-Even 🛡️ at 49357.00,3.5,20.0,75.0,125.0
+2026-02-12 15:40:00+00:00,15m Confirmed Close: Opening Range High,[LONG] Hit Hard Stop 🛑 at 50236.00,-76.5,42.0,75.0,125.0
+2026-02-13 16:40:00+00:00,15m Confirmed Close: Opening Range Low,[SHORT] Hit Break-Even 🛡️ at 49167.00,3.5,2.0,75.0,125.0
+2026-02-17 15:00:00+00:00,15m Confirmed Close: Opening Range Low,[SHORT] Hit Break-Even 🛡️ at 49355.00,3.5,21.0,75.0,125.0
 2026-02-18 16:30:00+00:00,15m Confirmed Close: Opening Range Low,[SHORT] Hit Hard Stop 🛑 at 49506.00,-76.5,1.0,75.0,125.0
-2026-02-19 16:11:00+00:00,15m Confirmed Close: Opening Range Low,[SHORT] Hit Hard Stop 🛑 at 49529.00,-76.5,19.0,75.0,125.0
-2026-02-20 15:00:00+00:00,15m Confirmed Close: Opening Range Low,[SHORT] Hit Hard Take Profit 🎯 at 49208.50,125.0,90.0,75.0,125.0
-2026-02-23 15:05:00+00:00,15m Confirmed Close: Opening Range Low,[SHORT] Hit Hard Stop 🛑 at 49444.00,-76.5,48.0,75.0,125.0
-2026-02-24 15:00:00+00:00,15m Confirmed Close: Opening Range Low,[SHORT] Hit Hard Stop 🛑 at 48941.00,-76.5,48.0,75.0,125.0
-2026-02-25 15:01:00+00:00,15m Confirmed Close: Opening Range High,[LONG] Hit Break-Even 🛡️ at 49340.00,3.5,89.0,75.0,125.0
-2026-02-26 15:04:00+00:00,15m Confirmed Close: Opening Range High,[LONG] Hit Hard Take Profit 🎯 at 49703.50,125.0,85.0,75.0,125.0
-2026-02-27 15:08:00+00:00,15m Confirmed Close: Opening Range Low,[SHORT] Hit Hard Take Profit 🎯 at 48981.50,125.0,22.0,75.0,125.0
+2026-02-19 15:30:00+00:00,15m Confirmed Close: Opening Range Low,[SHORT] Hit Hard Stop 🛑 at 49535.00,-76.5,60.0,75.0,125.0
+2026-02-20 15:00:00+00:00,15m Confirmed Close: Opening Range Low,[LONG] Hit Hard Stop 🛑 at 49260.00,-76.5,49.0,75.0,125.0
+2026-02-23 15:00:00+00:00,15m Confirmed Close: Opening Range Low,[SHORT] Hit Hard Stop 🛑 at 49438.00,-76.5,46.0,75.0,125.0
+2026-02-24 15:00:00+00:00,15m Confirmed Close: Opening Range Low,[LONG] Hit Break-Even 🛡️ at 48871.00,3.5,74.0,75.0,125.0
+2026-02-25 15:00:00+00:00,15m Confirmed Close: Opening Range High,[LONG] Hit Break-Even 🛡️ at 49338.00,3.5,90.0,75.0,125.0
+2026-02-26 15:00:00+00:00,15m Confirmed Close: Opening Range High,[LONG] Hit Hard Take Profit 🎯 at 49682.50,125.0,89.0,75.0,125.0
+2026-02-27 15:01:00+00:00,15m Confirmed Close: Opening Range Low,[SHORT] Hit Hard Take Profit 🎯 at 48985.50,125.0,29.0,75.0,125.0
 2026-03-02 15:57:00+00:00,15m Confirmed Close: Opening Range Low,[SHORT] Hit Hard Stop 🛑 at 48477.00,-76.5,33.0,75.0,125.0
-2026-03-03 15:51:00+00:00,15m Confirmed Close: Opening Range Low,[SHORT] Hit Break-Even 🛡️ at 47998.00,3.5,31.0,75.0,125.0
-2026-03-04 15:12:00+00:00,15m Confirmed Close: Opening Range High,[LONG] Hit Break-Even 🛡️ at 48654.00,3.5,78.0,75.0,125.0
-2026-03-05 15:01:00+00:00,15m Confirmed Close: Opening Range Low,[SHORT] Hit Hard Take Profit 🎯 at 48379.50,125.0,57.0,75.0,125.0
-2026-03-06 15:02:00+00:00,15m Confirmed Close: Opening Range Low,[SHORT] Hit Hard Take Profit 🎯 at 47540.50,125.0,28.0,75.0,125.0
-2026-03-09 15:39:00+00:00,15m Touch: S1 Pivot,[SHORT] Hit Break-Even 🛡️ at 46922.00,3.5,21.0,75.0,125.0
-2026-03-10 17:43:00+00:00,15m Confirmed Close: Opening Range High,[LONG] Hit Break-Even 🛡️ at 47910.00,3.5,27.0,75.0,125.0
-2026-03-11 15:03:00+00:00,15m Confirmed Close: Opening Range Low,[SHORT] Hit Hard Stop 🛑 at 47711.00,-76.5,27.0,75.0,125.0
+2026-03-03 15:47:00+00:00,15m Confirmed Close: Opening Range Low,[SHORT] Hit Break-Even 🛡️ at 48002.00,3.5,35.0,75.0,125.0
+2026-03-04 15:10:00+00:00,15m Confirmed Close: Opening Range High,[LONG] Hit Hard Take Profit 🎯 at 48750.50,125.0,80.0,75.0,125.0
+2026-03-05 15:00:00+00:00,15m Confirmed Close: Opening Range Low,[SHORT] Hit Hard Take Profit 🎯 at 48390.50,125.0,58.0,75.0,125.0
+2026-03-06 15:00:00+00:00,15m Confirmed Close: Opening Range Low,[SHORT] Hit Hard Take Profit 🎯 at 47532.50,125.0,30.0,75.0,125.0
+2026-03-09 15:01:00+00:00,15m Touch: S1 Pivot,[LONG] Hit Hard Take Profit 🎯 at 47051.50,125.0,30.0,75.0,125.0
+2026-03-10 17:41:00+00:00,15m Confirmed Close: Opening Range High,[LONG] Hit Hard Take Profit 🎯 at 48011.50,125.0,61.0,75.0,125.0
+2026-03-11 15:00:00+00:00,15m Confirmed Close: Opening Range Low,[LONG] Hit Break-Even 🛡️ at 47647.00,3.5,30.0,75.0,125.0
 2026-03-12 15:00:00+00:00,15m Confirmed Close: Opening Range Low,[SHORT] Hit Hard Take Profit 🎯 at 46957.50,125.0,75.0,75.0,125.0
-2026-03-13 15:02:00+00:00,15m Confirmed Close: Opening Range High,[LONG] Hit Hard Stop 🛑 at 46840.00,-76.5,8.0,75.0,125.0
-2026-03-16 15:04:00+00:00,15m Confirmed Close: Opening Range High,[LONG] Hit Hard Take Profit 🎯 at 46973.50,125.0,86.0,75.0,125.0
+2026-03-13 15:01:00+00:00,15m Confirmed Close: Opening Range High,[LONG] Hit Hard Stop 🛑 at 46830.00,-76.5,11.0,75.0,125.0
+2026-03-16 15:00:00+00:00,15m Confirmed Close: Opening Range High,[LONG] Hit Hard Take Profit 🎯 at 46971.50,125.0,90.0,75.0,125.0
 2026-03-17 15:01:00+00:00,15m Confirmed Close: Opening Range High,[LONG] Hit Hard Take Profit 🎯 at 47041.50,125.0,12.0,75.0,125.0
-2026-03-18 15:17:00+00:00,15m Confirmed Close: Opening Range Low,[SHORT] Hit Hard Take Profit 🎯 at 46896.50,125.0,16.0,75.0,125.0
-2026-03-19 15:02:00+00:00,15m Confirmed Close: Opening Range Low,[SHORT] Hit Hard Stop 🛑 at 46111.00,-76.5,5.0,75.0,125.0
+2026-03-18 15:16:00+00:00,15m Confirmed Close: Opening Range Low,[SHORT] Hit Hard Take Profit 🎯 at 46889.50,125.0,17.0,75.0,125.0
+2026-03-19 15:00:00+00:00,15m Confirmed Close: Opening Range Low,[SHORT] Hit Hard Take Profit 🎯 at 45942.50,125.0,26.0,75.0,125.0
 2026-03-20 17:12:00+00:00,15m Touch: S1 Pivot,[SHORT] Hit Hard Stop 🛑 at 45839.00,-76.5,23.0,75.0,125.0
-2026-03-23 15:04:00+00:00,15m Confirmed Close: Opening Range High,[LONG] Hit Hard Stop 🛑 at 46191.00,-76.5,3.0,75.0,125.0
-2026-03-24 15:21:00+00:00,15m Confirmed Close: Opening Range Low,[SHORT] Hit Hard Take Profit 🎯 at 45957.50,125.0,22.0,75.0,125.0
-2026-03-25 15:03:00+00:00,15m Confirmed Close: Opening Range High,[LONG] Hit Hard Stop 🛑 at 46556.00,-76.5,13.0,75.0,125.0
+2026-03-23 15:00:00+00:00,15m Confirmed Close: Opening Range High,[SHORT] Hit Hard Stop 🛑 at 46239.00,-76.5,3.0,75.0,125.0
+2026-03-24 15:09:00+00:00,15m Confirmed Close: Opening Range Low,[SHORT] Hit Hard Take Profit 🎯 at 45964.50,125.0,34.0,75.0,125.0
+2026-03-25 15:01:00+00:00,15m Confirmed Close: Opening Range High,[LONG] Hit Hard Stop 🛑 at 46552.00,-76.5,15.0,75.0,125.0
 2026-03-26 15:00:00+00:00,15m Confirmed Close: Opening Range Low,[SHORT] Hit Hard Stop 🛑 at 46091.00,-76.5,10.0,75.0,125.0
-2026-03-27 15:06:00+00:00,15m Touch: S1 Pivot,[SHORT] Hit Break-Even 🛡️ at 45749.00,3.5,78.0,75.0,125.0
-2026-03-30 15:01:00+00:00,15m Touch: Daily Central Pivot,[SHORT] Hit Hard Stop 🛑 at 45504.00,-76.5,23.0,75.0,125.0
+2026-03-27 15:05:00+00:00,15m Touch: S1 Pivot,[SHORT] Hit Break-Even 🛡️ at 45759.00,3.5,80.0,75.0,125.0
+2026-03-30 15:00:00+00:00,15m Confirmed Close: Opening Range High,[SHORT] Hit Hard Stop 🛑 at 45511.00,-76.5,24.0,75.0,125.0
 2026-03-31 15:00:00+00:00,15m Confirmed Close: Opening Range High,[LONG] Hit Break-Even 🛡️ at 45725.00,3.5,10.0,75.0,125.0
+2026-04-01 15:01:00+00:00,15m Confirmed Close: Opening Range High,[LONG] Hit Hard Stop 🛑 at 46639.00,-76.5,19.0,75.0,125.0

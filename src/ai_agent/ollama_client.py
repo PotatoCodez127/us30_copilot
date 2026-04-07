@@ -32,7 +32,7 @@ def analyze_setup_with_ollama(setup_payload: dict, max_retries=3) -> str:
             response = client.chat(
                 model=model,
                 messages=messages,
-                options={"temperature": 0.2} # Low temperature for strict quantitative logic
+                options={"temperature": 0.0} # Low temperature for strict quantitative logic
             )
             return response['message']['content']
             
