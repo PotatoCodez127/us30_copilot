@@ -25,7 +25,6 @@ def aggregate():
         with open(file, 'r', encoding='utf-8') as f:
             content = f.read()
             
-            # Extract data using regex
             trades_m = re.search(r'Total Trades Taken:\s+(\d+)', content)
             profit_m = re.search(r'Net Profit:\s+\$([\d,\.-]+)', content)
             dd_m = re.search(r'Max Drawdown:\s+-([\d\.]+)%', content)
@@ -44,7 +43,6 @@ def aggregate():
         print("No valid metrics found in files.")
         return
         
-    # Calculate Averages
     avg_trades = sum(metrics['trades']) / total_runs
     avg_profit = sum(metrics['profit']) / total_runs
     avg_dd = sum(metrics['drawdown']) / total_runs

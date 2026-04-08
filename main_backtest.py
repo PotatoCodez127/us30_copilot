@@ -25,6 +25,11 @@ Q4_LEVELS = generate_tradingview_levels()
 
 def run_master_backtest(csv_filepath: str):
     print(f"{Color.CYAN}🚀 Initializing 11 AM Sniper Engine (Golden Window Edition)...{Color.RESET}")
+    
+    # --- DESTROY GHOST FILES ---
+    if os.path.exists('results/trade_log.csv'):
+        os.remove('results/trade_log.csv')
+    
     df = load_and_prep_data(csv_filepath)
     unique_dates = pd.Series(df.index.date).unique()
     all_logged_setups = []

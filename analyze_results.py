@@ -20,9 +20,7 @@ def analyze():
 
     df['timestamp'] = pd.to_datetime(df['timestamp'], utc=True)
     
-    # ==========================================
-    # PRE-CALCULATE TIMING FEATURES FIRST
-    # ==========================================
+    # Pre-calculate timing features first to avoid DataFrame slice errors
     df['day_of_week'] = df['timestamp'].dt.day_name()
     df['time_window'] = df['timestamp'].dt.strftime('%H:%M')
     total_by_day = df['day_of_week'].value_counts()
@@ -37,9 +35,7 @@ def analyze():
     df['peak_equity'] = df['equity'].cummax()
     df['drawdown_pct'] = ((df['peak_equity'] - df['equity']) / df['peak_equity']) * 100
 
-    # ==========================================
-    # NOW CATEGORIZE TRADES
-    # ==========================================
+    # Categorize Trades
     is_be = df['outcome'].str.contains('Break-Even', na=False, case=False)
     is_time_eject = df['outcome'].str.contains('Time Ejection', na=False, case=False)
     
@@ -75,7 +71,6 @@ def analyze():
             print("  No trades found in this category.")
             continue
             
-        # 1. Analyze by Day of the Week
         print(f"\n{Color.CYAN}➤ BY DAY OF THE WEEK{Color.RESET}")
         day_counts = subset['day_of_week'].value_counts()
         
@@ -88,13 +83,11 @@ def analyze():
             else:
                 print(f"  {day:<10} |  0 Trades")
 
-        # 2. Analyze by Micro-Timing (Top 5 Minutes)
         print(f"\n{Color.CYAN}➤ BY MICRO-TIMING (Top 5 Minutes){Color.RESET}")
         time_counts = subset['time_window'].value_counts().head(5) 
         for t_window, count in time_counts.items():
             print(f"  {t_window} UTC  | {count:>2} Trades")
 
-        # 3. Analyze by Direction
         print(f"\n{Color.CYAN}➤ BY DIRECTION{Color.RESET}")
         direction_counts = subset['outcome'].str.extract(r'\[(.*?)\]', expand=False).value_counts()
         if not direction_counts.empty:
