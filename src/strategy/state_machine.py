@@ -1,10 +1,13 @@
+from typing import Optional
+
 class US30SessionTracker:
     def __init__(self, or_high: float, or_low: float, daily_pivots: dict):
         self.or_high = or_high
         self.or_low = or_low
         self.pivots = daily_pivots
 
-    def update_state(self, candle_15m: dict, current_1m: dict) -> dict | None:
+    # --- THE FIX: Using Optional[dict] instead of dict | None ---
+    def update_state(self, candle_15m: dict, current_1m: dict) -> Optional[dict]:
         high = candle_15m['high']
         low = candle_15m['low']
         close = candle_15m['close']
