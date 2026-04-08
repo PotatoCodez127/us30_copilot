@@ -4,3 +4,5 @@
 # test_ai.py
 __pycache__
 tests
+batch_results
+results
