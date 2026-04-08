@@ -27,7 +27,7 @@ def fetch_live_data():
     return df
 
 def run_live_bot():
-    print(f"{Color.CYAN}🟢 Initializing Live US30 Copilot (11 AM Sniper Mode)...{Color.RESET}")
+    print(f"{Color.CYAN}🟢 Initializing Live US30 Copilot (Golden Window Edition)...{Color.RESET}")
     setup_logged_today = False
     current_trading_day = None
 
@@ -83,15 +83,27 @@ def run_live_bot():
             or_high = opening_range['high'].max()
             or_low = opening_range['low'].min()
 
+            # =======================================================
+            # 🛡️ THE QUANTITATIVE FILTERS (Hard-Coded Edge)
+            # =======================================================
+            # 1. Filter out the Mid-Week Chop
+            if now.strftime('%A') == 'Wednesday':
+                print(f"[{now.strftime('%H:%M:%S')} UTC] Mid-Week Chop Protocol: Bot sleeps on Wednesdays.", end='\r')
+                time.sleep(60)
+                continue
+
+            # 2. Wait for the 15:00 UTC Window to Open
             if now.hour < 15:
                 print(f"[{now.strftime('%H:%M:%S')} UTC] OR Formed: {or_high:.2f} / {or_low:.2f}. Waiting for 15:00 UTC Sniper Window...", end='\r')
                 time.sleep(60)
                 continue
             
-            if now.hour >= 18:
-                print(f"[{now.strftime('%H:%M:%S')} UTC] Trading window closed for the day.", end='\r')
+            # 3. The Golden Window: Kill trades after 15:30 UTC
+            if now.hour > 15 or (now.hour == 15 and now.minute > 30):
+                print(f"[{now.strftime('%H:%M:%S')} UTC] Golden Window Closed. No valid momentum today.", end='\r')
                 time.sleep(60)
                 continue
+            # =======================================================
 
             tracker = US30SessionTracker(or_high=or_high, or_low=or_low, daily_pivots=pivots)
             sniper_window_data = current_day_data.loc[f"{today_str} 15:00:00":]
@@ -129,7 +141,7 @@ def run_live_bot():
                     print(f"Trigger: {payload['trigger']}")
                     print(f"{Color.MAGENTA}======================================================{Color.RESET}")
                     
-                    # --- THE MISSING TAPE GENERATOR ---
+                    # --- THE LIVE TAPE GENERATOR ---
                     tape_start = latest_time - pd.Timedelta(minutes=15)
                     recent_tape = current_day_data.loc[tape_start:latest_time]
                     tape_str = "\n".join([
@@ -140,12 +152,10 @@ def run_live_bot():
                     payload['mfe_points'] = "0"
                     payload['mae_points'] = "0"
                     payload['timestamp'] = str(latest_time)
-                    # ----------------------------------
                     
                     print(f"{Color.CYAN}Calling AI for tape reading...{Color.RESET}")
                     ai_analysis = analyze_setup_with_ollama(payload)
                     
-                    # --- SYNCHRONIZED REGEX ---
                     dir_match = re.search(r'DIRECTION:\s*(LONG|SHORT|NONE)', ai_analysis, re.IGNORECASE)
                     sl_match = re.search(r'SL:\s*[\$]?([\d,]+\.?\d*)', ai_analysis)
                     tp_match = re.search(r'TP:\s*[\$]?([\d,]+\.?\d*)', ai_analysis)

@@ -24,7 +24,7 @@ def generate_tradingview_levels():
 Q4_LEVELS = generate_tradingview_levels()
 
 def run_master_backtest(csv_filepath: str):
-    print(f"{Color.CYAN}🚀 Initializing 11 AM Sniper Engine (Corrected Trade Order)...{Color.RESET}")
+    print(f"{Color.CYAN}🚀 Initializing 11 AM Sniper Engine (Golden Window Edition)...{Color.RESET}")
     df = load_and_prep_data(csv_filepath)
     unique_dates = pd.Series(df.index.date).unique()
     all_logged_setups = []
@@ -50,8 +50,17 @@ def run_master_backtest(csv_filepath: str):
                 trigger_time = pd.to_datetime(setup['timestamp'])
                 raw_entry = setup.get('context', {}).get('close_price', 0)
                 
-                if trigger_time.hour not in [15, 16, 17]: 
+                # =======================================================
+                # 🛡️ THE QUANTITATIVE FILTERS (Hard-Coded Edge)
+                # =======================================================
+                # 1. Filter out the Mid-Week Chop
+                if trigger_time.day_name() == 'Wednesday':
                     continue 
+                
+                # 2. The Golden Window: Only trade between 15:00 and 15:30 UTC
+                if trigger_time.hour != 15 or trigger_time.minute > 30:
+                    continue 
+                # =======================================================
                 
                 central_pivot = pivots['P']
                 if 'Opening Range Low' in setup['trigger'] and raw_entry > central_pivot:
@@ -96,23 +105,19 @@ def run_master_backtest(csv_filepath: str):
                         for idx, candle in future_data.iloc[1:].iterrows():
                             high, low, current_close = candle['high'], candle['low'], candle['close']
                             
-                            # 1. HARD TAKE PROFIT (Broker priority)
                             if high >= tp:
                                 outcome, exit_price, exit_time = "Hit Hard Take Profit 🎯", tp, idx
                                 break
                                 
-                            # 2. Break-Even Shield Update
                             if not be_hit and high >= (entry_price + risk_in_points):
                                 be_hit = True
                                 sl = max(sl, entry_price + 5.0)
                             
-                            # 3. HARD STOP LOSS (Broker priority)
                             if low <= sl:
                                 outcome = "Hit Break-Even 🛡️" if be_hit else "Hit Hard Stop 🛑"
                                 exit_price, exit_time = sl - SLIPPAGE_POINTS, idx
                                 break
                             
-                            # 4. TIME EJECTION: 90 mins (Manual priority)
                             mins_held = (idx - trigger_time).total_seconds() / 60.0
                             if mins_held >= 90:
                                 if current_close < entry_price: 
@@ -133,23 +138,19 @@ def run_master_backtest(csv_filepath: str):
                         for idx, candle in future_data.iloc[1:].iterrows():
                             high, low, current_close = candle['high'], candle['low'], candle['close']
                             
-                            # 1. HARD TAKE PROFIT (Broker priority)
                             if low <= tp:
                                 outcome, exit_price, exit_time = "Hit Hard Take Profit 🎯", tp, idx
                                 break
                                 
-                            # 2. Break-Even Shield Update
                             if not be_hit and low <= (entry_price - risk_in_points):
                                 be_hit = True
                                 sl = min(sl, entry_price - 5.0)
                             
-                            # 3. HARD STOP LOSS (Broker priority)
                             if high >= sl:
                                 outcome = "Hit Break-Even 🛡️" if be_hit else "Hit Hard Stop 🛑"
                                 exit_price, exit_time = sl + SLIPPAGE_POINTS, idx
                                 break
                             
-                            # 4. TIME EJECTION: 90 mins (Manual priority)
                             mins_held = (idx - trigger_time).total_seconds() / 60.0
                             if mins_held >= 90:
                                 if current_close > entry_price: 

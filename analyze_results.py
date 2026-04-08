@@ -20,6 +20,13 @@ def analyze():
 
     df['timestamp'] = pd.to_datetime(df['timestamp'], utc=True)
     
+    # ==========================================
+    # PRE-CALCULATE TIMING FEATURES FIRST
+    # ==========================================
+    df['day_of_week'] = df['timestamp'].dt.day_name()
+    df['time_window'] = df['timestamp'].dt.strftime('%H:%M')
+    total_by_day = df['day_of_week'].value_counts()
+    
     dollar_risk = ACCOUNT_SIZE * RISK_PERCENT
     valid_sl = df['sl_distance'].apply(lambda x: x if x > 0 else 75.0) if 'sl_distance' in df.columns else 75.0
     lot_size = dollar_risk / valid_sl
@@ -30,6 +37,9 @@ def analyze():
     df['peak_equity'] = df['equity'].cummax()
     df['drawdown_pct'] = ((df['peak_equity'] - df['equity']) / df['peak_equity']) * 100
 
+    # ==========================================
+    # NOW CATEGORIZE TRADES
+    # ==========================================
     is_be = df['outcome'].str.contains('Break-Even', na=False, case=False)
     is_time_eject = df['outcome'].str.contains('Time Ejection', na=False, case=False)
     
@@ -47,53 +57,53 @@ def analyze():
     print(f"Hard Loss Rate:         {(len(losses) / len(df)) * 100:.2f}%")
 
     # =================================================================================
-    # ☠️ NEW: DEEP AUTOPSY OF LOSING TRADES
+    # 🕵️‍♂️ DEEP AUTOPSY: FULL PROFILE (WINS, LOSSES, SCRATCHES)
     # =================================================================================
-    print(f"\n{Color.RED}===========================================================================")
-    print(f"☠️ DEEP AUTOPSY: PROFILING THE LOSING TRADES")
-    print(f"==========================================================================={Color.RESET}")
-    
-    if losses.empty:
-        print("No hard losses found to autopsy!")
-        return
 
-    # 1. Add Timing Features
-    losses = losses.copy()
-    losses['day_of_week'] = losses['timestamp'].dt.day_name()
-    losses['time_window'] = losses['timestamp'].dt.strftime('%H:%M')
+    profiles = [
+        ("☠️ PROFILING THE LOSING TRADES 🛑", losses, Color.RED),
+        ("🏆 PROFILING THE WINNING TRADES 🎯", wins, Color.GREEN),
+        ("🛡️ PROFILING THE SCRATCH/BE TRADES 🛡️", scratches, Color.YELLOW)
+    ]
 
-    # 2. Analyze by Day of the Week
-    print(f"\n{Color.YELLOW}➤ LOSSES BY DAY OF THE WEEK (Are certain days toxic?){Color.RESET}")
-    day_counts = losses['day_of_week'].value_counts()
-    total_losses = len(losses)
-    
-    # Compare against total trades taken on those days to find the true "Loss Rate" per day
-    df['day_of_week'] = df['timestamp'].dt.day_name()
-    total_by_day = df['day_of_week'].value_counts()
-    
-    for day in ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']:
-        if day in day_counts:
-            l_count = day_counts[day]
-            t_count = total_by_day.get(day, 0)
-            fail_rate = (l_count / t_count) * 100 if t_count > 0 else 0
-            print(f"  {day:<10} | {l_count:>2} Hard Stops | Failed {fail_rate:>5.1f}% of setups taken this day")
+    for title, subset, color in profiles:
+        print(f"\n{color}===========================================================================")
+        print(title)
+        print(f"==========================================================================={Color.RESET}")
+        
+        if subset.empty:
+            print("  No trades found in this category.")
+            continue
+            
+        # 1. Analyze by Day of the Week
+        print(f"\n{Color.CYAN}➤ BY DAY OF THE WEEK{Color.RESET}")
+        day_counts = subset['day_of_week'].value_counts()
+        
+        for day in ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']:
+            if day in day_counts:
+                l_count = day_counts[day]
+                t_count = total_by_day.get(day, 0)
+                rate = (l_count / t_count) * 100 if t_count > 0 else 0
+                print(f"  {day:<10} | {l_count:>2} Trades | {rate:>5.1f}% of total {day} setups")
+            else:
+                print(f"  {day:<10} |  0 Trades")
+
+        # 2. Analyze by Micro-Timing (Top 5 Minutes)
+        print(f"\n{Color.CYAN}➤ BY MICRO-TIMING (Top 5 Minutes){Color.RESET}")
+        time_counts = subset['time_window'].value_counts().head(5) 
+        for t_window, count in time_counts.items():
+            print(f"  {t_window} UTC  | {count:>2} Trades")
+
+        # 3. Analyze by Direction
+        print(f"\n{Color.CYAN}➤ BY DIRECTION{Color.RESET}")
+        direction_counts = subset['outcome'].str.extract(r'\[(.*?)\]', expand=False).value_counts()
+        if not direction_counts.empty:
+            for dir_val, count in direction_counts.items():
+                print(f"  {dir_val:<10} | {count:>2} Trades")
         else:
-            print(f"  {day:<10} |  0 Hard Stops")
+            print("  Could not parse direction.")
 
-    # 3. Analyze by Micro-Timing (Specific 15-min windows)
-    print(f"\n{Color.YELLOW}➤ LOSSES BY MICRO-TIMING (When are the traps sprung?){Color.RESET}")
-    # Group by HH:MM to see if the losses cluster at 15:00 vs 15:45
-    time_counts = losses['time_window'].value_counts().head(5) # Top 5 deadliest minutes
-    for t_window, count in time_counts.items():
-        print(f"  {t_window} UTC  | {count:>2} Hard Stops")
-
-    # 4. Analyze by Direction
-    print(f"\n{Color.YELLOW}➤ LOSSES BY DIRECTION{Color.RESET}")
-    direction_counts = losses['outcome'].str.extract(r'\[(.*?)\]', expand=False).value_counts()
-    for dir_val, count in direction_counts.items():
-        print(f"  {dir_val:<10} | {count:>2} Hard Stops")
-
-    print(f"\n{Color.RED}===========================================================================\n{Color.RESET}")
+    print(f"\n{Color.MAGENTA}===========================================================================\n{Color.RESET}")
 
 if __name__ == "__main__":
     analyze()
