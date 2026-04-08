@@ -1,32 +1,43 @@
 def generate_risk_assessment_prompt(setup_payload: dict) -> str:
-    return f"""
-    You are an elite quantitative Momentum trader trading the US30 Cash Market. 
-    Your edge is trading BREAKOUTS of the Opening Range and Daily Pivots.
-    
-    --- KEY LEVELS ESTABLISHED TODAY ---
-    Opening Range High: {setup_payload.get('context', {}).get('or_high', 'N/A')}
-    Opening Range Low: {setup_payload.get('context', {}).get('or_low', 'N/A')}
-    
-    --- LIVE TAPE (LAST 15 MINUTES) ---
-    {setup_payload.get('recent_tape', 'N/A')}
-
-    --- CURRENT TRIGGER ---
-    Event: {setup_payload.get('trigger', 'Unknown')}
-    Current Price: {setup_payload.get('context', {}).get('close_price', 'N/A')}
-
-    --- YOUR TASK ---
-    Analyze the live tape. We are looking for a STRONG BREAKOUT.
-    If price is at resistance (ORH/R1), look for strong momentum to LONG. 
-    If price is at support (ORL/S1), look for heavy selling pressure to SHORT.
-
-    1. **Tape Reading:** Describe the momentum. Is volume and price action supporting a breakout?
-    2. **Direction:** State LONG or SHORT. (Always trade WITH the breakout momentum).
-    3. **Stop Loss:** Place a safe, structural stop below the breakout candle origin or recent swing. Give the trade room to breathe.
-    4. **Take Profit:** Target a strict minimum 2:1 Risk/Reward ratio based on your Stop Loss distance.
-    
-    --- EXECUTION ---
-    DIRECTION: [LONG, SHORT, or NONE]
-    ENTRY: {setup_payload.get('context', {}).get('close_price', 'N/A')}
-    SL: [Exact Stop Loss Price]
-    TP: [Exact Take Profit Price]
     """
+    Generates a strict Chain-of-Thought (CoT) prompt for the LLM.
+    Forcing the AI to evaluate the tape before making a decision drastically reduces hallucinations.
+    """
+    
+    prompt = f"""
+You are an elite, cold, and calculating Institutional Quantitative Trading AI.
+Your ONLY objective is to analyze the following 15-minute rolling tape of the US30 index and determine if a structural breakout is legitimate or a trap.
+
+You have zero emotion. You do not gamble. If the tape is choppy, exhausted, or unclear, you reject the trade.
+
+=========================================
+🚨 SETUP DETECTED 🚨
+Trigger Level: {setup_payload.get('trigger', 'Unknown')}
+Entry Price: {setup_payload.get('context', {}).get('close_price', 'N/A')}
+Time of Trigger: {setup_payload.get('timestamp', 'Unknown')}
+=========================================
+
+📊 ROLLING 15-MINUTE TAPE:
+{setup_payload.get('recent_tape', 'N/A')}
+=========================================
+
+YOUR MISSION:
+You must analyze the tape and respond using EXACTLY the following structure. Do not deviate. 
+
+STEP 1: TAPE_ANALYSIS
+(Write 1-2 sentences analyzing the momentum. Are there strong consecutive closes pushing through the level, or is it alternating green/red doji chop?)
+
+STEP 2: EXHAUSTION_CHECK
+(Write 1 sentence. Did the price drop/rally significantly in a straight line just to reach this level? If yes, it is exhausted and you must reject.)
+
+STEP 3: TRAP_CHECK
+(Write 1 sentence. Is this breaking out after a period of consolidation, or is it a sudden, erratic spike that looks like a liquidity sweep?)
+
+STEP 4: EXECUTION
+(Based on your reasoning above, you must execute. Risk is exactly 75 points. Reward is exactly 125 points.)
+
+DIRECTION: [LONG, SHORT, or NONE]
+SL: [Calculate Entry +/- 75]
+TP: [Calculate Entry +/- 125]
+"""
+    return prompt
