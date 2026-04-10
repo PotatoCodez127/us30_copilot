@@ -23,6 +23,46 @@ def generate_tradingview_levels():
 
 Q4_LEVELS = generate_tradingview_levels()
 
+# =======================================================
+# 🧠 TEST 3: THE SEMANTIC TRANSLATOR
+# =======================================================
+def build_semantic_tape(current_day_data, trigger_time):
+    """Translates raw OHLC numbers into a semantic story for the LLM."""
+    tape_start = trigger_time - pd.Timedelta(minutes=15)
+    recent_tape = current_day_data.loc[tape_start:trigger_time]
+
+    tape_lines = []
+    for idx, row in recent_tape.iterrows():
+        time_str = idx.strftime('%H:%M')
+        o, h, l, c = row['open'], row['high'], row['low'], row['close']
+        
+        # 1. Math
+        point_change = c - o
+        total_range = h - l
+        body = abs(c - o)
+        if total_range == 0: total_range = 0.1
+        
+        # 2. Direction
+        direction = "Bullish" if point_change > 0 else "Bearish" if point_change < 0 else "Neutral"
+        
+        # 3. Shape Analysis
+        if body <= (total_range * 0.25):
+            shape = "Indecision/Doji"
+        elif body >= (total_range * 0.75):
+            shape = "Strong Momentum"
+        else:
+            shape = "Standard Candle"
+            
+        # 4. Volatility Context
+        vol = "High Volatility" if total_range > 30 else "Low Volatility" if total_range < 10 else "Normal Volatility"
+        
+        # 5. The Semantic String
+        tape_lines.append(f"[{time_str}] {direction} | Net: {point_change:+.1f} pts | {shape} | {vol}")
+        
+    return "\n".join(tape_lines)
+# =======================================================
+
+
 def run_master_backtest(csv_filepath: str):
     print(f"{Color.CYAN}🚀 Initializing 11 AM Sniper Engine (Golden Window Edition)...{Color.RESET}")
     
@@ -73,10 +113,19 @@ def run_master_backtest(csv_filepath: str):
                 if 'Opening Range High' in setup['trigger'] and raw_entry < central_pivot:
                     continue 
                 
-                print(f"{Color.YELLOW}🔍 SETUP TRIGGERED: {current_date_str} at {setup['timestamp']} | Level: {setup['trigger']}{Color.RESET}")
+                # print(f"{Color.YELLOW}🔍 SETUP TRIGGERED: {current_date_str} at {setup['timestamp']} | Level: {setup['trigger']}{Color.RESET}")
+                
+                # --- OVERWRITE RAW TAPE WITH SEMANTIC TAPE ---
+                setup['recent_tape'] = build_semantic_tape(current_day_data, trigger_time)
+                # ---------------------------------------------
                 
                 ai_analysis = analyze_setup_with_ollama(setup)
                 
+                # 👇 ADD THESE 3 LINES TO READ THE AI'S MIND 👇
+                print(f"\n{Color.CYAN}--- AI RAW THOUGHT PROCESS ---{Color.RESET}")
+                print(ai_analysis)
+                print(f"{Color.CYAN}------------------------------\n{Color.RESET}")
+
                 setup['trade_outcome'] = "Skipped"
                 setup['pnl_points'], setup['holding_time_mins'] = 0.0, 0
                 setup['sl_distance'], setup['tp_distance'] = 0.0, 0.0
