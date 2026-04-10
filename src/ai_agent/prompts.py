@@ -1,32 +1,38 @@
 def generate_risk_assessment_prompt(setup_payload: dict) -> str:
-    return f"""
-    You are an elite quantitative Momentum trader trading the US30 Cash Market. 
-    Your edge is trading BREAKOUTS of the Opening Range and Daily Pivots.
-    
-    --- KEY LEVELS ESTABLISHED TODAY ---
-    Opening Range High: {setup_payload.get('context', {}).get('or_high', 'N/A')}
-    Opening Range Low: {setup_payload.get('context', {}).get('or_low', 'N/A')}
-    
-    --- LIVE TAPE (LAST 15 MINUTES) ---
-    {setup_payload.get('recent_tape', 'N/A')}
-
-    --- CURRENT TRIGGER ---
-    Event: {setup_payload.get('trigger', 'Unknown')}
-    Current Price: {setup_payload.get('context', {}).get('close_price', 'N/A')}
-
-    --- YOUR TASK ---
-    Analyze the live tape. We are looking for a STRONG BREAKOUT.
-    If price is at resistance (ORH/R1), look for strong momentum to LONG. 
-    If price is at support (ORL/S1), look for heavy selling pressure to SHORT.
-
-    1. **Tape Reading:** Describe the momentum. Is volume and price action supporting a breakout?
-    2. **Direction:** State LONG or SHORT. (Always trade WITH the breakout momentum).
-    3. **Stop Loss:** Place a safe, structural stop below the breakout candle origin or recent swing. Give the trade room to breathe.
-    4. **Take Profit:** Target a strict minimum 2:1 Risk/Reward ratio based on your Stop Loss distance.
-    
-    --- EXECUTION ---
-    DIRECTION: [LONG, SHORT, or NONE]
-    ENTRY: {setup_payload.get('context', {}).get('close_price', 'N/A')}
-    SL: [Exact Stop Loss Price]
-    TP: [Exact Take Profit Price]
     """
+    Generates a draconian Chain-of-Thought (CoT) prompt.
+    Pre-calculates all math to prevent the LLM from hallucinating its own risk parameters.
+    """
+    
+    entry = setup_payload.get('context', {}).get('close_price', 0)
+    sl_long = entry - 75.0
+    tp_long = entry + 125.0
+    sl_short = entry + 75.0
+    tp_short = entry - 125.0
+    
+    prompt = f"""
+You are an elite, cold, and calculating Institutional Quantitative Trading AI.
+Your ONLY objective is to analyze the following 15-minute rolling tape of the US30 index and determine if a structural breakout is legitimate or a trap.
+
+=========================================
+🚨 SETUP DETECTED 🚨
+Trigger Level: {setup_payload.get('trigger', 'Unknown')}
+Entry Price: {entry}
+Time of Trigger: {setup_payload.get('timestamp', 'Unknown')}
+=========================================
+
+📊 ROLLING 15-MINUTE SEMANTIC TAPE:
+{setup_payload.get('recent_tape', 'N/A')}
+=========================================
+
+CRITICAL INSTRUCTION: You are strictly forbidden from writing conversational paragraphs. You must output EXACTLY the following template. Fill in the brackets. Do not add any other text.
+
+STEP 1 TAPE_ANALYSIS: [Write 1 sentence assessing the semantic tape]
+STEP 2 EXHAUSTION_CHECK: [Write 1 sentence checking if volatility is too high or price overextended]
+STEP 3 TRAP_CHECK: [Write 1 sentence deciding if this is a clean breakout or fakeout]
+STEP 4 EXECUTION:
+DIRECTION: [Output exactly LONG, SHORT, or NONE]
+SL: [If LONG output {sl_long}. If SHORT output {sl_short}. If NONE output 0]
+TP: [If LONG output {tp_long}. If SHORT output {tp_short}. If NONE output 0]
+"""
+    return prompt
