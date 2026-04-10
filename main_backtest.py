@@ -224,6 +224,8 @@ def run_master_backtest(csv_filepath: str):
                     trade_taken_today = True 
 
     if all_logged_setups:
+        import json # Ensure json is imported at the top of your file
+        
         os.makedirs('results', exist_ok=True)
         export_df = pd.DataFrame([{
             'timestamp': t['timestamp'],
@@ -235,6 +237,34 @@ def run_master_backtest(csv_filepath: str):
             'tp_distance': t.get('tp_distance', 0)
         } for t in all_logged_setups])
         export_df.to_csv('results/trade_log.csv', index=False)
+        
+        # =======================================================
+        # 🧠 RAG HARVESTER: Saving Semantic Tapes for the AI
+        # =======================================================
+        memory_data = []
+        for t in all_logged_setups:
+            # Only save the extreme winners and losers for the AI to learn from
+            if t['pnl_points'] >= 100.0 or t['pnl_points'] <= -50.0:
+                classification = "VALID BREAKOUT" if t['pnl_points'] > 0 else "TRAP / CHOP"
+                memory_data.append({
+                    'id': str(t['timestamp']).replace(' ', '_'),
+                    'tape': t['recent_tape'],
+                    'classification': classification,
+                    'pnl': t['pnl_points']
+                })
+                
+        # Append to a master memory bank
+        memory_file = 'results/master_memory_bank.json'
+        if os.path.exists(memory_file):
+            with open(memory_file, 'r') as f:
+                existing_memory = json.load(f)
+            existing_memory.extend(memory_data)
+        else:
+            existing_memory = memory_data
+            
+        with open(memory_file, 'w') as f:
+            json.dump(existing_memory, f, indent=4)
+        # =======================================================
 
 if __name__ == "__main__":
     run_master_backtest("data/historical_us30_1m.csv")
