@@ -2,6 +2,7 @@ import pandas as pd
 import re
 import os
 import json
+import chromadb
 from src.data_feed.historical import load_and_prep_data, simulate_ny_session
 from src.math_engine.pivots import calculate_daily_pivots
 from src.ai_agent.ollama_client import analyze_setup_with_ollama
@@ -55,8 +56,9 @@ def build_semantic_tape(current_day_data, trigger_time):
     return "\n".join(tape_lines)
 
 def run_master_backtest(csv_filepath: str):
-    print(f"{Color.CYAN}🚀 Initializing 11 AM Sniper Engine (Golden Window Edition)...{Color.RESET}")
+    print(f"{Color.CYAN}🚀 Initializing 11 AM Sniper Engine (RAG-Powered Edition)...{Color.RESET}")
     
+    # --- DESTROY GHOST FILES ---
     if os.path.exists('results/trade_log.csv'):
         os.remove('results/trade_log.csv')
     
@@ -85,6 +87,9 @@ def run_master_backtest(csv_filepath: str):
                 trigger_time = pd.to_datetime(setup['timestamp'])
                 raw_entry = setup.get('context', {}).get('close_price', 0)
                 
+                # =======================================================
+                # 🛡️ THE QUANTITATIVE FILTERS
+                # =======================================================
                 if trigger_time.day_name() == 'Wednesday':
                     continue 
                 
@@ -96,11 +101,42 @@ def run_master_backtest(csv_filepath: str):
                     continue 
                 if 'Opening Range High' in setup['trigger'] and raw_entry < central_pivot:
                     continue 
+                # =======================================================
                 
                 print(f"{Color.YELLOW}🔍 SETUP TRIGGERED: {current_date_str} at {setup['timestamp']} | Level: {setup['trigger']}{Color.RESET}")
                 
-                setup['recent_tape'] = build_semantic_tape(current_day_data, trigger_time)
+                # --- 1. Generate Semantic Tape ---
+                current_semantic_tape = build_semantic_tape(current_day_data, trigger_time)
+                setup['recent_tape'] = current_semantic_tape
                 
+                # --- 2. RAG RETRIEVAL (Query ChromaDB) ---
+                setup['historical_context'] = "No historical data available."
+                try:
+                    db_path = os.path.join(os.getcwd(), "data", "rag_db")
+                    if os.path.exists(db_path):
+                        rag_client = chromadb.PersistentClient(path=db_path)
+                        rag_collection = rag_client.get_or_create_collection(name="us30_setups")
+                        
+                        if rag_collection.count() > 0:
+                            print(f"{Color.CYAN}🧠 Querying RAG Memory Bank for similar setups...{Color.RESET}")
+                            results = rag_collection.query(
+                                query_texts=[current_semantic_tape],
+                                n_results=3 # Get the top 3 closest historical matches
+                            )
+                            
+                            hist_text = ""
+                            if results['documents'] and len(results['documents'][0]) > 0:
+                                for idx, doc in enumerate(results['documents'][0]):
+                                    meta = results['metadatas'][0][idx]
+                                    hist_text += f"--- SIMILAR MATCH #{idx+1} ---\n"
+                                    hist_text += f"TAPE:\n{doc}\n"
+                                    hist_text += f"ACTUAL OUTCOME: {meta['classification']} (PnL: {meta['pnl']} pts)\n\n"
+                                setup['historical_context'] = hist_text
+                except Exception as e:
+                    print(f"{Color.RED}⚠️ RAG Retrieval skipped or failed: {e}{Color.RESET}")
+                # ------------------------------------------
+
+                # --- 3. Call the AI with the Injected Context ---
                 ai_analysis = analyze_setup_with_ollama(setup)
                 
                 setup['trade_outcome'] = "Skipped"
@@ -213,7 +249,9 @@ def run_master_backtest(csv_filepath: str):
         } for t in all_logged_setups])
         export_df.to_csv('results/trade_log.csv', index=False)
         
-        # --- RAG HARVESTER (UTF-8 Enforced) ---
+        # =======================================================
+        # 🧠 RAG HARVESTER: Saving Semantic Tapes for the AI
+        # =======================================================
         try:
             memory_data = []
             for t in all_logged_setups:
@@ -245,6 +283,7 @@ def run_master_backtest(csv_filepath: str):
                     
         except Exception as e:
             print(f"{Color.RED}🚨 Failed to save to JSON memory bank: {e}{Color.RESET}")
+        # =======================================================
 
 if __name__ == "__main__":
     run_master_backtest("data/historical_us30_1m.csv")
