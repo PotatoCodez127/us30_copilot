@@ -1,6 +1,7 @@
 import pandas as pd
 import re
 import os
+import json
 from src.data_feed.historical import load_and_prep_data, simulate_ny_session
 from src.math_engine.pivots import calculate_daily_pivots
 from src.ai_agent.ollama_client import analyze_setup_with_ollama
@@ -23,9 +24,6 @@ def generate_tradingview_levels():
 
 Q4_LEVELS = generate_tradingview_levels()
 
-# =======================================================
-# 🧠 TEST 3: THE SEMANTIC TRANSLATOR
-# =======================================================
 def build_semantic_tape(current_day_data, trigger_time):
     """Translates raw OHLC numbers into a semantic story for the LLM."""
     tape_start = trigger_time - pd.Timedelta(minutes=15)
@@ -36,16 +34,13 @@ def build_semantic_tape(current_day_data, trigger_time):
         time_str = idx.strftime('%H:%M')
         o, h, l, c = row['open'], row['high'], row['low'], row['close']
         
-        # 1. Math
         point_change = c - o
         total_range = h - l
         body = abs(c - o)
         if total_range == 0: total_range = 0.1
         
-        # 2. Direction
         direction = "Bullish" if point_change > 0 else "Bearish" if point_change < 0 else "Neutral"
         
-        # 3. Shape Analysis
         if body <= (total_range * 0.25):
             shape = "Indecision/Doji"
         elif body >= (total_range * 0.75):
@@ -53,20 +48,15 @@ def build_semantic_tape(current_day_data, trigger_time):
         else:
             shape = "Standard Candle"
             
-        # 4. Volatility Context
         vol = "High Volatility" if total_range > 30 else "Low Volatility" if total_range < 10 else "Normal Volatility"
         
-        # 5. The Semantic String
         tape_lines.append(f"[{time_str}] {direction} | Net: {point_change:+.1f} pts | {shape} | {vol}")
         
     return "\n".join(tape_lines)
-# =======================================================
-
 
 def run_master_backtest(csv_filepath: str):
     print(f"{Color.CYAN}🚀 Initializing 11 AM Sniper Engine (Golden Window Edition)...{Color.RESET}")
     
-    # --- DESTROY GHOST FILES ---
     if os.path.exists('results/trade_log.csv'):
         os.remove('results/trade_log.csv')
     
@@ -95,17 +85,11 @@ def run_master_backtest(csv_filepath: str):
                 trigger_time = pd.to_datetime(setup['timestamp'])
                 raw_entry = setup.get('context', {}).get('close_price', 0)
                 
-                # =======================================================
-                # 🛡️ THE QUANTITATIVE FILTERS (Hard-Coded Edge)
-                # =======================================================
-                # 1. Filter out the Mid-Week Chop
                 if trigger_time.day_name() == 'Wednesday':
                     continue 
                 
-                # 2. The Golden Window: Only trade between 15:00 and 15:30 UTC
                 if trigger_time.hour != 15 or trigger_time.minute > 30:
                     continue 
-                # =======================================================
                 
                 central_pivot = pivots['P']
                 if 'Opening Range Low' in setup['trigger'] and raw_entry > central_pivot:
@@ -113,19 +97,12 @@ def run_master_backtest(csv_filepath: str):
                 if 'Opening Range High' in setup['trigger'] and raw_entry < central_pivot:
                     continue 
                 
-                # print(f"{Color.YELLOW}🔍 SETUP TRIGGERED: {current_date_str} at {setup['timestamp']} | Level: {setup['trigger']}{Color.RESET}")
+                print(f"{Color.YELLOW}🔍 SETUP TRIGGERED: {current_date_str} at {setup['timestamp']} | Level: {setup['trigger']}{Color.RESET}")
                 
-                # --- OVERWRITE RAW TAPE WITH SEMANTIC TAPE ---
                 setup['recent_tape'] = build_semantic_tape(current_day_data, trigger_time)
-                # ---------------------------------------------
                 
                 ai_analysis = analyze_setup_with_ollama(setup)
                 
-                # 👇 ADD THESE 3 LINES TO READ THE AI'S MIND 👇
-                print(f"\n{Color.CYAN}--- AI RAW THOUGHT PROCESS ---{Color.RESET}")
-                print(ai_analysis)
-                print(f"{Color.CYAN}------------------------------\n{Color.RESET}")
-
                 setup['trade_outcome'] = "Skipped"
                 setup['pnl_points'], setup['holding_time_mins'] = 0.0, 0
                 setup['sl_distance'], setup['tp_distance'] = 0.0, 0.0
@@ -224,8 +201,6 @@ def run_master_backtest(csv_filepath: str):
                     trade_taken_today = True 
 
     if all_logged_setups:
-        import json # Ensure json is imported at the top of your file
-        
         os.makedirs('results', exist_ok=True)
         export_df = pd.DataFrame([{
             'timestamp': t['timestamp'],
@@ -238,33 +213,38 @@ def run_master_backtest(csv_filepath: str):
         } for t in all_logged_setups])
         export_df.to_csv('results/trade_log.csv', index=False)
         
-        # =======================================================
-        # 🧠 RAG HARVESTER: Saving Semantic Tapes for the AI
-        # =======================================================
-        memory_data = []
-        for t in all_logged_setups:
-            # Only save the extreme winners and losers for the AI to learn from
-            if t['pnl_points'] >= 100.0 or t['pnl_points'] <= -50.0:
-                classification = "VALID BREAKOUT" if t['pnl_points'] > 0 else "TRAP / CHOP"
-                memory_data.append({
-                    'id': str(t['timestamp']).replace(' ', '_'),
-                    'tape': t['recent_tape'],
-                    'classification': classification,
-                    'pnl': t['pnl_points']
-                })
+        # --- RAG HARVESTER (UTF-8 Enforced) ---
+        try:
+            memory_data = []
+            for t in all_logged_setups:
+                if t['pnl_points'] >= 100.0 or t['pnl_points'] <= -50.0:
+                    classification = "VALID BREAKOUT" if t['pnl_points'] > 0 else "TRAP / CHOP"
+                    memory_data.append({
+                        'id': str(t['timestamp']).replace(' ', '_'),
+                        'tape': t['recent_tape'],
+                        'classification': classification,
+                        'pnl': t['pnl_points']
+                    })
+                    
+            if memory_data:
+                memory_file = os.path.join('results', 'master_memory_bank.json')
+                existing_memory = []
                 
-        # Append to a master memory bank
-        memory_file = 'results/master_memory_bank.json'
-        if os.path.exists(memory_file):
-            with open(memory_file, 'r') as f:
-                existing_memory = json.load(f)
-            existing_memory.extend(memory_data)
-        else:
-            existing_memory = memory_data
-            
-        with open(memory_file, 'w') as f:
-            json.dump(existing_memory, f, indent=4)
-        # =======================================================
+                if os.path.exists(memory_file):
+                    with open(memory_file, 'r', encoding='utf-8') as f:
+                        try:
+                            existing_memory = json.load(f)
+                        except Exception:
+                            print(f"{Color.YELLOW}⚠️ Warning: memory bank was corrupted/empty. Overwriting with new data.{Color.RESET}")
+                            existing_memory = []
+                            
+                existing_memory.extend(memory_data)
+                
+                with open(memory_file, 'w', encoding='utf-8') as f:
+                    json.dump(existing_memory, f, indent=4)
+                    
+        except Exception as e:
+            print(f"{Color.RED}🚨 Failed to save to JSON memory bank: {e}{Color.RESET}")
 
 if __name__ == "__main__":
     run_master_backtest("data/historical_us30_1m.csv")

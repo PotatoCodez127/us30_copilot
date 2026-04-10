@@ -6,9 +6,14 @@ class Color:
     GREEN, CYAN, YELLOW, RED, MAGENTA, WHITE, RESET = '\033[92m', '\033[96m', '\033[93m', '\033[91m', '\033[95m', '\033[97m', '\033[0m'
 
 def aggregate():
-    output_dir = "batch_results"
+    session_name = input(f"{Color.CYAN}Enter the name of the test session to aggregate (e.g., test_3): {Color.RESET}").strip()
+    if not session_name:
+        session_name = "default_run"
+        
+    output_dir = f"batch_results/{session_name}"
+    
     if not os.path.exists(output_dir):
-        print(f"{Color.RED}No batch_results folder found. Run batch_runner.py first!{Color.RESET}")
+        print(f"{Color.RED}No folder found at {output_dir}. Run batch_runner.py first!{Color.RESET}")
         return
         
     files = glob.glob(f"{output_dir}/*.txt")
