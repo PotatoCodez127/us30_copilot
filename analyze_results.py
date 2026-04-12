@@ -6,7 +6,7 @@ class Color:
 
 # --- ACCOUNT PARAMETERS ---
 ACCOUNT_SIZE = 100.0 
-RISK_PERCENT = 0.10  # 10% Risk per trade
+RISK_PERCENT = 0.3  # 10% Risk per trade
 COMMISSION_PER_LOT = 0.00
 
 def analyze():

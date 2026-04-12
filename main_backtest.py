@@ -166,7 +166,7 @@ def run_master_backtest(csv_filepath: str):
                     if direction == 'LONG':
                         entry_price = raw_entry + SLIPPAGE_POINTS
                         sl = entry_price - risk_in_points 
-                        tp = entry_price + 125.0 
+                        tp = entry_price + 250.0
                         exit_price = future_data['close'].iloc[-1] if not future_data.empty else entry_price
                         exit_time = future_data.index[-1] if not future_data.empty else trigger_idx
 
@@ -199,7 +199,7 @@ def run_master_backtest(csv_filepath: str):
                     elif direction == 'SHORT':
                         entry_price = raw_entry - SLIPPAGE_POINTS
                         sl = entry_price + risk_in_points 
-                        tp = entry_price - 125.0 
+                        tp = entry_price - 250.0 
                         exit_price = future_data['close'].iloc[-1] if not future_data.empty else entry_price
                         exit_time = future_data.index[-1] if not future_data.empty else trigger_idx
 
