@@ -4,10 +4,12 @@ def generate_risk_assessment_prompt(setup_payload: dict) -> str:
     """
     
     entry = setup_payload.get('context', {}).get('close_price', 0)
-    sl_long = entry - 75.0
-    tp_long = entry + 125.0
-    sl_short = entry + 75.0
-    tp_short = entry - 125.0
+    # --- WIDENED THE BOUNDS FOR US30 VOLATILITY ---
+    sl_long = entry - 150.0
+    tp_long = entry + 250.0
+    sl_short = entry + 150.0
+    tp_short = entry - 250.0
+    # ----------------------------------------------
     
     historical_context = setup_payload.get('historical_context', 'No historical data available.')
     

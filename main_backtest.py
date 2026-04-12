@@ -51,7 +51,8 @@ def build_semantic_tape(current_day_data, trigger_time):
             
         vol = "High Volatility" if total_range > 30 else "Low Volatility" if total_range < 10 else "Normal Volatility"
         
-        tape_lines.append(f"[{time_str}] {direction} | Net: {point_change:+.1f} pts | {shape} | {vol}")
+        # We inject the Close Price (c) so the AI knows EXACTLY where the market is
+        tape_lines.append(f"[{time_str}] Close: {c:.1f} | {direction} | Net: {point_change:+.1f} pts | {shape} | {vol}")
         
     return "\n".join(tape_lines)
 
@@ -150,9 +151,11 @@ def run_master_backtest(csv_filepath: str):
                 if dir_match and dir_match.group(1).upper() in ['LONG', 'SHORT'] and sl_match and tp_match: 
                     direction = dir_match.group(1).upper()
                     
-                    risk_in_points = 75.0
+                    # --- WIDENED THE BOUNDS FOR US30 VOLATILITY ---
+                    risk_in_points = 150.0
                     setup['sl_distance'] = risk_in_points
-                    setup['tp_distance'] = 125.0 
+                    setup['tp_distance'] = 250.0 
+                    # ----------------------------------------------
 
                     future_data = current_day_data.loc[setup['timestamp'] : f"{current_date_str} 20:00:00+00:00"]
                     trigger_idx = future_data.index[0] if not future_data.empty else trigger_time
