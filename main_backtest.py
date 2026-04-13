@@ -189,7 +189,7 @@ def run_master_backtest(csv_filepath: str):
                                 break
                             
                             mins_held = (idx - trigger_time).total_seconds() / 60.0
-                            if mins_held >= 90:
+                            if mins_held >= 180:
                                 if current_close < entry_price: 
                                     outcome, exit_price, exit_time = "Time Ejection ⏳", current_close - SLIPPAGE_POINTS, idx
                                     break
@@ -222,7 +222,7 @@ def run_master_backtest(csv_filepath: str):
                                 break
                             
                             mins_held = (idx - trigger_time).total_seconds() / 60.0
-                            if mins_held >= 90:
+                            if mins_held >= 180:
                                 if current_close > entry_price: 
                                     outcome, exit_price, exit_time = "Time Ejection ⏳", current_close + SLIPPAGE_POINTS, idx
                                     break
