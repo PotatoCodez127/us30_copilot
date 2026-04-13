@@ -26,12 +26,18 @@ def build_vector_db():
     ids = []
     
     added_count = 0
+    # --- IN-MEMORY DEDUPLICATION TRACKER ---
+    seen_ids = set() 
+    # ---------------------------------------
     
     for tape in tapes:
-        if len(collection.get(ids=[tape['id']])['ids']) == 0:
+        tape_id = tape['id']
+        # Check if it's NOT in our staging list AND NOT in the database
+        if tape_id not in seen_ids and len(collection.get(ids=[tape_id])['ids']) == 0:
+            seen_ids.add(tape_id)
             documents.append(tape['tape'])
             metadatas.append({"classification": tape['classification'], "pnl": tape['pnl']})
-            ids.append(tape['id'])
+            ids.append(tape_id)
             added_count += 1
 
     if added_count > 0:
@@ -40,7 +46,7 @@ def build_vector_db():
             metadatas=metadatas,
             ids=ids
         )
-        print(f"{Color.GREEN}✅ Successfully vectorized and stored {added_count} new historical setups.{Color.RESET}")
+        print(f"{Color.GREEN}✅ Successfully vectorized and stored {added_count} unique historical setups.{Color.RESET}")
     else:
         print(f"{Color.YELLOW}⚠️ DB is already up to date. No new setups found.{Color.RESET}")
         
