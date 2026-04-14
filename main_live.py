@@ -4,6 +4,7 @@ import pandas as pd
 from datetime import datetime, timezone
 import re
 import os
+import chromadb
 
 from src.math_engine.pivots import calculate_daily_pivots
 from src.strategy.state_machine import US30SessionTracker
@@ -13,6 +14,36 @@ class Color:
     GREEN, CYAN, YELLOW, RED, MAGENTA, WHITE, RESET = '\033[92m', '\033[96m', '\033[93m', '\033[91m', '\033[95m', '\033[97m', '\033[0m'
 
 TICKER = "^DJI"
+
+def build_semantic_tape(current_day_data, trigger_time):
+    """Translates raw OHLC numbers into a semantic story for the LLM."""
+    tape_start = trigger_time - pd.Timedelta(minutes=15)
+    recent_tape = current_day_data.loc[tape_start:trigger_time]
+
+    tape_lines = []
+    for idx, row in recent_tape.iterrows():
+        time_str = idx.strftime('%H:%M')
+        o, h, l, c = row['open'], row['high'], row['low'], row['close']
+        
+        point_change = c - o
+        total_range = h - l
+        body = abs(c - o)
+        if total_range == 0: total_range = 0.1
+        
+        direction = "Bullish" if point_change > 0 else "Bearish" if point_change < 0 else "Neutral"
+        
+        if body <= (total_range * 0.25):
+            shape = "Indecision/Doji"
+        elif body >= (total_range * 0.75):
+            shape = "Strong Momentum"
+        else:
+            shape = "Standard Candle"
+            
+        vol = "High Volatility" if total_range > 30 else "Low Volatility" if total_range < 10 else "Normal Volatility"
+        
+        tape_lines.append(f"[{time_str}] Close: {c:.1f} | {direction} | Net: {point_change:+.1f} pts | {shape} | {vol}")
+        
+    return "\n".join(tape_lines)
 
 def fetch_live_data():
     df = yf.download(TICKER, period="5d", interval="1m", progress=False)
@@ -27,7 +58,7 @@ def fetch_live_data():
     return df
 
 def run_live_bot():
-    print(f"{Color.CYAN}🟢 Initializing Live US30 Copilot (Golden Window Edition)...{Color.RESET}")
+    print(f"{Color.CYAN}🟢 Initializing Live US30 Copilot (RAG-Powered Edition)...{Color.RESET}")
     setup_logged_today = False
     current_trading_day = None
 
@@ -84,21 +115,18 @@ def run_live_bot():
             or_low = opening_range['low'].min()
 
             # =======================================================
-            # 🛡️ THE QUANTITATIVE FILTERS (Hard-Coded Edge)
+            # 🛡️ THE QUANTITATIVE FILTERS
             # =======================================================
-            # 1. Filter out the Mid-Week Chop
             if now.strftime('%A') == 'Wednesday':
                 print(f"[{now.strftime('%H:%M:%S')} UTC] Mid-Week Chop Protocol: Bot sleeps on Wednesdays.", end='\r')
                 time.sleep(60)
                 continue
 
-            # 2. Wait for the 15:00 UTC Window to Open
             if now.hour < 15:
                 print(f"[{now.strftime('%H:%M:%S')} UTC] OR Formed: {or_high:.2f} / {or_low:.2f}. Waiting for 15:00 UTC Sniper Window...", end='\r')
                 time.sleep(60)
                 continue
             
-            # 3. The Golden Window: Kill trades after 15:30 UTC
             if now.hour > 15 or (now.hour == 15 and now.minute > 30):
                 print(f"[{now.strftime('%H:%M:%S')} UTC] Golden Window Closed. No valid momentum today.", end='\r')
                 time.sleep(60)
@@ -141,19 +169,41 @@ def run_live_bot():
                     print(f"Trigger: {payload['trigger']}")
                     print(f"{Color.MAGENTA}======================================================{Color.RESET}")
                     
-                    # --- THE LIVE TAPE GENERATOR ---
-                    tape_start = latest_time - pd.Timedelta(minutes=15)
-                    recent_tape = current_day_data.loc[tape_start:latest_time]
-                    tape_str = "\n".join([
-                        f"{idx.strftime('%H:%M')} | O:{row['open']:.2f} H:{row['high']:.2f} L:{row['low']:.2f} C:{row['close']:.2f}" 
-                        for idx, row in recent_tape.iterrows()
-                    ])
-                    payload['recent_tape'] = tape_str
+                    # --- THE SEMANTIC TAPE GENERATOR ---
+                    current_semantic_tape = build_semantic_tape(current_day_data, latest_time)
+                    payload['recent_tape'] = current_semantic_tape
                     payload['mfe_points'] = "0"
                     payload['mae_points'] = "0"
                     payload['timestamp'] = str(latest_time)
                     
-                    print(f"{Color.CYAN}Calling AI for tape reading...{Color.RESET}")
+                    # --- RAG RETRIEVAL (Query ChromaDB) ---
+                    payload['historical_context'] = "No historical data available."
+                    try:
+                        db_path = os.path.join(os.getcwd(), "data", "rag_db")
+                        if os.path.exists(db_path):
+                            rag_client = chromadb.PersistentClient(path=db_path)
+                            rag_collection = rag_client.get_or_create_collection(name="us30_setups")
+                            
+                            if rag_collection.count() > 0:
+                                print(f"{Color.CYAN}🧠 Querying RAG Memory Bank for similar live setups...{Color.RESET}")
+                                results = rag_collection.query(
+                                    query_texts=[current_semantic_tape],
+                                    n_results=3 
+                                )
+                                
+                                hist_text = ""
+                                if results['documents'] and len(results['documents'][0]) > 0:
+                                    for idx, doc in enumerate(results['documents'][0]):
+                                        meta = results['metadatas'][0][idx]
+                                        hist_text += f"--- SIMILAR MATCH #{idx+1} ---\n"
+                                        hist_text += f"TAPE:\n{doc}\n"
+                                        hist_text += f"ACTUAL OUTCOME: {meta['classification']} (PnL: {meta['pnl']} pts)\n\n"
+                                    payload['historical_context'] = hist_text
+                    except Exception as e:
+                        print(f"{Color.RED}⚠️ RAG Retrieval skipped or failed: {e}{Color.RESET}")
+                    # ------------------------------------------
+                    
+                    print(f"{Color.CYAN}Calling AI for RAG-powered tape reading...{Color.RESET}")
                     ai_analysis = analyze_setup_with_ollama(payload)
                     
                     dir_match = re.search(r'DIRECTION:\s*(LONG|SHORT|NONE)', ai_analysis, re.IGNORECASE)
@@ -163,8 +213,9 @@ def run_live_bot():
                     if dir_match and dir_match.group(1).upper() in ['LONG', 'SHORT'] and sl_match and tp_match:
                         direction = dir_match.group(1).upper()
                         
-                        risk = 75.0
-                        reward = 125.0
+                        # --- WIDENED BOUNDS ---
+                        risk = 150.0
+                        reward = 250.0
                         
                         if direction == 'LONG':
                             sl = raw_entry - risk
@@ -176,8 +227,8 @@ def run_live_bot():
                         print(f"\n{Color.YELLOW}🔔 EXECUTION PARAMETERS (MANUAL ENTRY) 🔔{Color.RESET}")
                         print(f"Direction:   {Color.GREEN if direction=='LONG' else Color.RED}{direction}{Color.RESET}")
                         print(f"Entry Price: {raw_entry:.2f} (Market Order)")
-                        print(f"Stop Loss:   {sl:.2f} (75 points)")
-                        print(f"Take Profit: {tp:.2f} (125 points)")
+                        print(f"Stop Loss:   {sl:.2f} (150 points)")
+                        print(f"Take Profit: {tp:.2f} (250 points)")
                         print('\a') 
                         
                         setup_logged_today = True 
