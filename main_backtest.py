@@ -7,10 +7,83 @@ from src.data_feed.historical import load_and_prep_data, simulate_ny_session
 from src.math_engine.pivots import calculate_daily_pivots
 from src.ai_agent.ollama_client import analyze_setup_with_ollama
 
+# 1. NEW IMPORT: Bring in the AI sandbox variables
+from src.strategy.us30_ai_config import SL_RISK_POINTS, TP_REWARD_POINTS, MAX_HOLDING_MINUTES
+
 class Color:
     GREEN, CYAN, YELLOW, RED, MAGENTA, WHITE, RESET = '\033[92m', '\033[96m', '\033[93m', '\033[91m', '\033[95m', '\033[97m', '\033[0m'
 
 SLIPPAGE_POINTS = 1.5 
+
+def simulate_trade(direction: str, raw_entry: float, future_data: pd.DataFrame, trigger_time: pd.Timestamp):
+    """Simulates the trade using AI Sandbox parameters."""
+    if future_data.empty:
+        return "No Future Data", raw_entry, trigger_time, 0.0
+
+    trigger_idx = future_data.index[0]
+    outcome = "Closed at End of Day 🌇"
+    
+    if direction == 'LONG':
+        entry_price = raw_entry + SLIPPAGE_POINTS
+        sl = entry_price - SL_RISK_POINTS
+        tp = entry_price + TP_REWARD_POINTS
+        exit_price = future_data['close'].iloc[-1]
+        exit_time = future_data.index[-1]
+        be_hit = False
+
+        for idx, candle in future_data.iloc[1:].iterrows():
+            high, low, current_close = candle['high'], candle['low'], candle['close']
+            
+            if high >= tp:
+                return "Hit Hard Take Profit 🎯", tp, idx, (tp - entry_price)
+                
+            if not be_hit and high >= (entry_price + SL_RISK_POINTS):
+                be_hit = True
+                sl = max(sl, entry_price + 5.0)
+            
+            if low <= sl:
+                outcome = "Hit Break-Even 🛡️" if be_hit else "Hit Hard Stop 🛑"
+                exit_price = sl - SLIPPAGE_POINTS
+                return outcome, exit_price, idx, (exit_price - entry_price)
+            
+            mins_held = (idx - trigger_time).total_seconds() / 60.0
+            if mins_held >= MAX_HOLDING_MINUTES:
+                if current_close < entry_price: 
+                    exit_price = current_close - SLIPPAGE_POINTS
+                    return "Time Ejection ⏳", exit_price, idx, (exit_price - entry_price)
+                    
+        return outcome, exit_price, exit_time, (exit_price - entry_price)
+
+    elif direction == 'SHORT':
+        entry_price = raw_entry - SLIPPAGE_POINTS
+        sl = entry_price + SL_RISK_POINTS
+        tp = entry_price - TP_REWARD_POINTS
+        exit_price = future_data['close'].iloc[-1]
+        exit_time = future_data.index[-1]
+        be_hit = False
+
+        for idx, candle in future_data.iloc[1:].iterrows():
+            high, low, current_close = candle['high'], candle['low'], candle['close']
+            
+            if low <= tp:
+                return "Hit Hard Take Profit 🎯", tp, idx, (entry_price - tp)
+                
+            if not be_hit and low <= (entry_price - SL_RISK_POINTS):
+                be_hit = True
+                sl = min(sl, entry_price - 5.0)
+            
+            if high >= sl:
+                outcome = "Hit Break-Even 🛡️" if be_hit else "Hit Hard Stop 🛑"
+                exit_price = sl + SLIPPAGE_POINTS
+                return outcome, exit_price, idx, (entry_price - exit_price)
+            
+            mins_held = (idx - trigger_time).total_seconds() / 60.0
+            if mins_held >= MAX_HOLDING_MINUTES:
+                if current_close > entry_price: 
+                    exit_price = current_close + SLIPPAGE_POINTS
+                    return "Time Ejection ⏳", exit_price, idx, (entry_price - exit_price)
+                    
+        return outcome, exit_price, exit_time, (entry_price - exit_price)
 
 def generate_tradingview_levels():
     q4_start = 48362
@@ -51,7 +124,6 @@ def build_semantic_tape(current_day_data, trigger_time):
             
         vol = "High Volatility" if total_range > 30 else "Low Volatility" if total_range < 10 else "Normal Volatility"
         
-        # We inject the Close Price (c) so the AI knows EXACTLY where the market is
         tape_lines.append(f"[{time_str}] Close: {c:.1f} | {direction} | Net: {point_change:+.1f} pts | {shape} | {vol}")
         
     return "\n".join(tape_lines)
@@ -59,7 +131,6 @@ def build_semantic_tape(current_day_data, trigger_time):
 def run_master_backtest(csv_filepath: str):
     print(f"{Color.CYAN}🚀 Initializing 11 AM Sniper Engine (RAG-Powered Edition)...{Color.RESET}")
     
-    # --- DESTROY GHOST FILES ---
     if os.path.exists('results/trade_log.csv'):
         os.remove('results/trade_log.csv')
     
@@ -88,9 +159,6 @@ def run_master_backtest(csv_filepath: str):
                 trigger_time = pd.to_datetime(setup['timestamp'])
                 raw_entry = setup.get('context', {}).get('close_price', 0)
                 
-                # =======================================================
-                # 🛡️ THE QUANTITATIVE FILTERS
-                # =======================================================
                 if trigger_time.day_name() == 'Wednesday':
                     continue 
                 
@@ -102,15 +170,12 @@ def run_master_backtest(csv_filepath: str):
                     continue 
                 if 'Opening Range High' in setup['trigger'] and raw_entry < central_pivot:
                     continue 
-                # =======================================================
                 
                 print(f"{Color.YELLOW}🔍 SETUP TRIGGERED: {current_date_str} at {setup['timestamp']} | Level: {setup['trigger']}{Color.RESET}")
                 
-                # --- 1. Generate Semantic Tape ---
                 current_semantic_tape = build_semantic_tape(current_day_data, trigger_time)
                 setup['recent_tape'] = current_semantic_tape
                 
-                # --- 2. RAG RETRIEVAL (Query ChromaDB) ---
                 setup['historical_context'] = "No historical data available."
                 try:
                     db_path = os.path.join(os.getcwd(), "data", "rag_db")
@@ -122,7 +187,7 @@ def run_master_backtest(csv_filepath: str):
                             print(f"{Color.CYAN}🧠 Querying RAG Memory Bank for similar setups...{Color.RESET}")
                             results = rag_collection.query(
                                 query_texts=[current_semantic_tape],
-                                n_results=3 # Get the top 3 closest historical matches
+                                n_results=3
                             )
                             
                             hist_text = ""
@@ -135,9 +200,7 @@ def run_master_backtest(csv_filepath: str):
                                 setup['historical_context'] = hist_text
                 except Exception as e:
                     print(f"{Color.RED}⚠️ RAG Retrieval skipped or failed: {e}{Color.RESET}")
-                # ------------------------------------------
 
-                # --- 3. Call the AI with the Injected Context ---
                 ai_analysis = analyze_setup_with_ollama(setup)
                 
                 setup['trade_outcome'] = "Skipped"
@@ -151,83 +214,14 @@ def run_master_backtest(csv_filepath: str):
                 if dir_match and dir_match.group(1).upper() in ['LONG', 'SHORT'] and sl_match and tp_match: 
                     direction = dir_match.group(1).upper()
                     
-                    # --- WIDENED THE BOUNDS FOR US30 VOLATILITY ---
-                    risk_in_points = 150.0
-                    setup['sl_distance'] = risk_in_points
-                    setup['tp_distance'] = 250.0 
-                    # ----------------------------------------------
+                    setup['sl_distance'] = SL_RISK_POINTS
+                    setup['tp_distance'] = TP_REWARD_POINTS 
 
                     future_data = current_day_data.loc[setup['timestamp'] : f"{current_date_str} 20:00:00+00:00"]
-                    trigger_idx = future_data.index[0] if not future_data.empty else trigger_time
-                    outcome = "Closed at End of Day 🌇"
                     
-                    pnl_points = 0.0
-                    
-                    if direction == 'LONG':
-                        entry_price = raw_entry + SLIPPAGE_POINTS
-                        sl = entry_price - risk_in_points 
-                        tp = entry_price + 250.0
-                        exit_price = future_data['close'].iloc[-1] if not future_data.empty else entry_price
-                        exit_time = future_data.index[-1] if not future_data.empty else trigger_idx
-
-                        be_hit = False
-                        
-                        for idx, candle in future_data.iloc[1:].iterrows():
-                            high, low, current_close = candle['high'], candle['low'], candle['close']
-                            
-                            if high >= tp:
-                                outcome, exit_price, exit_time = "Hit Hard Take Profit 🎯", tp, idx
-                                break
-                                
-                            if not be_hit and high >= (entry_price + risk_in_points):
-                                be_hit = True
-                                sl = max(sl, entry_price + 5.0)
-                            
-                            if low <= sl:
-                                outcome = "Hit Break-Even 🛡️" if be_hit else "Hit Hard Stop 🛑"
-                                exit_price, exit_time = sl - SLIPPAGE_POINTS, idx
-                                break
-                            
-                            mins_held = (idx - trigger_time).total_seconds() / 60.0
-                            if mins_held >= 180:
-                                if current_close < entry_price: 
-                                    outcome, exit_price, exit_time = "Time Ejection ⏳", current_close - SLIPPAGE_POINTS, idx
-                                    break
-                                
-                        pnl_points = exit_price - entry_price
-
-                    elif direction == 'SHORT':
-                        entry_price = raw_entry - SLIPPAGE_POINTS
-                        sl = entry_price + risk_in_points 
-                        tp = entry_price - 250.0 
-                        exit_price = future_data['close'].iloc[-1] if not future_data.empty else entry_price
-                        exit_time = future_data.index[-1] if not future_data.empty else trigger_idx
-
-                        be_hit = False
-                        
-                        for idx, candle in future_data.iloc[1:].iterrows():
-                            high, low, current_close = candle['high'], candle['low'], candle['close']
-                            
-                            if low <= tp:
-                                outcome, exit_price, exit_time = "Hit Hard Take Profit 🎯", tp, idx
-                                break
-                                
-                            if not be_hit and low <= (entry_price - risk_in_points):
-                                be_hit = True
-                                sl = min(sl, entry_price - 5.0)
-                            
-                            if high >= sl:
-                                outcome = "Hit Break-Even 🛡️" if be_hit else "Hit Hard Stop 🛑"
-                                exit_price, exit_time = sl + SLIPPAGE_POINTS, idx
-                                break
-                            
-                            mins_held = (idx - trigger_time).total_seconds() / 60.0
-                            if mins_held >= 180:
-                                if current_close > entry_price: 
-                                    outcome, exit_price, exit_time = "Time Ejection ⏳", current_close + SLIPPAGE_POINTS, idx
-                                    break
-                                
-                        pnl_points = entry_price - exit_price 
+                    outcome, exit_price, exit_time, pnl_points = simulate_trade(
+                        direction, raw_entry, future_data, trigger_time
+                    )
 
                     setup['trade_outcome'] = f"[{direction}] {outcome} at {exit_price:.2f}"
                     setup['pnl_points'] = round(pnl_points, 2)
@@ -252,9 +246,6 @@ def run_master_backtest(csv_filepath: str):
         } for t in all_logged_setups])
         export_df.to_csv('results/trade_log.csv', index=False)
         
-        # =======================================================
-        # 🧠 RAG HARVESTER: Saving Semantic Tapes for the AI
-        # =======================================================
         try:
             memory_data = []
             for t in all_logged_setups:
@@ -286,7 +277,6 @@ def run_master_backtest(csv_filepath: str):
                     
         except Exception as e:
             print(f"{Color.RED}🚨 Failed to save to JSON memory bank: {e}{Color.RESET}")
-        # =======================================================
 
 if __name__ == "__main__":
     run_master_backtest("data/historical_us30_1m.csv")
