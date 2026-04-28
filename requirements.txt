@@ -9,3 +9,4 @@ yfinance
 matplotlib
 pandas
 chromadb
+litellm

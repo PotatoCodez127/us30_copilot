@@ -14,7 +14,7 @@ load_dotenv()
 CONFIG_FILE = "src/strategy/us30_ai_config.py"
 BEST_CONFIG_FILE = "src/strategy/us30_ai_config_best.py"
 RESULTS_FILE = "autoresearch_log.tsv"
-EVAL_CMD = [sys.executable, "auto_eval.py"]
+EVAL_CMD = [sys.executable, "-X", "utf8", "-u", "auto_eval.py"]
 
 # ==========================================
 # 🔑 CLOUD API KEY & CONFIG MANAGEMENT
@@ -63,6 +63,10 @@ Our current best custom evaluation score is {best_score}.
 
 You MUST generate a new hypothesis for our strategy configuration to beat this score.
 US30 is highly volatile. Consider widening stops or optimizing breakout buffers.
+
+CRITICAL RULES:
+1. You MUST write all code and reasoning strictly in English. Do NOT output any Chinese characters.
+2. Only output raw floating point numbers or integers for the variables. Do not include units or text next to the numbers.
 
 You MUST format your response EXACTLY like this:
 THINKING: [Your reasoning]
@@ -157,11 +161,25 @@ def run_loop():
     print(f"\n💡 Testing Configuration:\n{hypothesis}")
 
     # Inject the new code into the sandbox
+    # Prepare the new code string
+    new_code = "# ==========================================\n"
+    new_code += "# 🤖 AUTORESEARCHER SANDBOX\n"
+    new_code += "# ==========================================\n\n"
+    new_code += hypothesis.replace("```python", "").replace("```", "").strip()
+
+    # --- NEW: PRE-FLIGHT SYNTAX CHECK ---
+    try:
+        # This checks if the code is valid Python without actually running it
+        compile(new_code, '<string>', 'exec')
+    except SyntaxError as e:
+        print(f"⚠️ AI generated invalid Python syntax ({e}). Discarding hypothesis.")
+        time.sleep(2)
+        return
+    # ------------------------------------
+
+    # If syntax is valid, inject the new code into the sandbox
     with open(CONFIG_FILE, "w", encoding="utf-8") as f:
-        f.write("# ==========================================\n")
-        f.write("# 🤖 AUTORESEARCHER SANDBOX\n")
-        f.write("# ==========================================\n\n")
-        f.write(hypothesis.replace("```python", "").replace("```", "").strip())
+        f.write(new_code)
 
     # Run Evaluator
     print(f"\n📈 Running Walk-Forward Judge...")
