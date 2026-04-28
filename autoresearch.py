@@ -6,6 +6,57 @@ import re
 import shutil
 import requests
 from dotenv import load_dotenv
+import networkx as nx
+
+RESEARCH_MEMORY = []
+
+def build_research_graph():
+    """Builds a NetworkX graph of past runs to find profitable parameter ranges."""
+    if len(RESEARCH_MEMORY) < 3:
+        return "[GraphRAG Context] Graph is still gathering nodes. Make radical guesses to map the space."
+        
+    G = nx.Graph()
+    G.add_node("WINNING_SCORE", type="outcome")
+    G.add_node("LOSING_SCORE", type="outcome")
+    
+    for run in RESEARCH_MEMORY:
+        score = run.get('score', 0)
+        outcome = "WINNING_SCORE" if score > 0 else "LOSING_SCORE"
+        
+        # Create categorical Nodes for the parameters by "bucketing" them
+        sl = run.get('sl', 0)
+        tp = run.get('tp', 0)
+        buf = run.get('buffer', 0)
+        
+        sl_node = f"SL_Range_{int(sl//50)*50}_to_{int(sl//50)*50+50}"
+        tp_node = f"TP_Range_{int(tp//50)*50}_to_{int(tp//50)*50+50}"
+        buf_node = f"Buffer_Range_{int(buf//5)*5}_to_{int(buf//5)*5+5}"
+        
+        # Draw edges between the parameter buckets and the final outcome
+        for node in [sl_node, tp_node, buf_node]:
+            G.add_node(node, type="parameter")
+            if G.has_edge(node, outcome):
+                G[node][outcome]['weight'] += 1
+            else:
+                G.add_edge(node, outcome, weight=1)
+                
+    # Traverse graph to find what works and what fails
+    insights = []
+    for node, attr in G.nodes(data=True):
+        if attr.get('type') == 'parameter':
+            wins = G[node].get("WINNING_SCORE", {}).get("weight", 0)
+            losses = G[node].get("LOSING_SCORE", {}).get("weight", 0)
+            
+            # If a node strongly leans one way, extract that insight
+            if wins > losses:
+                insights.append(f"🟢 Path Detected: '{node}' heavily connects to WINNING configurations ({wins} Wins vs {losses} Losses).")
+            elif losses > wins: 
+                insights.append(f"🔴 Danger Node: '{node}' heavily connects to LOSING configurations ({losses} Losses vs {wins} Wins). AVOID.")
+
+    if not insights:
+        return "[GraphRAG Context] Graph built, but no dominant paths yet. Keep exploring."
+        
+    return "[GraphRAG Context] Based on the topological graph of your past runs:\n" + "\n".join(insights)
 
 # Load variables from the .env file
 load_dotenv()
@@ -57,27 +108,38 @@ def generate_hypothesis(best_score):
     if not API_KEYS:
         print("⚠️ ERROR: No API keys were loaded. Check that your file is named exactly '.env' and not '.env.txt'.")
         return "", ""
+    
+    # Grab the champion config
+    champion_config = "No previous configuration found."
+    if os.path.exists(BEST_CONFIG_FILE):
+        with open(BEST_CONFIG_FILE, "r", encoding="utf-8") as f:
+            lines = f.readlines()
+            champion_config = "".join([line for line in lines if "=" in line]).strip()
+
+    # --- NEW: Get Graph Insights ---
+    graph_context = build_research_graph()
+    # -------------------------------
 
     prompt = f"""You are an elite quantitative researcher optimizing a US30 trading algorithm.
-Our current best custom evaluation score is {best_score}. 
+                Our current best custom evaluation score is {best_score}. 
 
-You MUST generate a new hypothesis for our strategy configuration to beat this score.
-US30 is highly volatile. Consider widening stops or optimizing breakout buffers.
+                Here are the parameters of the CURRENT CHAMPION that achieved this score:
+                {champion_config}
 
-CRITICAL RULES:
-1. You MUST write all code and reasoning strictly in English. Do NOT output any Chinese characters.
-2. Only output raw floating point numbers or integers for the variables. Do not include units or text next to the numbers.
+                =========================================
+                🕸️ KNOWLEDGE GRAPH TRAVERSAL
+                =========================================
+                {graph_context}
 
-You MUST format your response EXACTLY like this:
-THINKING: [Your reasoning]
-HYPOTHESIS:
-ENABLE_OR_CHECKS = True|False
-ENABLE_PIVOT_CHECKS = True|False
-BREAKOUT_BUFFER_POINTS = [float between 0.0 and 15.0]
-SL_RISK_POINTS = [float between 50.0 and 300.0]
-TP_REWARD_POINTS = [float between 100.0 and 500.0]
-MAX_HOLDING_MINUTES = [int between 30 and 240]
-"""
+                You MUST generate a new hypothesis for our strategy configuration to beat this score. 
+                DO NOT just repeat the same reasoning. Use the GraphRAG context above to navigate away from Danger Nodes and towards Winning Paths.
+
+                CRITICAL RULES:
+                1. You MUST write all code and reasoning strictly in English. Do NOT output any Chinese characters.
+                2. Only output raw floating point numbers or integers for the variables. Do not include units.
+
+                You MUST format your response EXACTLY like this:
+                ..."""
 
     print(f"🤔 AI ({OLLAMA_MODEL}) is thinking of a new hypothesis...")
     
@@ -200,6 +262,21 @@ def run_loop():
 
     match = re.search(r"FINAL_RESULT:([-\d.]+)", full_output)
     score = float(match.group(1)) if match else 0.0
+
+    try:
+            sl_match = re.search(r'SL_RISK_POINTS\s*=\s*([0-9.]+)', hypothesis)
+            tp_match = re.search(r'TP_REWARD_POINTS\s*=\s*([0-9.]+)', hypothesis)
+            buf_match = re.search(r'BREAKOUT_BUFFER_POINTS\s*=\s*([0-9.]+)', hypothesis)
+            
+            RESEARCH_MEMORY.append({
+                'sl': float(sl_match.group(1)) if sl_match else 0,
+                'tp': float(tp_match.group(1)) if tp_match else 0,
+                'buffer': float(buf_match.group(1)) if buf_match else 0,
+                'score': new_score
+            })
+        except Exception as e:
+            print(f"[DEBUG] Could not map run to Graph: {e}")
+        # -------------------------------------------------------
     
     print(f"📊 OOS Score Achieved: {score:.4f}")
 

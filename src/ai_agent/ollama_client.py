@@ -3,6 +3,7 @@ import time
 from dotenv import load_dotenv
 import litellm
 from src.ai_agent.prompts import generate_risk_assessment_prompt
+from src.ai_agent.graph_engine import query_knowledge_graph
 
 # Suppress verbose litellm output to keep your terminal clean
 litellm.suppress_debug_info = True
@@ -20,7 +21,18 @@ def analyze_setup_with_ollama(setup_payload: dict, max_retries=3) -> str:
     if not API_KEYS:
         return "AI Analysis skipped: No OLLAMA_API_KEYS found in .env file."
         
+    # --- NEW: Query the GraphRAG Engine ---
+    graph_context = query_knowledge_graph(setup_payload)
+    # --------------------------------------
+    
+    # Generate the base prompt and append the Graph context
     prompt_text = generate_risk_assessment_prompt(setup_payload)
+    prompt_text += f"\n\n=========================================\n"
+    prompt_text += f"🕸️ KNOWLEDGE GRAPH TRAVERSAL\n"
+    prompt_text += f"=========================================\n"
+    prompt_text += f"{graph_context}\n"
+    prompt_text += f"Factor this historical node weight into your final confidence score."
+    
     messages = [{"role": "user", "content": prompt_text}]
     
     # Grab settings from .env

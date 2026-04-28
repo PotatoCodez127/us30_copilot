@@ -10,3 +10,6 @@ matplotlib
 pandas
 chromadb
 litellm
+llama-index
+llama-index-graph-stores-simple
+networkx
