@@ -53,7 +53,7 @@ def analyze_setup_with_ollama(setup_payload: dict, max_retries=3) -> str:
     for attempt in range(max_retries):
         current_key = API_KEYS[CURRENT_KEY_INDEX]
         try:
-            print(f"    [SENDING] Analyzing live tape with Key #{CURRENT_KEY_INDEX + 1}...")
+            # print(f"    [SENDING] Analyzing live tape with Key #{CURRENT_KEY_INDEX + 1}...")
             
             # Using LiteLLM directly matching your Crypto App architecture
             response = litellm.completion(

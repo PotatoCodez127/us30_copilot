@@ -171,7 +171,7 @@ def run_master_backtest(csv_filepath: str):
                 if 'Opening Range High' in setup['trigger'] and raw_entry < central_pivot:
                     continue 
                 
-                print(f"{Color.YELLOW}🔍 SETUP TRIGGERED: {current_date_str} at {setup['timestamp']} | Level: {setup['trigger']}{Color.RESET}")
+                # print(f"{Color.YELLOW}🔍 SETUP TRIGGERED: {current_date_str} at {setup['timestamp']} | Level: {setup['trigger']}{Color.RESET}")
                 
                 current_semantic_tape = build_semantic_tape(current_day_data, trigger_time)
                 setup['recent_tape'] = current_semantic_tape
@@ -184,7 +184,7 @@ def run_master_backtest(csv_filepath: str):
                         rag_collection = rag_client.get_or_create_collection(name="us30_setups")
                         
                         if rag_collection.count() > 0:
-                            print(f"{Color.CYAN}🧠 Querying RAG Memory Bank for similar setups...{Color.RESET}")
+                            # print(f"{Color.CYAN}🧠 Querying RAG Memory Bank for similar setups...{Color.RESET}")
                             results = rag_collection.query(
                                 query_texts=[current_semantic_tape],
                                 n_results=3
@@ -255,7 +255,8 @@ def run_master_backtest(csv_filepath: str):
                         'id': str(t['timestamp']).replace(' ', '_'),
                         'tape': t['recent_tape'],
                         'classification': classification,
-                        'pnl': t['pnl_points']
+                        'pnl': t['pnl_points'],
+                        'level': t['trigger']
                     })
                     
             if memory_data:
@@ -279,4 +280,8 @@ def run_master_backtest(csv_filepath: str):
             print(f"{Color.RED}🚨 Failed to save to JSON memory bank: {e}{Color.RESET}")
 
 if __name__ == "__main__":
-    run_master_backtest("data/historical_us30_1m.csv")
+    # Point the backtester to the dynamically generated rolling window
+    if os.path.exists("data/rolling_train.csv"):
+        run_master_backtest("data/rolling_train.csv")
+    else:
+        print("⚠️ No rolling data found. Run the fetcher first!")

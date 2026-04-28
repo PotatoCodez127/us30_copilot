@@ -188,13 +188,12 @@ def generate_hypothesis(best_score):
             
             content = response.json().get('response', '')
             
-            think_match = re.search(r'THINKING:\s*(.*?)(?=HYPOTHESIS:)', content, re.DOTALL)
-            hypo_match = re.search(r'HYPOTHESIS:\s*(.*)', content, re.DOTALL)
+            # More forgiving regex to catch the thinking block
+            think_match = re.search(r'THINKING:\s*(.*?)(?=(HYPOTHESIS:|```|\n\nENABLE_OR_CHECKS|\*\*NEW PARAMETERS))', content, re.DOTALL | re.IGNORECASE)
+            thinking = think_match.group(1).strip() if think_match else "No explicit THINKING block found. Using parameter mapping."
             
-            thinking = think_match.group(1).strip() if think_match else "No reasoning provided."
-            hypothesis = hypo_match.group(1).strip() if hypo_match else ""
-            
-            return thinking, hypothesis
+            # Return the full raw content to the extractor
+            return thinking, content
 
         except requests.exceptions.RequestException as e:
             print(f"⚠️ Network/API Error with Key {CURRENT_KEY_IDX + 1}: {e}")
@@ -212,22 +211,46 @@ def run_loop():
     print(f"🚀 STARTING AUTORESEARCH LOOP | Target to beat: {best_score:.4f}")
     print("="*50)
     
-    thinking, hypothesis = generate_hypothesis(best_score)
+    thinking, raw_output = generate_hypothesis(best_score)
     
-    if not hypothesis or "SL_RISK_POINTS" not in hypothesis:
+    if not raw_output or "SL_RISK_POINTS" not in raw_output:
         print("⚠️ Malformed output from LLM or API exhausted. Skipping iteration.")
         time.sleep(3)
         return
 
     print(f"\n🧠 AI Reasoning:\n   > {thinking}")
-    print(f"\n💡 Testing Configuration:\n{hypothesis}")
 
-    # Inject the new code into the sandbox
-    # Prepare the new code string
+    # ==========================================
+    # 🛡️ THE BULLETPROOF EXTRACTOR
+    # ==========================================
+    def extract_val(pattern, text, default):
+        match = re.search(pattern, text, re.IGNORECASE)
+        return match.group(1) if match else default
+
+    or_checks = extract_val(r'ENABLE_OR_CHECKS\s*=\s*(True|False)', raw_output, None)
+    pivot_checks = extract_val(r'ENABLE_PIVOT_CHECKS\s*=\s*(True|False)', raw_output, None)
+    buffer_pts = extract_val(r'BREAKOUT_BUFFER_POINTS\s*=\s*([0-9.]+)', raw_output, None)
+    sl_pts = extract_val(r'SL_RISK_POINTS\s*=\s*([0-9.]+)', raw_output, None)
+    tp_pts = extract_val(r'TP_REWARD_POINTS\s*=\s*([0-9.]+)', raw_output, None)
+    max_hold = extract_val(r'MAX_HOLDING_MINUTES\s*=\s*([0-9]+)', raw_output, None)
+
+    if not all([or_checks, pivot_checks, buffer_pts, sl_pts, tp_pts, max_hold]):
+        print(f"⚠️ LLM missed core variables. Skipping iteration.")
+        time.sleep(2)
+        return
+
+    # Explicitly rebuild the Python string. This ignores ALL hallucinated text, arrows, and fake variables.
     new_code = "# ==========================================\n"
-    new_code += "# 🤖 AUTORESEARCHER SANDBOX\n"
+    new_code += "# 🤖 AUTORESEARCHER SANDBOX (BULLETPROOF)\n"
     new_code += "# ==========================================\n\n"
-    new_code += hypothesis.replace("```python", "").replace("```", "").strip()
+    new_code += f"ENABLE_OR_CHECKS = {or_checks}\n"
+    new_code += f"ENABLE_PIVOT_CHECKS = {pivot_checks}\n"
+    new_code += f"BREAKOUT_BUFFER_POINTS = {buffer_pts}\n"
+    new_code += f"SL_RISK_POINTS = {sl_pts}\n"
+    new_code += f"TP_REWARD_POINTS = {tp_pts}\n"
+    new_code += f"MAX_HOLDING_MINUTES = {max_hold}\n"
+
+    print(f"\n💡 Testing Configuration:\n{new_code.strip()}")
 
     # --- NEW: PRE-FLIGHT SYNTAX CHECK ---
     try:
@@ -264,19 +287,20 @@ def run_loop():
     score = float(match.group(1)) if match else 0.0
 
     try:
-            sl_match = re.search(r'SL_RISK_POINTS\s*=\s*([0-9.]+)', hypothesis)
-            tp_match = re.search(r'TP_REWARD_POINTS\s*=\s*([0-9.]+)', hypothesis)
-            buf_match = re.search(r'BREAKOUT_BUFFER_POINTS\s*=\s*([0-9.]+)', hypothesis)
-            
-            RESEARCH_MEMORY.append({
-                'sl': float(sl_match.group(1)) if sl_match else 0,
-                'tp': float(tp_match.group(1)) if tp_match else 0,
-                'buffer': float(buf_match.group(1)) if buf_match else 0,
-                'score': new_score
-            })
-        except Exception as e:
-            print(f"[DEBUG] Could not map run to Graph: {e}")
-        # -------------------------------------------------------
+        # Directly use the cleanly extracted variables from above
+        RESEARCH_MEMORY.append({
+            'sl': float(sl_pts),
+            'tp': float(tp_pts),
+            'buffer': float(buffer_pts),
+            'score': score
+        })
+
+        import json
+        with open("results/research_memory.json", "w", encoding="utf-8") as f:
+            json.dump(RESEARCH_MEMORY, f, indent=4)
+
+    except Exception as e:
+        print(f"[DEBUG] Could not map run to Graph: {e}")
     
     print(f"📊 OOS Score Achieved: {score:.4f}")
 

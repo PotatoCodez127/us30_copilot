@@ -1,98 +1,69 @@
-import pandas as pd
 import os
-from src.strategy.state_machine import US30SessionTracker
+import requests
+import pandas as pd
+from datetime import datetime, timedelta
+from dotenv import load_dotenv
 
-def load_and_prep_data(filepath):
+def fetch_chunk(symbol, start_str, end_str, api_key):
+    """Fetches a specific chunk of data from Massive to respect the 50k limit."""
+    endpoint_url = f"https://api.massive.com/v2/aggs/ticker/{symbol}/range/1/minute/{start_str}/{end_str}"
+    params = {"adjusted": "true", "sort": "asc", "limit": 50000}
+    headers = {"Authorization": f"Bearer {api_key}"}
+
+    response = requests.get(endpoint_url, params=params, headers=headers)
+    response.raise_for_status()
+    
+    return response.json().get("results", [])
+
+def fetch_rolling_6_months(symbol="DIA"):
     """
-    Loads the historical 1-minute data and ensures datetime index.
+    Calculates the exact 6-month window from today, fetches the data in chunks,
+    and returns a clean Pandas DataFrame for the evaluator.
     """
-    if not os.path.exists(filepath):
-        raise FileNotFoundError(f"Could not find data file at {filepath}")
-        
-    df = pd.read_csv(filepath)
-    df['datetime'] = pd.to_datetime(df['datetime'])
-    df.set_index('datetime', inplace=True)
+    load_dotenv()
+    api_key = os.getenv("MASSIVE_API_KEY")
+    
+    if not api_key:
+        raise ValueError("MASSIVE_API_KEY is missing from the .env file.")
+
+    # Calculate Dates
+    end_date = datetime.utcnow()
+    mid_date = end_date - timedelta(days=90) # 3 months ago
+    start_date = end_date - timedelta(days=180) # 6 months ago
+
+    end_str = end_date.strftime('%Y-%m-%d')
+    mid_str = mid_date.strftime('%Y-%m-%d')
+    start_str = start_date.strftime('%Y-%m-%d')
+
+    print(f"📡 Fetching ROLLING WINDOW for {symbol}: {start_str} to {end_str}")
+
+    # Fetch in two chunks to avoid the 50,000 limit
+    raw_candles = []
+    raw_candles.extend(fetch_chunk(symbol, start_str, mid_str, api_key))
+    raw_candles.extend(fetch_chunk(symbol, (mid_date + timedelta(days=1)).strftime('%Y-%m-%d'), end_str, api_key))
+
+    if not raw_candles:
+        raise ValueError("API returned no data for this rolling window.")
+
+    df = pd.DataFrame(raw_candles)
+
+    # Map schema and convert timestamps
+    df = df.rename(columns={'o': 'open', 'h': 'high', 'l': 'low', 'c': 'close', 'v': 'volume', 't': 'timestamp'})
+    df['timestamp'] = pd.to_datetime(df['timestamp'], unit='ms')
+    df['timestamp'] = df['timestamp'].dt.tz_localize('UTC')
+    
+    # Drop duplicates (if chunks overlapped) and sort
+    df.drop_duplicates(subset=['timestamp'], inplace=True)
+    df.sort_values('timestamp', inplace=True)
+    df.set_index('timestamp', inplace=True)
+    
+    columns_to_keep = ['open', 'high', 'low', 'close', 'volume']
+    df = df[columns_to_keep]
+
+    print(f"✅ Loaded {len(df)} candles for the 6-Month Walk-Forward Judge.")
+    
+    # Save a local cache so auto_eval.py can read it without hitting the API constantly
+    os.makedirs('data', exist_ok=True)
+    df.to_csv("data/rolling_train.csv")
+    
     return df
-
-def simulate_ny_session(df_1m, date_str, pivots):
-    """
-    Simulates the NY Session. First calculates the Opening Range (13:30 to 14:00 UTC),
-    then runs the State Machine on the rest of the session.
-    """
-    # 1. Isolate the Opening Range (First 30 minutes of NY Session)
-    opening_range = df_1m.loc[f"{date_str} 13:30:00":f"{date_str} 14:00:00"]
-    
-    if opening_range.empty:
-        return []
-        
-    or_high = opening_range['high'].max()
-    or_low = opening_range['low'].min()
-    
-    # 2. Initialize the new State Machine
-    tracker = US30SessionTracker(
-        or_high=or_high,
-        or_low=or_low,
-        daily_pivots=pivots
-    )
-    
-    # 3. Simulate the rest of the day (After the Opening Range establishes)
-    trading_session = df_1m.loc[f"{date_str} 14:01:00":f"{date_str} 20:00:00"]
-    setups_found = []
-    
-    for i in range(len(trading_session)):
-        current_time = trading_session.index[i]
-        candle_1m = trading_session.iloc[i].to_dict()
-        
-        # Build 5m candle for momentum precision
-        floor_5m = current_time.floor('5min')
-        current_5m_window = trading_session.loc[floor_5m:current_time]
-        
-        if current_5m_window.empty:
-            continue
-            
-        candle_5m = {
-            'open': current_5m_window['open'].iloc[0],
-            'high': current_5m_window['high'].max(),
-            'low': current_5m_window['low'].min(),
-            'close': current_5m_window['close'].iloc[-1],
-        }
-        
-        ai_payload = tracker.update_state(candle_5m, candle_1m)
-        
-        if ai_payload:
-            ai_payload['timestamp'] = str(current_time)
-            entry_price = candle_5m['close']
-            
-            # --- THE LIVE TAPE GENERATOR ---
-            tape_start = current_time - pd.Timedelta(minutes=15)
-            recent_tape = trading_session.loc[tape_start:current_time]
-            
-            tape_str = "\n".join([
-                f"{idx.strftime('%H:%M')} | O:{row['open']:.2f} H:{row['high']:.2f} L:{row['low']:.2f} C:{row['close']:.2f}" 
-                for idx, row in recent_tape.iterrows()
-            ])
-            ai_payload['recent_tape'] = tape_str
-            # -------------------------------
-            
-            # --- TRADE MANAGEMENT (MFE/MAE) ---
-            if i + 1 < len(trading_session):
-                future_data = trading_session.iloc[i+1:]
-                absolute_highest = future_data['high'].max()
-                absolute_lowest = future_data['low'].min()
-                
-                # Calculate absolute maximums in both directions
-                mfe_up = float(round(absolute_highest - entry_price, 2))
-                mae_down = float(round(absolute_lowest - entry_price, 2))
-                mfe_down = float(round(entry_price - absolute_lowest, 2))
-                mae_up = float(round(entry_price - absolute_highest, 2))
-                
-                ai_payload['mfe_points'] = f"Long: {mfe_up} | Short: {mfe_down}"
-                ai_payload['mae_points'] = f"Long: {mae_down} | Short: {mae_up}"
-            else:
-                ai_payload['mfe_points'] = "0"
-                ai_payload['mae_points'] = "0"
-            
-            setups_found.append(ai_payload)
-            # Let main_backtest.py handle the daily lockouts
-            
-    return setups_found
