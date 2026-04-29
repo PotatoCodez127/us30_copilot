@@ -10,7 +10,7 @@ def evaluate():
     # 1. Run the backtest (Outputs to results/trade_log.csv)
     print("[DEBUG] Step 2: Attempting to call run_master_backtest()...")
     try:
-        run_master_backtest("data/historical_us30_1m.csv")
+        run_master_backtest("data/rolling_train.csv")
         print("[DEBUG] Step 3: run_master_backtest() completed successfully.")
     except Exception as e:
         print(f"[DEBUG] Step 3 FAILED: Exception caught during backtest: {e}")

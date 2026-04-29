@@ -13,7 +13,7 @@ from src.strategy.us30_ai_config import SL_RISK_POINTS, TP_REWARD_POINTS, MAX_HO
 class Color:
     GREEN, CYAN, YELLOW, RED, MAGENTA, WHITE, RESET = '\033[92m', '\033[96m', '\033[93m', '\033[91m', '\033[95m', '\033[97m', '\033[0m'
 
-SLIPPAGE_POINTS = 1.5 
+SLIPPAGE_POINTS = 0.02
 
 def simulate_trade(direction: str, raw_entry: float, future_data: pd.DataFrame, trigger_time: pd.Timestamp):
     """Simulates the trade using AI Sandbox parameters."""
@@ -39,7 +39,7 @@ def simulate_trade(direction: str, raw_entry: float, future_data: pd.DataFrame, 
                 
             if not be_hit and high >= (entry_price + SL_RISK_POINTS):
                 be_hit = True
-                sl = max(sl, entry_price + 5.0)
+                sl = max(sl, entry_price + 0.05)
             
             if low <= sl:
                 outcome = "Hit Break-Even 🛡️" if be_hit else "Hit Hard Stop 🛑"
@@ -70,7 +70,7 @@ def simulate_trade(direction: str, raw_entry: float, future_data: pd.DataFrame, 
                 
             if not be_hit and low <= (entry_price - SL_RISK_POINTS):
                 be_hit = True
-                sl = min(sl, entry_price - 5.0)
+                sl = min(sl, entry_price - 0.05)
             
             if high >= sl:
                 outcome = "Hit Break-Even 🛡️" if be_hit else "Hit Hard Stop 🛑"
@@ -249,7 +249,7 @@ def run_master_backtest(csv_filepath: str):
         try:
             memory_data = []
             for t in all_logged_setups:
-                if t['pnl_points'] >= 100.0 or t['pnl_points'] <= -50.0:
+                if t['pnl_points'] >= 1.0 or t['pnl_points'] <= -0.5:
                     classification = "VALID BREAKOUT" if t['pnl_points'] > 0 else "TRAP / CHOP"
                     memory_data.append({
                         'id': str(t['timestamp']).replace(' ', '_'),
@@ -280,8 +280,8 @@ def run_master_backtest(csv_filepath: str):
             print(f"{Color.RED}🚨 Failed to save to JSON memory bank: {e}{Color.RESET}")
 
 if __name__ == "__main__":
-    # Point the backtester to the dynamically generated rolling window
-    if os.path.exists("data/rolling_train.csv"):
-        run_master_backtest("data/rolling_train.csv")
+    rolling_file = "data/rolling_train.csv"
+    if os.path.exists(rolling_file):
+        run_master_backtest(rolling_file)
     else:
-        print("⚠️ No rolling data found. Run the fetcher first!")
+        print(f"{Color.RED}⚠️ No rolling data found. Please run rolling_researcher.py to fetch data first.{Color.RESET}")

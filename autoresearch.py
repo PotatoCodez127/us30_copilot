@@ -139,6 +139,14 @@ def generate_hypothesis(best_score):
                 2. Only output raw floating point numbers or integers for the variables. Do not include units.
 
                 You MUST format your response EXACTLY like this:
+                THINKING: [Explain your reasoning]
+                HYPOTHESIS:
+                ENABLE_OR_CHECKS = True|False
+                ENABLE_PIVOT_CHECKS = True|False
+                BREAKOUT_BUFFER_POINTS = [float between 0.05 and 0.20]
+                SL_RISK_POINTS = [float between 0.50 and 3.00]
+                TP_REWARD_POINTS = [float between 1.00 and 5.00]
+                MAX_HOLDING_MINUTES = [int between 30 and 240]
                 ..."""
 
     print(f"🤔 AI ({OLLAMA_MODEL}) is thinking of a new hypothesis...")
