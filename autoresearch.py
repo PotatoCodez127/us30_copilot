@@ -300,6 +300,7 @@ def run_loop():
             'sl': float(sl_pts),
             'tp': float(tp_pts),
             'buffer': float(buffer_pts),
+            'max_hold': int(max_hold),
             'score': score
         })
 

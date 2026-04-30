@@ -8,12 +8,13 @@ import chromadb
 
 from src.math_engine.pivots import calculate_daily_pivots
 from src.strategy.state_machine import US30SessionTracker
-from src.ai_agent.ollama_client import analyze_setup_with_ollama
+from src.ai_agent.ollama_client import analyze_setup_with_ollama  
+from src.strategy.us30_ai_config_best import SL_RISK_POINTS, TP_REWARD_POINTS, MAX_HOLDING_MINUTES
 
 class Color:
     GREEN, CYAN, YELLOW, RED, MAGENTA, WHITE, RESET = '\033[92m', '\033[96m', '\033[93m', '\033[91m', '\033[95m', '\033[97m', '\033[0m'
 
-TICKER = "^DJI"
+TICKER = "DIA"
 
 def build_semantic_tape(current_day_data, trigger_time):
     """Translates raw OHLC numbers into a semantic story for the LLM."""
@@ -213,9 +214,9 @@ def run_live_bot():
                     if dir_match and dir_match.group(1).upper() in ['LONG', 'SHORT'] and sl_match and tp_match:
                         direction = dir_match.group(1).upper()
                         
-                        # --- WIDENED BOUNDS ---
-                        risk = 150.0
-                        reward = 250.0
+                        # --- DYNAMIC AI PARAMETERS ---
+                        risk = SL_RISK_POINTS
+                        reward = TP_REWARD_POINTS
                         
                         if direction == 'LONG':
                             sl = raw_entry - risk
@@ -227,9 +228,10 @@ def run_live_bot():
                         print(f"\n{Color.YELLOW}🔔 EXECUTION PARAMETERS (MANUAL ENTRY) 🔔{Color.RESET}")
                         print(f"Direction:   {Color.GREEN if direction=='LONG' else Color.RED}{direction}{Color.RESET}")
                         print(f"Entry Price: {raw_entry:.2f} (Market Order)")
-                        print(f"Stop Loss:   {sl:.2f} (150 points)")
-                        print(f"Take Profit: {tp:.2f} (250 points)")
-                        print('\a') 
+                        print(f"Stop Loss:   {sl:.2f} ({risk} points)")
+                        print(f"Take Profit: {tp:.2f} ({reward} points)")
+                        print(f"Time Limit:  Eject trade after exactly {MAX_HOLDING_MINUTES} minutes! ⏳") # <-- NEW LINE
+                        print('\a')
                         
                         setup_logged_today = True 
                         print(f"\n{Color.CYAN}Bot is now locked for the remainder of the day.{Color.RESET}\n")

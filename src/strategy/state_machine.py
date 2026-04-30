@@ -1,7 +1,7 @@
 from typing import Optional
 
-# IMPORT THE AI SANDBOX VARIABLES
-from src.strategy.us30_ai_config import (
+# IMPORT THE AI CHAMPION VARIABLES
+from src.strategy.us30_ai_config_best import (
     ENABLE_OR_CHECKS, 
     ENABLE_PIVOT_CHECKS, 
     BREAKOUT_BUFFER_POINTS
