@@ -25,12 +25,13 @@ def get_metrics():
             
             return jsonify({
                 "status": "success",
-                "trial_number": int(latest.get('trial', 0)),
+                "trial_number": len(df), # <--- FIX: We just count the number of rows now!
                 "latest_score": float(latest.get('score', 0)),
                 "best_score": float(best_score),
                 "trial_status": str(latest.get('status', 'Unknown'))
             })
     except Exception as e:
+        print(f"Error in metrics route: {e}") # This will print errors to your terminal if it fails again
         return jsonify({"status": "error", "message": str(e)})
     
     return jsonify({"status": "empty"})
