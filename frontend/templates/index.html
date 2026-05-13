@@ -10,36 +10,37 @@
         body { background-color: #121212; color: #ffffff; }
         .card { background-color: #1e1e1e; border: 1px solid #333; color: white; }
         .text-success { color: #00e676 !important; }
+        .text-danger { color: #ff5252 !important; }
     </style>
 </head>
 <body>
 
 <div class="container mt-5">
-    <h2 class="mb-4">🚀 US30 Copilot AI Dashboard</h2>
+    <h2 class="mb-4">🚀 US30 Copilot Live Monitor</h2>
 
     <div class="row mb-4">
         <div class="col-md-3">
             <div class="card p-3 text-center">
-                <h5>Latest Trial</h5>
-                <h3 id="trial-number" class="text-info">Loading...</h3>
+                <h5>Latest Net Profit</h5>
+                <h3 id="net-profit">Loading...</h3>
             </div>
         </div>
         <div class="col-md-3">
             <div class="card p-3 text-center">
-                <h5>Latest Score</h5>
-                <h3 id="latest-score">Loading...</h3>
+                <h5>Win Rate</h5>
+                <h3 id="win-rate">Loading...</h3>
             </div>
         </div>
         <div class="col-md-3">
             <div class="card p-3 text-center">
-                <h5>Best Score</h5>
-                <h3 id="best-score" class="text-success">Loading...</h3>
+                <h5>Profit Factor</h5>
+                <h3 id="profit-factor">Loading...</h3>
             </div>
         </div>
         <div class="col-md-3">
             <div class="card p-3 text-center">
-                <h5>Status</h5>
-                <h3 id="trial-status">Loading...</h3>
+                <h5>Total Trades</h5>
+                <h3 id="total-trades">Loading...</h3>
             </div>
         </div>
     </div>
@@ -47,67 +48,93 @@
     <div class="row">
         <div class="col-md-8">
             <div class="card p-3">
-                <h5>Live Equity Curve</h5>
+                <h5>Latest Trial Equity Curve</h5>
                 <canvas id="equityChart" height="100"></canvas>
             </div>
         </div>
         
         <div class="col-md-4">
             <div class="card p-3 h-100">
-                <h5>🤖 AI Agent State</h5>
+                <h5>🤖 Autoresearch Status</h5>
                 <hr>
-                <p><strong>Current State:</strong> <span class="badge bg-primary">MONITORING</span></p>
-                <p><strong>Last Action:</strong> Evaluated M1 Pivots</p>
-                <p><strong>Confidence:</strong> 82%</p>
-                <button class="btn btn-outline-light btn-sm mt-auto">Refresh Agent Log</button>
+                <p><strong>Current Trial:</strong> <span id="trial-number" class="badge bg-primary">Loading...</span></p>
+                <p><strong>Status:</strong> <span id="trial-status">Loading...</span></p>
+                <p class="text-muted mt-3" style="font-size: 0.8em;">Monitoring batch_results folder...</p>
             </div>
         </div>
     </div>
 </div>
 
 <script>
-    // Fetch Metrics
-    fetch('/api/metrics')
-        .then(response => response.json())
-        .then(data => {
-            if(data.status === 'success') {
-                document.getElementById('trial-number').innerText = `#${data.trial_number}`;
-                document.getElementById('latest-score').innerText = data.latest_score.toFixed(2);
-                document.getElementById('best-score').innerText = data.best_score.toFixed(2);
-                document.getElementById('trial-status').innerText = data.trial_status;
-            } else {
-                console.error("Error loading metrics:", data.message);
-            }
-        });
+let equityChartInstance = null;
 
-    // Fetch and Draw Equity Chart
-    fetch('/api/equity')
-        .then(response => response.json())
-        .then(data => {
-            const ctx = document.getElementById('equityChart').getContext('2d');
-            new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: data.labels,
-                    datasets: [{
-                        label: 'Account Equity ($)',
-                        data: data.equity,
-                        borderColor: '#00e676',
-                        backgroundColor: 'rgba(0, 230, 118, 0.1)',
-                        borderWidth: 2,
-                        fill: true,
-                        tension: 0.3
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    scales: {
-                        y: { grid: { color: '#333' } },
-                        x: { grid: { color: '#333' } }
-                    }
+    function updateDashboard() {
+        // Fetch Metrics
+        fetch('/api/metrics')
+            .then(response => response.json())
+            .then(data => {
+                if(data.status === 'success') {
+                    const profitEl = document.getElementById('net-profit');
+                    profitEl.innerText = `$${data.net_profit.toFixed(2)}`;
+                    profitEl.className = data.net_profit >= 0 ? "text-success" : "text-danger";
+
+                    document.getElementById('win-rate').innerText = `${data.win_rate.toFixed(1)}%`;
+                    document.getElementById('profit-factor').innerText = data.profit_factor.toFixed(2);
+                    document.getElementById('total-trades').innerText = data.total_trades;
+                    document.getElementById('trial-number').innerText = `#${data.trial}`;
+                    document.getElementById('trial-status').innerText = data.status_msg;
+                } else {
+                    // Show the actual error message!
+                    document.getElementById('trial-status').innerText = "ERROR: " + data.message;
+                    document.getElementById('trial-status').className = "text-danger";
                 }
-            });
-        });
+            })
+            .catch(err => console.error("Metrics Error:", err));
+
+        // Fetch Chart Data
+        fetch('/api/equity')
+            .then(response => response.json())
+            .then(data => {
+                const ctx = document.getElementById('equityChart').getContext('2d');
+                
+                if (equityChartInstance) {
+                    equityChartInstance.destroy();
+                }
+
+                const finalEquity = data.equity[data.equity.length - 1];
+                const lineColor = finalEquity >= 10000 ? '#00e676' : '#ff5252';
+                const bgColor = finalEquity >= 10000 ? 'rgba(0, 230, 118, 0.1)' : 'rgba(255, 82, 82, 0.1)';
+
+                equityChartInstance = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: data.labels,
+                        datasets: [{
+                            label: 'Account Equity ($)',
+                            data: data.equity,
+                            borderColor: lineColor,
+                            backgroundColor: bgColor,
+                            borderWidth: 2,
+                            fill: true,
+                            tension: 0.1,
+                            pointRadius: 4 // Made dots visible since there are only 2 points (Start/End)
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        animation: false,
+                        scales: {
+                            y: { grid: { color: '#333' } },
+                            x: { grid: { color: '#333' } } 
+                        }
+                    }
+                });
+            })
+            .catch(err => console.error("Chart Error:", err));
+    }
+
+    updateDashboard();
+    setInterval(updateDashboard, 3000);
 </script>
 
 </body>
