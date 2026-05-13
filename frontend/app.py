@@ -100,5 +100,33 @@ def get_equity():
     except:
         return jsonify({"labels": ["Error"], "equity": [10000]})
 
+@app.route('/api/history')
+def get_history():
+    """Reads the autoresearch_log.tsv file to populate the history table and chart."""
+    import os
+    
+    # Locate the TSV file in the root directory (one level up from frontend)
+    tsv_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'autoresearch_log.tsv'))
+    history_data = []
+    
+    try:
+        if os.path.exists(tsv_path):
+            with open(tsv_path, 'r', encoding='utf-8') as f:
+                lines = f.readlines()
+                # Skip the header row
+                for idx, line in enumerate(lines[1:]):
+                    parts = line.strip().split('\t')
+                    if len(parts) >= 3:
+                        history_data.append({
+                            "id": idx + 1,
+                            "trial": parts[0],
+                            "score": float(parts[1]),
+                            "status": parts[2]
+                        })
+        return jsonify({"status": "success", "data": history_data})
+    except Exception as e:
+        print(f"剥 DEBUG: Error reading history -> {e}")
+        return jsonify({"status": "error", "message": str(e)})
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug=True, port=5000)
