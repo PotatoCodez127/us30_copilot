@@ -13,3 +13,4 @@ litellm
 llama-index
 llama-index-graph-stores-simple
 networkx
+Flask
