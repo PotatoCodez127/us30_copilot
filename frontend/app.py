@@ -26,60 +26,61 @@ def index():
 
 @app.route('/api/metrics')
 def get_metrics():
-    print("\n" + "="*50)
-    print("🔍 DEBUG: /api/metrics ENDPOINT CALLED")
+    import os
+    # Point directly to the new source of truth
+    tsv_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'autoresearch_log.tsv'))
     
-    latest_file = find_latest_text_file()
-    
-    if not latest_file:
-        print("🔍 DEBUG: No text file found by crawler!")
-        return jsonify({"status": "success", "net_profit": 0.0, "win_rate": 0.0, "profit_factor": 0.0, "total_trades": 0, "trial": "N/A", "status_msg": "Waiting for backtester..."})
-
-    print(f"🔍 DEBUG: Target File -> {latest_file}")
-
     try:
-        with open(latest_file, 'r', encoding='utf-8', errors='ignore') as file:
-            content = file.read()
-            
-            # --- DEBUG BLOCK 1: Raw Content ---
-            print("\n--- DEBUG: RAW FILE CONTENT (Last 300 chars) ---")
-            print(repr(content[-300:])) # Using repr() to show hidden newline/formatting characters
-            print("--------------------------------------------------\n")
-
-            # Scrape the numbers using the forgiving regex
-            net_profit_match = re.search(r'Net Profit[^\d-]+([-+]?\d+\.\d+)', content, re.IGNORECASE)
-            win_rate_match = re.search(r'Win Rate[^\d-]+(\d+\.\d+)', content, re.IGNORECASE)
-            trades_match = re.search(r'Total Trades[^\d]+(\d+)', content, re.IGNORECASE)
-            
-            # --- DEBUG BLOCK 2: Regex Results ---
-            print("🔍 DEBUG: Regex Match Results:")
-            print(f"   Net Profit Match Obj: {net_profit_match}")
-            print(f"   Win Rate Match Obj:   {win_rate_match}")
-            print(f"   Trades Match Obj:     {trades_match}")
-
-            net_profit = float(net_profit_match.group(1)) if net_profit_match else 0.0
-            win_rate = float(win_rate_match.group(1)) if win_rate_match else 0.0
-            total_trades = int(trades_match.group(1)) if trades_match else 0
-            
-            filename = os.path.basename(latest_file)
-            trial_match = re.search(r'(\d+)', filename)
-            trial_num = trial_match.group(1) if trial_match else "Latest"
-
-            print(f"\n🔍 DEBUG: Final Output -> Profit: {net_profit}, Win Rate: {win_rate}, Trades: {total_trades}")
-            print("="*50 + "\n")
-
-            return jsonify({
-                "status": "success",
-                "net_profit": net_profit,
-                "win_rate": win_rate,
-                "profit_factor": 0.0, 
-                "total_trades": total_trades,
-                "trial": trial_num,
-                "status_msg": "Tracking Live" if total_trades == 0 else "Run Complete"
-            })
+        if os.path.exists(tsv_path):
+            with open(tsv_path, 'r', encoding='utf-8') as f:
+                lines = f.readlines()
+                if len(lines) > 1: # Ensure there is data beyond the header
+                    # Grab the very last run
+                    last_line = lines[-1].strip().split('\t')
+                    latest_score = float(last_line[1])
+                    total_runs = len(lines) - 1
+                    
+                    return jsonify({
+                        "status": "success",
+                        "net_profit": latest_score,
+                        "win_rate": 0.0,      # Currently not tracked in TSV
+                        "profit_factor": 0.0, # Currently not tracked in TSV
+                        "total_trades": 0,    # Currently not tracked in TSV
+                        "trial": str(total_runs),
+                        "status_msg": "Rolling Research Active"
+                    })
     except Exception as e:
         print(f"🔍 DEBUG: CRASH in get_metrics -> {e}")
         return jsonify({"status": "error", "message": f"Parsing Error: {str(e)}"})
+
+    # Fallback if TSV is empty or missing
+    return jsonify({
+        "status": "success", "net_profit": 0.0, "win_rate": 0.0, 
+        "profit_factor": 0.0, "total_trades": 0, "trial": "N/A", 
+        "status_msg": "Waiting for data..."
+    })
+
+@app.route('/api/equity')
+def get_equity():
+    import os
+    tsv_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'autoresearch_log.tsv'))
+    
+    try:
+        if os.path.exists(tsv_path):
+            with open(tsv_path, 'r', encoding='utf-8') as f:
+                lines = f.readlines()
+                if len(lines) > 1:
+                    last_line = lines[-1].strip().split('\t')
+                    latest_score = float(last_line[1])
+                    
+                    return jsonify({
+                        "labels": ["Start", "End"],
+                        "equity": [10000.0, 10000.0 + latest_score]
+                    })
+    except:
+        pass
+        
+    return jsonify({"labels": ["Waiting for data..."], "equity": [10000.0, 10000.0]})
 
 @app.route('/api/equity')
 def get_equity():
