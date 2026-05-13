@@ -20,26 +20,26 @@
     <div class="row mb-4">
         <div class="col-md-3">
             <div class="card p-3 text-center">
-                <h5>Net Profit</h5>
-                <h3 id="net-profit" class="text-success">Loading...</h3>
+                <h5>Latest Trial</h5>
+                <h3 id="trial-number" class="text-info">Loading...</h3>
             </div>
         </div>
         <div class="col-md-3">
             <div class="card p-3 text-center">
-                <h5>Win Rate</h5>
-                <h3 id="win-rate">Loading...</h3>
+                <h5>Latest Score</h5>
+                <h3 id="latest-score">Loading...</h3>
             </div>
         </div>
         <div class="col-md-3">
             <div class="card p-3 text-center">
-                <h5>Profit Factor</h5>
-                <h3 id="profit-factor">Loading...</h3>
+                <h5>Best Score</h5>
+                <h3 id="best-score" class="text-success">Loading...</h3>
             </div>
         </div>
         <div class="col-md-3">
             <div class="card p-3 text-center">
-                <h5>Total Trades</h5>
-                <h3 id="total-trades">Loading...</h3>
+                <h5>Status</h5>
+                <h3 id="trial-status">Loading...</h3>
             </div>
         </div>
     </div>
@@ -71,12 +71,12 @@
         .then(response => response.json())
         .then(data => {
             if(data.status === 'success') {
-                document.getElementById('net-profit').innerText = `$${data.net_profit.toFixed(2)}`;
-                document.getElementById('win-rate').innerText = `${data.win_rate.toFixed(1)}%`;
-                document.getElementById('profit-factor').innerText = data.profit_factor.toFixed(2);
-                document.getElementById('total-trades').innerText = data.total_trades;
+                document.getElementById('trial-number').innerText = `#${data.trial_number}`;
+                document.getElementById('latest-score').innerText = data.latest_score.toFixed(2);
+                document.getElementById('best-score').innerText = data.best_score.toFixed(2);
+                document.getElementById('trial-status').innerText = data.trial_status;
             } else {
-                console.error("Error loading metrics");
+                console.error("Error loading metrics:", data.message);
             }
         });
 

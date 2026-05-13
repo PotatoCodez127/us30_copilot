@@ -4,28 +4,31 @@ import os
 
 app = Flask(__name__)
 
-# Path to your research log
-LOG_PATH = os.path.join(os.path.dirname(__file__), '..', 'autoresearch_log.tsv')
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+LOG_PATH = os.path.join(BASE_DIR, 'autoresearch_log.tsv')
 
 @app.route('/')
 def index():
-    """Render the main dashboard."""
     return render_template('index.html')
 
 @app.route('/api/metrics')
 def get_metrics():
-    """API endpoint to get the latest research metrics."""
     try:
-        # Read the latest line from your autoresearch log
+        if not os.path.exists(LOG_PATH):
+            return jsonify({"status": "error", "message": "File not found"})
+
         df = pd.read_csv(LOG_PATH, sep='\t')
+        
         if not df.empty:
             latest = df.iloc[-1]
+            best_score = df['score'].max() # Find the best score out of all trials
+            
             return jsonify({
                 "status": "success",
-                "win_rate": float(latest.get('Win Rate [%]', 0)),
-                "net_profit": float(latest.get('Net Profit [$]', 0)),
-                "total_trades": int(latest.get('Total Trades', 0)),
-                "profit_factor": float(latest.get('Profit Factor', 0))
+                "trial_number": int(latest.get('trial', 0)),
+                "latest_score": float(latest.get('score', 0)),
+                "best_score": float(best_score),
+                "trial_status": str(latest.get('status', 'Unknown'))
             })
     except Exception as e:
         return jsonify({"status": "error", "message": str(e)})
@@ -34,12 +37,10 @@ def get_metrics():
 
 @app.route('/api/equity')
 def get_equity():
-    """Mock API endpoint for the equity curve. 
-    You can hook this up to your plot_equity.py logic or a CSV export."""
-    # Simulating equity data for the chart
+    # Still mock data until we find your trade log file
     data = {
-        "labels": ["10:00", "10:15", "10:30", "10:45", "11:00", "11:15"],
-        "equity": [10000, 10050, 10020, 10150, 10100, 10250]
+        "labels": ["Day 1", "Day 2", "Day 3", "Day 4", "Day 5"],
+        "equity": [10000, 10050, 10100, 10080, 10200] 
     }
     return jsonify(data)
 
