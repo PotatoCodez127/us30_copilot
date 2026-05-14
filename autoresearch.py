@@ -313,16 +313,20 @@ def run_loop():
     
     print(f"📊 OOS Score Achieved: {score:.4f}")
 
+    # Find this section at the bottom of autoresearch.py and update the f.write lines:
+    
     if score > best_score:
         print(f"🏆 NEW HIGH SCORE! ({score:.4f} > {best_score:.4f}). Saving configuration.")
         shutil.copy(CONFIG_FILE, BEST_CONFIG_FILE)
         with open(RESULTS_FILE, "a", encoding="utf-8") as f:
-            f.write(f"auto\t{score:.4f}\tkeep\n")
+            # NEW: Log the parameters into the TSV
+            f.write(f"auto\t{score:.4f}\tkeep\t{sl_pts}\t{tp_pts}\t{buffer_pts}\t{max_hold}\n")
     else:
         print(f"❌ FAILED to beat high score. Reverting configuration to best known.")
         shutil.copy(BEST_CONFIG_FILE, CONFIG_FILE)
         with open(RESULTS_FILE, "a", encoding="utf-8") as f:
-            f.write(f"auto\t{score:.4f}\tdiscard\n")
+            # NEW: Log the parameters into the TSV
+            f.write(f"auto\t{score:.4f}\tdiscard\t{sl_pts}\t{tp_pts}\t{buffer_pts}\t{max_hold}\n")
 
     time.sleep(3)
 

@@ -54,12 +54,33 @@
         </div>
         
         <div class="col-md-4">
-            <div class="card p-3 h-100">
+            <div class="card p-3 mb-3">
                 <h5>🤖 Autoresearch Status</h5>
-                <hr>
-                <p><strong>Current Trial:</strong> <span id="trial-number" class="badge bg-primary">Loading...</span></p>
-                <p><strong>Status:</strong> <span id="trial-status">Loading...</span></p>
-                <p class="text-muted mt-3" style="font-size: 0.8em;">Monitoring batch_results folder...</p>
+                <hr class="mt-1 mb-2">
+                <p class="mb-1"><strong>Current Trial:</strong> <span id="trial-number" class="badge bg-primary">Loading...</span></p>
+                <p class="mb-1"><strong>Status:</strong> <span id="trial-status">Loading...</span></p>
+            </div>
+            
+            <div class="card p-3 h-100" id="inspector-card">
+                <h5>🔬 Parameter Inspector</h5>
+                <hr class="mt-1 mb-2">
+                <p class="text-muted" id="inspector-placeholder">Click a run in the history table to view its exact configuration.</p>
+                
+                <div id="inspector-details" style="display: none;">
+                    <h6 class="text-info mb-3">Viewing Run #<span id="inspect-id"></span></h6>
+                    <div class="d-flex justify-content-between border-bottom border-secondary pb-1 mb-2">
+                        <span>Stop Loss (Pts):</span> <strong id="inspect-sl"></strong>
+                    </div>
+                    <div class="d-flex justify-content-between border-bottom border-secondary pb-1 mb-2">
+                        <span>Take Profit (Pts):</span> <strong id="inspect-tp"></strong>
+                    </div>
+                    <div class="d-flex justify-content-between border-bottom border-secondary pb-1 mb-2">
+                        <span>Breakout Buffer:</span> <strong id="inspect-buffer"></strong>
+                    </div>
+                    <div class="d-flex justify-content-between pb-1">
+                        <span>Max Hold (Mins):</span> <strong id="inspect-hold"></strong>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -110,9 +131,13 @@ function updateHistory() {
                 const tbody = document.getElementById('history-table-body');
                 tbody.innerHTML = ''; 
                 
-                // Reverse the array so the newest runs show at the top of the table
+                // Reverse the array so the newest runs show at the top
                 [...history].reverse().forEach(row => {
                     const tr = document.createElement('tr');
+                    
+                    // Make the row look clickable
+                    tr.style.cursor = 'pointer';
+                    
                     const isKeep = row.status === 'keep';
                     const scoreColor = row.score > 0 ? 'text-success' : 'text-danger';
                     const badgeHtml = isKeep 
@@ -124,6 +149,23 @@ function updateHistory() {
                         <td class="${scoreColor}"><strong>${row.score.toFixed(4)}</strong></td>
                         <td>${badgeHtml}</td>
                     `;
+                    
+                    // NEW: Add click listener to trigger the inspector
+                    tr.onclick = () => {
+                        document.getElementById('inspector-placeholder').style.display = 'none';
+                        document.getElementById('inspector-details').style.display = 'block';
+                        
+                        document.getElementById('inspect-id').innerText = row.id;
+                        document.getElementById('inspect-sl').innerText = row.sl;
+                        document.getElementById('inspect-tp').innerText = row.tp;
+                        document.getElementById('inspect-buffer').innerText = row.buffer;
+                        document.getElementById('inspect-hold').innerText = row.max_hold;
+                        
+                        // Highlight the selected row
+                        document.querySelectorAll('#history-table-body tr').forEach(r => r.classList.remove('table-active'));
+                        tr.classList.add('table-active');
+                    };
+                    
                     tbody.appendChild(tr);
                 });
 
