@@ -1,0 +1,39 @@
+[tool.black]
+line-length = 100
+target-version = ['py39', 'py310', 'py311']
+include = '\.pyi?$'
+exclude = '''
+/(
+    \.git
+  | \.venv
+  | \.env
+  | build
+  | dist
+)/
+'''
+
+[tool.ruff]
+line-length = 100
+exclude = [
+    ".git",
+    ".venv",
+    ".env",
+    "__pycache__",
+]
+
+[tool.ruff.lint]
+select = ["E", "F", "I"]
+ignore = ["E501"]
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = ["F401"]
+
+[tool.ruff.lint.isort]
+# Guarantees unified import section sorting on both local and cloud platforms
+known-first-party = ["src"]
+
+[tool.pytest.ini_options]
+minversion = "7.0"
+addopts = "-ra -q --strict-markers"
+testpaths = ["tests"]
+pythonpath = ["."]
