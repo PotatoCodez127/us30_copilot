@@ -1,3 +1,5 @@
+# tests/test_state_machine_ai.py
+
 import unittest
 from unittest.mock import patch
 
@@ -19,6 +21,9 @@ class TestStateMachineAiSandbox(unittest.TestCase):
         # A candle that touches the Central Pivot
         self.pivot_candle = {"high": 39030.0, "low": 39020.0, "close": 39028.0}
 
+    @patch("src.strategy.state_machine.BREAKOUT_BUFFER_POINTS", 0.0)
+    @patch("src.strategy.state_machine.ENABLE_OR_CHECKS", True)
+    @patch("src.strategy.state_machine.ENABLE_PIVOT_CHECKS", True)
     def test_default_behavior(self):
         """Test the baseline logic with no AI tweaks."""
         result = self.tracker.update_state(self.breakout_candle, {})
@@ -26,6 +31,7 @@ class TestStateMachineAiSandbox(unittest.TestCase):
         self.assertIn("Opening Range High", result["trigger"])
 
     @patch("src.strategy.state_machine.BREAKOUT_BUFFER_POINTS", 5.0)
+    @patch("src.strategy.state_machine.ENABLE_OR_CHECKS", True)
     def test_ai_buffer_rejection(self):
         """Test if the AI applying a 5-point buffer correctly rejects a weak 2-point breakout."""
         # The candle closes at 39052. OR High is 39050. Buffer is 5.
