@@ -1,16 +1,13 @@
 pandas
 pytest
 requests
-dotenv
 ollama
 supabase
 python-dotenv
 yfinance
 matplotlib
-pandas
 chromadb
 litellm
 llama-index
-llama-index-graph-stores-simple
 networkx
 Flask
