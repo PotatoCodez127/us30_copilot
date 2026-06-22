@@ -1,6 +1,7 @@
 import os
-import requests
+
 import pandas as pd
+import requests
 from dotenv import load_dotenv
 
 # Suppress pandas display limits so we can see all columns
