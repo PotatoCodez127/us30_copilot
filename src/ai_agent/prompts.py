@@ -2,17 +2,17 @@ def generate_risk_assessment_prompt(setup_payload: dict) -> str:
     """
     Generates a draconian Chain-of-Thought (CoT) prompt powered by RAG context.
     """
-    
-    entry = setup_payload.get('context', {}).get('close_price', 0)
+
+    entry = setup_payload.get("context", {}).get("close_price", 0)
     # --- WIDENED THE BOUNDS FOR US30 VOLATILITY ---
     sl_long = entry - 150.0
     tp_long = entry + 250.0
     sl_short = entry + 150.0
     tp_short = entry - 250.0
     # ----------------------------------------------
-    
-    historical_context = setup_payload.get('historical_context', 'No historical data available.')
-    
+
+    historical_context = setup_payload.get("historical_context", "No historical data available.")
+
     prompt = f"""
 You are an elite, cold, and calculating Institutional Quantitative Trading AI.
 Your ONLY objective is to analyze the following 15-minute rolling tape of the US30 index and determine if a structural breakout is legitimate or a trap.
