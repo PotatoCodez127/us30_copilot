@@ -1,10 +1,8 @@
 import json
 import os
 import re
-
 import chromadb
 import pandas as pd
-
 from src.ai_agent.ollama_client import analyze_setup_with_ollama
 from src.data_feed.historical import load_and_prep_data, simulate_ny_session
 from src.math_engine.pivots import calculate_daily_pivots
@@ -35,7 +33,6 @@ def simulate_trade(
     if future_data.empty:
         return "No Future Data", raw_entry, trigger_time, 0.0
 
-    trigger_idx = future_data.index[0]
     outcome = "Closed at End of Day 🌇"
 
     if direction == "LONG":
@@ -61,6 +58,7 @@ def simulate_trade(
                 exit_price = sl - SLIPPAGE_POINTS
                 return outcome, exit_price, idx, (exit_price - entry_price)
 
+            # Eject trade after threshold holding minutes have elapsed
             mins_held = (idx - trigger_time).total_seconds() / 60.0
             if mins_held >= MAX_HOLDING_MINUTES:
                 if current_close < entry_price:
@@ -124,15 +122,23 @@ def build_semantic_tape(current_day_data, trigger_time):
     tape_lines = []
     for idx, row in recent_tape.iterrows():
         time_str = idx.strftime("%H:%M")
-        o, h, l, c = row["open"], row["high"], row["low"], row["close"]
+        # Standardized tracking variable strings to avoid visual ambiguity warnings
+        open_prc, high_prc, low_prc, close_prc = (
+            row["open"],
+            row["high"],
+            row["low"],
+            row["close"],
+        )
 
-        point_change = c - o
-        total_range = h - l
-        body = abs(c - o)
+        point_change = close_prc - open_prc
+        total_range = high_prc - low_prc
+        body = abs(close_prc - open_prc)
         if total_range == 0:
             total_range = 0.1
 
-        direction = "Bullish" if point_change > 0 else "Bearish" if point_change < 0 else "Neutral"
+        direction = (
+            "Bullish" if point_change > 0 else "Bearish" if point_change < 0 else "Neutral"
+        )
 
         if body <= (total_range * 0.25):
             shape = "Indecision/Doji"
@@ -148,14 +154,16 @@ def build_semantic_tape(current_day_data, trigger_time):
         )
 
         tape_lines.append(
-            f"[{time_str}] Close: {c:.1f} | {direction} | Net: {point_change:+.1f} pts | {shape} | {vol}"
+            f"[{time_str}] Close: {close_prc:.1f} | {direction} | Net: {point_change:+.1f} pts | {shape} | {vol}"
         )
 
     return "\n".join(tape_lines)
 
 
 def run_master_backtest(csv_filepath: str):
-    print(f"{Color.CYAN}🚀 Initializing 11 AM Sniper Engine (RAG-Powered Edition)...{Color.RESET}")
+    print(
+        f"{Color.CYAN}🚀 Initializing 11 AM Sniper Engine (RAG-Powered Edition)...{Color.RESET}"
+    )
 
     if os.path.exists("results/trade_log.csv"):
         os.remove("results/trade_log.csv")
@@ -166,7 +174,10 @@ def run_master_backtest(csv_filepath: str):
 
     for i in range(1, len(unique_dates)):
         current_date_str = str(unique_dates[i])
-        prev_day_data, current_day_data = df.loc[str(unique_dates[i - 1])], df.loc[current_date_str]
+        prev_day_data, current_day_data = (
+            df.loc[str(unique_dates[i - 1])],
+            df.loc[current_date_str],
+        )
 
         if prev_day_data.empty or current_day_data.empty:
             continue
@@ -202,8 +213,6 @@ def run_master_backtest(csv_filepath: str):
                 if "Opening Range High" in setup["trigger"] and raw_entry < central_pivot:
                     continue
 
-                # print(f"{Color.YELLOW}🔍 SETUP TRIGGERED: {current_date_str} at {setup['timestamp']} | Level: {setup['trigger']}{Color.RESET}")
-
                 current_semantic_tape = build_semantic_tape(current_day_data, trigger_time)
                 setup["recent_tape"] = current_semantic_tape
 
@@ -215,7 +224,6 @@ def run_master_backtest(csv_filepath: str):
                         rag_collection = rag_client.get_or_create_collection(name="us30_setups")
 
                         if rag_collection.count() > 0:
-                            # print(f"{Color.CYAN}🧠 Querying RAG Memory Bank for similar setups...{Color.RESET}")
                             results = rag_collection.query(
                                 query_texts=[current_semantic_tape], n_results=3
                             )
@@ -237,7 +245,9 @@ def run_master_backtest(csv_filepath: str):
                 setup["pnl_points"], setup["holding_time_mins"] = 0.0, 0
                 setup["sl_distance"], setup["tp_distance"] = 0.0, 0.0
 
-                dir_match = re.search(r"DIRECTION:\s*(LONG|SHORT|NONE)", ai_analysis, re.IGNORECASE)
+                dir_match = re.search(
+                    r"DIRECTION:\s*(LONG|SHORT|NONE)", ai_analysis, re.IGNORECASE
+                )
                 sl_match = re.search(r"SL:\s*[\$]?([\d,]+\.?\d*)", ai_analysis)
                 tp_match = re.search(r"TP:\s*[\$]?([\d,]+\.?\d*)", ai_analysis)
 
