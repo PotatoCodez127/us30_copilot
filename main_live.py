@@ -1,3 +1,5 @@
+# main_live.py
+
 import os
 import re
 import time
@@ -35,28 +37,41 @@ def build_semantic_tape(current_day_data, trigger_time):
 
     tape_lines = []
     for idx, row in recent_tape.iterrows():
-        time_str = idx.strftime('%H:%M')
-        # Synchronized name fields with backtest tracks to prevent visual ambiguity flaws
-        open_prc, high_prc, low_prc, close_prc = row['open'], row['high'], row['low'], row['close']
-        
+        time_str = idx.strftime("%H:%M")
+        open_prc, high_prc, low_prc, close_prc = (
+            row["open"],
+            row["high"],
+            row["low"],
+            row["close"],
+        )
+
         point_change = close_prc - open_prc
         total_range = high_prc - low_prc
         body = abs(close_prc - open_prc)
-        if total_range == 0: total_range = 0.1
-        
-        direction = "Bullish" if point_change > 0 else "Bearish" if point_change < 0 else "Neutral"
-        
+        if total_range == 0:
+            total_range = 0.1
+
+        direction = (
+            "Bullish" if point_change > 0 else "Bearish" if point_change < 0 else "Neutral"
+        )
+
         if body <= (total_range * 0.25):
             shape = "Indecision/Doji"
         elif body >= (total_range * 0.75):
             shape = "Strong Momentum"
         else:
             shape = "Standard Candle"
-            
-        vol = "High Volatility" if total_range > 30 else "Low Volatility" if total_range < 10 else "Normal Volatility"
-        
-        tape_lines.append(f"[{time_str}] Close: {close_prc:.1f} | {direction} | Net: {point_change:+.1f} pts | {shape} | {vol}")
-        
+
+        vol = (
+            "High Volatility"
+            if total_range > 30
+            else "Low Volatility" if total_range < 10 else "Normal Volatility"
+        )
+
+        tape_lines.append(
+            f"[{time_str}] Close: {close_prc:.1f} | {direction} | Net: {point_change:+.1f} pts | {shape} | {vol}"
+        )
+
     return "\n".join(tape_lines)
 
 
@@ -127,7 +142,7 @@ def run_live_bot():
                 time.sleep(60)
                 continue
 
-            opening_range = current_day_data.loc[f"{today_str} 13:30:00":f"{today_str} 14:00:00"]
+            opening_range = current_day_data.loc[f"{today_str} 13:30:00" : f"{today_str} 14:00:00"]
             if opening_range.empty or len(opening_range) < 30:
                 print(
                     f"[{now.strftime('%H:%M:%S')} UTC] Waiting for Opening Range to form (14:00 UTC)...",
@@ -168,7 +183,7 @@ def run_live_bot():
             # =======================================================
 
             tracker = US30SessionTracker(or_high=or_high, or_low=or_low, daily_pivots=pivots)
-            sniper_window_data = current_day_data.loc[f"{today_str} 15:00:00":]
+            sniper_window_data = current_day_data.loc[f"{today_str} 15:00:00" :]
             if sniper_window_data.empty:
                 time.sleep(60)
                 continue
@@ -227,7 +242,9 @@ def run_live_bot():
                         db_path = os.path.join(os.getcwd(), "data", "rag_db")
                         if os.path.exists(db_path):
                             rag_client = chromadb.PersistentClient(path=db_path)
-                            rag_collection = rag_client.get_or_create_collection(name="us30_setups")
+                            rag_collection = rag_client.get_or_create_collection(
+                                name="us30_setups"
+                            )
 
                             if rag_collection.count() > 0:
                                 print(
@@ -277,9 +294,7 @@ def run_live_bot():
                             sl = raw_entry + risk
                             tp = raw_entry - reward
 
-                        print(
-                            f"\n{Color.YELLOW}🔔 EXECUTION PARAMETERS (MANUAL ENTRY) 🔔{Color.RESET}"
-                        )
+                        print(f"\n{Color.YELLOW}🔔 EXECUTION PARAMETERS (MANUAL ENTRY) 🔔{Color.RESET}")
                         print(
                             f"Direction:   {Color.GREEN if direction=='LONG' else Color.RED}{direction}{Color.RESET}"
                         )

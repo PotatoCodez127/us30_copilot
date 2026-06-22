@@ -1,8 +1,12 @@
+# main_backtest.py
+
 import json
 import os
 import re
+
 import chromadb
 import pandas as pd
+
 from src.ai_agent.ollama_client import analyze_setup_with_ollama
 from src.data_feed.historical import load_and_prep_data, simulate_ny_session
 from src.math_engine.pivots import calculate_daily_pivots
@@ -122,7 +126,6 @@ def build_semantic_tape(current_day_data, trigger_time):
     tape_lines = []
     for idx, row in recent_tape.iterrows():
         time_str = idx.strftime("%H:%M")
-        # Standardized tracking variable strings to avoid visual ambiguity warnings
         open_prc, high_prc, low_prc, close_prc = (
             row["open"],
             row["high"],
