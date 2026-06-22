@@ -51,9 +51,7 @@ def build_semantic_tape(current_day_data, trigger_time):
         if total_range == 0:
             total_range = 0.1
 
-        direction = (
-            "Bullish" if point_change > 0 else "Bearish" if point_change < 0 else "Neutral"
-        )
+        direction = "Bullish" if point_change > 0 else "Bearish" if point_change < 0 else "Neutral"
 
         if body <= (total_range * 0.25):
             shape = "Indecision/Doji"
@@ -142,7 +140,7 @@ def run_live_bot():
                 time.sleep(60)
                 continue
 
-            opening_range = current_day_data.loc[f"{today_str} 13:30:00" : f"{today_str} 14:00:00"]
+            opening_range = current_day_data.loc[f"{today_str} 13:30:00":f"{today_str} 14:00:00"]
             if opening_range.empty or len(opening_range) < 30:
                 print(
                     f"[{now.strftime('%H:%M:%S')} UTC] Waiting for Opening Range to form (14:00 UTC)...",
@@ -183,7 +181,7 @@ def run_live_bot():
             # =======================================================
 
             tracker = US30SessionTracker(or_high=or_high, or_low=or_low, daily_pivots=pivots)
-            sniper_window_data = current_day_data.loc[f"{today_str} 15:00:00" :]
+            sniper_window_data = current_day_data.loc[f"{today_str} 15:00:00":]
             if sniper_window_data.empty:
                 time.sleep(60)
                 continue
@@ -242,9 +240,7 @@ def run_live_bot():
                         db_path = os.path.join(os.getcwd(), "data", "rag_db")
                         if os.path.exists(db_path):
                             rag_client = chromadb.PersistentClient(path=db_path)
-                            rag_collection = rag_client.get_or_create_collection(
-                                name="us30_setups"
-                            )
+                            rag_collection = rag_client.get_or_create_collection(name="us30_setups")
 
                             if rag_collection.count() > 0:
                                 print(
@@ -294,7 +290,9 @@ def run_live_bot():
                             sl = raw_entry + risk
                             tp = raw_entry - reward
 
-                        print(f"\n{Color.YELLOW}🔔 EXECUTION PARAMETERS (MANUAL ENTRY) 🔔{Color.RESET}")
+                        print(
+                            f"\n{Color.YELLOW}🔔 EXECUTION PARAMETERS (MANUAL ENTRY) 🔔{Color.RESET}"
+                        )
                         print(
                             f"Direction:   {Color.GREEN if direction=='LONG' else Color.RED}{direction}{Color.RESET}"
                         )

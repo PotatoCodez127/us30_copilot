@@ -139,9 +139,7 @@ def build_semantic_tape(current_day_data, trigger_time):
         if total_range == 0:
             total_range = 0.1
 
-        direction = (
-            "Bullish" if point_change > 0 else "Bearish" if point_change < 0 else "Neutral"
-        )
+        direction = "Bullish" if point_change > 0 else "Bearish" if point_change < 0 else "Neutral"
 
         if body <= (total_range * 0.25):
             shape = "Indecision/Doji"
@@ -164,9 +162,7 @@ def build_semantic_tape(current_day_data, trigger_time):
 
 
 def run_master_backtest(csv_filepath: str):
-    print(
-        f"{Color.CYAN}🚀 Initializing 11 AM Sniper Engine (RAG-Powered Edition)...{Color.RESET}"
-    )
+    print(f"{Color.CYAN}🚀 Initializing 11 AM Sniper Engine (RAG-Powered Edition)...{Color.RESET}")
 
     if os.path.exists("results/trade_log.csv"):
         os.remove("results/trade_log.csv")
@@ -248,9 +244,7 @@ def run_master_backtest(csv_filepath: str):
                 setup["pnl_points"], setup["holding_time_mins"] = 0.0, 0
                 setup["sl_distance"], setup["tp_distance"] = 0.0, 0.0
 
-                dir_match = re.search(
-                    r"DIRECTION:\s*(LONG|SHORT|NONE)", ai_analysis, re.IGNORECASE
-                )
+                dir_match = re.search(r"DIRECTION:\s*(LONG|SHORT|NONE)", ai_analysis, re.IGNORECASE)
                 sl_match = re.search(r"SL:\s*[\$]?([\d,]+\.?\d*)", ai_analysis)
                 tp_match = re.search(r"TP:\s*[\$]?([\d,]+\.?\d*)", ai_analysis)
 

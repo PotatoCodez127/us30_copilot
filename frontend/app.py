@@ -56,25 +56,26 @@ def get_metrics():
     )
 
 
-@app.route('/api/equity')
+@app.route("/api/equity")
 def get_equity():
-    tsv_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'autoresearch_log.tsv'))
-    
+    tsv_path = os.path.abspath(
+        os.path.join(os.path.dirname(__file__), "..", "autoresearch_log.tsv")
+    )
+
     try:
         if os.path.exists(tsv_path):
-            with open(tsv_path, 'r', encoding='utf-8') as f:
+            with open(tsv_path, "r", encoding="utf-8") as f:
                 lines = f.readlines()
                 if len(lines) > 1:
-                    last_line = lines[-1].strip().split('\t')
+                    last_line = lines[-1].strip().split("\t")
                     latest_score = float(last_line[1])
-                    
-                    return jsonify({
-                        "labels": ["Start", "End"],
-                        "equity": [10000.0, 10000.0 + latest_score]
-                    })
+
+                    return jsonify(
+                        {"labels": ["Start", "End"], "equity": [10000.0, 10000.0 + latest_score]}
+                    )
     except Exception:  # Upgraded from bare except to safe application exception type
         pass
-        
+
     return jsonify({"labels": ["Waiting for data..."], "equity": [10000.0, 10000.0]})
 
 
