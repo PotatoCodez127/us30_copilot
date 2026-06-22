@@ -35,34 +35,28 @@ def build_semantic_tape(current_day_data, trigger_time):
 
     tape_lines = []
     for idx, row in recent_tape.iterrows():
-        time_str = idx.strftime("%H:%M")
-        o, h, l, c = row["open"], row["high"], row["low"], row["close"]
-
-        point_change = c - o
-        total_range = h - l
-        body = abs(c - o)
-        if total_range == 0:
-            total_range = 0.1
-
+        time_str = idx.strftime('%H:%M')
+        # Synchronized name fields with backtest tracks to prevent visual ambiguity flaws
+        open_prc, high_prc, low_prc, close_prc = row['open'], row['high'], row['low'], row['close']
+        
+        point_change = close_prc - open_prc
+        total_range = high_prc - low_prc
+        body = abs(close_prc - open_prc)
+        if total_range == 0: total_range = 0.1
+        
         direction = "Bullish" if point_change > 0 else "Bearish" if point_change < 0 else "Neutral"
-
+        
         if body <= (total_range * 0.25):
             shape = "Indecision/Doji"
         elif body >= (total_range * 0.75):
             shape = "Strong Momentum"
         else:
             shape = "Standard Candle"
-
-        vol = (
-            "High Volatility"
-            if total_range > 30
-            else "Low Volatility" if total_range < 10 else "Normal Volatility"
-        )
-
-        tape_lines.append(
-            f"[{time_str}] Close: {c:.1f} | {direction} | Net: {point_change:+.1f} pts | {shape} | {vol}"
-        )
-
+            
+        vol = "High Volatility" if total_range > 30 else "Low Volatility" if total_range < 10 else "Normal Volatility"
+        
+        tape_lines.append(f"[{time_str}] Close: {close_prc:.1f} | {direction} | Net: {point_change:+.1f} pts | {shape} | {vol}")
+        
     return "\n".join(tape_lines)
 
 
