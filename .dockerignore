@@ -1,0 +1,36 @@
+# Version Control Systems
+.git
+.gitignore
+.github/
+
+# Local Python Virtual Environments
+.venv
+venv/
+env/
+ENV/
+.env
+
+# Python Bytecode and Compilation Artifacts
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Quality Assurance & Linter Tracking Caches
+.pytest_cache/
+.ruff_cache/
+.vscode/
+.idea/
+
+# Large-Scale Historical Quantitative Data Feeds (Exclude to prevent Image Bloat)
+*.csv
+*.tsv
+data/*.csv
+data/*.csv.gz
+US30M1.csv
+
+# Dynamic Simulation Databases & Research Outputs
+data/rag_db/
+results/
+*.png
+*.html
