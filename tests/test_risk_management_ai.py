@@ -1,3 +1,5 @@
+# tests/test_risk_management_ai.py
+
 import unittest
 from unittest.mock import patch
 
@@ -47,6 +49,7 @@ class TestRiskManagementAiSandbox(unittest.TestCase):
         self.assertLess(pnl, 0)
 
     @patch("main_backtest.MAX_HOLDING_MINUTES", 1)
+    @patch("main_backtest.SL_RISK_POINTS", 200.0)  # Fortified to survive minute-1 drawdown drop
     @patch("main_backtest.SLIPPAGE_POINTS", 0.0)
     def test_ai_time_ejection(self):
         """AI forces the bot to exit after exactly 1 minute of drawdown."""
